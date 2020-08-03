@@ -9,10 +9,10 @@
             <input type="text" class="ipt" placeholder="ID" v-model="user.id">
         </div>
         <div class="ipt__box">
-            <input type="password" class="ipt" placeholder="Password" v-model="user.password" @keyup.enter="login()">
+            <input type="password" class="ipt" placeholder="Password" v-model="user.password" @keyup.enter="join">
         </div>
         <div class="ipt__btn">
-            <a href="#" class="btn btn--confirm btn--large" v-on:click="login()">LOGIN</a>
+            <a href="#" class="btn btn--confirm btn--large" v-on:click="join">LOGIN</a>
         </div>
     </div>
     </div>
