@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.lang.Object;
 import com.project.dao.user.UserDAO;
-import com.project.model.UserEntity;
+import com.project.model.user.UserEntity;
 
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;

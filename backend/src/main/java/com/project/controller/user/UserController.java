@@ -4,7 +4,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 
-import com.project.model.UserEntity;
+import com.project.model.user.UserEntity;
 import com.project.service.user.*;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
