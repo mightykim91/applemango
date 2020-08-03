@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.project.dao.UserDAO;
+import com.project.dao.user.UserDAO;
 import com.project.model.Review;
 import com.project.service.ReviewService;
 import com.project.model.ReviewUpdateRequest;

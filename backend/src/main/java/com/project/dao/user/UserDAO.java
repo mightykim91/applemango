@@ -1,4 +1,4 @@
-package com.project.dao;
+package com.project.dao.user;
 
 import com.project.model.UserEntity;
 import java.util.Optional;
