@@ -1,11 +1,11 @@
-package com.project.controller;
+package com.project.controller.user;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 
-import com.project.model.UserEntity;
-import com.project.service.*;
+import com.project.model.user.*;
+import com.project.service.user.*;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;

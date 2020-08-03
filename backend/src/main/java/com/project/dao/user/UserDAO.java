@@ -1,6 +1,6 @@
-package com.project.dao;
+package com.project.dao.user;
 
-import com.project.model.UserEntity;
+import com.project.model.user.UserEntity;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;

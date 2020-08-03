@@ -1,4 +1,4 @@
-package com.project.service;
+package com.project.service.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,8 +12,8 @@ import javax.persistence.PersistenceUnit;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.lang.Object;
-import com.project.dao.UserDAO;
-import com.project.model.UserEntity;
+import com.project.dao.user.*;
+import com.project.model.user.UserEntity;
 
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
