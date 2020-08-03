@@ -31,10 +31,10 @@ public class RestaurantController {
 
     //레스토랑 등록
     @PostMapping("/reg") 
-    public Object rstReg(@RequestBody Restaurant request) {
+    public Object rstReg(@RequestBody RestaurantEntity request) {
         System.out.println(request.toString());
 
-        Restaurant rst = new Restaurant(request.getRname(), request.getRbranch(),
+        RestaurantEntity rst = new RestaurantEntity(request.getRname(), request.getRbranch(),
                                         request.getRuid(), request.getRphone(), request.getRaddr());
         if(restaurantService.rstSave(rst) == rst) {
             System.out.println("성공");
@@ -50,7 +50,7 @@ public class RestaurantController {
         System.out.println(" rid체크 in Rst Controller : "+rid);
         int ridnum = Integer.parseInt(rid);
 
-        Optional<Restaurant> result = restaurantService.getRestaurantInfo(ridnum);
+        Optional<RestaurantEntity> result = restaurantService.getRestaurantInfo(ridnum);
 
         
         System.out.println(result.toString());
@@ -58,22 +58,22 @@ public class RestaurantController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<Restaurant>> getRestaurantList(@RequestParam("uid") String uid){
+    public ResponseEntity<List<RestaurantEntity>> getRestaurantList(@RequestParam("uid") String uid){
         // System.out.println("사용자의 아이디: "+uid);
 
-        List<Restaurant> result = null;
+        List<RestaurantEntity> result = null;
 
         if(!uid.equals("undefined") && uid!=null){
             result = restaurantService.getRestaurantList(uid);
             //System.out.println(result.get(0).getRname());
-            return new ResponseEntity<List<Restaurant>>(result, HttpStatus.OK);
+            return new ResponseEntity<List<RestaurantEntity>>(result, HttpStatus.OK);
         } else {
-            return new ResponseEntity<List<Restaurant>>(result, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<List<RestaurantEntity>>(result, HttpStatus.BAD_REQUEST);
         }
     }
 
     @PutMapping("/mod")
-    public Object rstMod(@RequestBody Restaurant request) {
+    public Object rstMod(@RequestBody RestaurantEntity request) {
         System.out.println(request.toString());
         return restaurantService.Modrst(request);
     }

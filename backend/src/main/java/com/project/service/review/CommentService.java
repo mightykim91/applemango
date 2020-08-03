@@ -1,7 +1,7 @@
-package com.project.service;
+package com.project.service.review;
 
 import com.project.dao.review.CommentDAO;
-import com.project.model.CommentEntity;
+import com.project.model.review.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
