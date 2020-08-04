@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import main from '@/views/main.vue';
+import MainView from '@/views/MainView.vue';
 import login from '@/views/user/login.vue';
-import test1 from '@/views/test1.vue';
+import Join from '@/views/user/Join.vue';
 import insta from '@/views/restaurant/Receive-insta.vue';
 
 import Review from '@/components/review/ReviewList.vue';
@@ -23,31 +23,33 @@ export const router = new VueRouter({
       //  path : url 주소
       path: '/',
       // component: url 주소로 갔을 때 표시될 컴포넌트
-      component: main,
+      name: 'Home',
+      component: MainView,
     },
     {
         path: '/user/login',
+        name: 'Login',
         component: login,
+    },
+    {
+      path: '/user/signup',
+      name: 'SignUp',
+      component: Join
     },
     {
       path: '/instagram/receive',
       name: 'receiveInsta',
       component: insta
-
-  },
-    {
-      path: '/test1',
-      component: test1,
     },
     {
       path: '/rst/reg',
       component: reg,
     },
-    {
-      path: '/rst/mystore/:ruid?',
-      name: 'mystore',
-      component: mystore
-    },
+    // {
+    //   path: '/rst/mystore/:ruid?',
+    //   name: 'mystore',
+    //   component: mystore
+    // },
     {
       path: '/rst/mystore/:ruid',
       name: 'mystore',

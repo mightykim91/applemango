@@ -52,7 +52,7 @@ public class ReviewService {
         reviewDao.findById(reviewId).ifPresent(r -> {
             reviewDao.delete(r);
         });
-        return new ResponseEntity<String>(HttpStatus.OK);
+        return new ResponseEntity<List<ReviewEntity>>(reviewDao.findAll() ,HttpStatus.OK);
     }
     
 }

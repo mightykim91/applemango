@@ -54,6 +54,12 @@ public class UserController {
         return session.toString();
     }
 
+    @GetMapping("/info")
+    public Object userInfo(@RequestParam("uid") String userId){
+        
+        return userService.userInfo(userId);
+    }
+
     // @PutMapping("/edit/{seq}")
     // public Object edit(@RequestBody @Valid UserEntity param, @PathVariable("seq") @Min(1) String uid){
     //     param.setSeq(seq);

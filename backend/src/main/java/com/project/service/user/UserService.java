@@ -86,6 +86,14 @@ public class UserService {
         return session;
     }
 
+    //김연수추가
+    public Object userInfo(String userId){
+        
+        UserEntity user = userDAO.getUserByUid(userId);
+
+        return user;
+    }
+
 
   
 }
