@@ -20,6 +20,7 @@ public class RestaurantEntity {
     private String ruid; //식당 주인 id
     private String rphone; //식당 번호
     private String raddr; //식당 주소
+    private String rimage; //식당 로고 이미지
     private String rlat; //식당 위도,경도
     private String rlng;
     private String rdescription; //식당 정보
@@ -36,18 +37,17 @@ public class RestaurantEntity {
         this.raddr = raddr;
     }
 
-
-    public RestaurantEntity(String rname, String rbranch, String ruid, String rphone, String raddr, String rlat, String rlng, String rdescription, Date rcreatedate){
+    public RestaurantEntity(String rname, String rbranch, String ruid, String rphone, String raddr, String rimage, String rlat, String rlng, String rdescription, Date rcreatedate){
         this.rname = rname;
         this.rbranch = rbranch;
         this.ruid = ruid;
         this.rphone = rphone;
         this.raddr = raddr;
+        this.rimage = rimage;
         this.rlat = rlat;
         this.rlng = rlng;
         this.rdescription = rdescription;
         this.rcreatedate = rcreatedate;
-
     }
 
     public String toString(){

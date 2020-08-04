@@ -46,7 +46,6 @@
             'mystore-header' : Header
         },
         mounted() {
-
             axios.get(BACKEND_URL + '/rst/list?uid='+this.$route.params.ruid).then(({ data }) => {
                 this.rsts = data;
             })

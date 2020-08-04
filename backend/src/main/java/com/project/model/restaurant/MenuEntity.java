@@ -13,20 +13,24 @@ public class MenuEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int mid;
     private int mrid;
-    private String missig;
+    private boolean missig;
     private String mname;
     private int mprice;
     private String mimage;
     
     public MenuEntity() {}
 
-    public MenuEntity(int mid, int mrid, String missig, String mname,int mprice, String mimage) {
-        this.mid = mid;
+    public MenuEntity(int mrid, boolean missig, String mname,int mprice, String mimage) {
         this.mrid = mrid;
         this.missig = missig;
         this.mname = mname;
         this.mprice = mprice;
         this.mimage = mimage;
+    }
+
+   
+    public boolean getmissig() {
+        return this.missig;
     }
 
     public String toSring() {

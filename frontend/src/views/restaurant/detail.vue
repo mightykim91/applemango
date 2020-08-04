@@ -17,22 +17,67 @@
         <br clear="left">
 
         <div class="menuInfo">
-        <p>메뉴정보</p>
+            
+            <!-- 메뉴 등록 모달 창 -->
+            Menu <b-button v-b-modal.regMenu>등록</b-button>
+                 
+            <b-modal id="regMenu" ref="modal" 
+                title="메뉴 등록" @show="resetModal" @hidden="resetModal" @ok="reghandleOk">
+                <form ref="form">
+                    <b-form-group  
+                        label-for="input" invalid-feedback="required">
+                        이름<b-form-input v-model="newname"  required></b-form-input>
+                        <b-form-checkbox v-model="newissig" requried>메인메뉴 </b-form-checkbox> 
+                        가격 <b-form-input v-model="newprice" required></b-form-input>
+                        <!-- 이미지 업로드 or 이미지 주소 복사(현재는 이미지 주소) -->
+                        이미지 <b-form-input v-model="newimage" required></b-form-input>
+                    </b-form-group>
+                </form>
+            </b-modal>
         <hr>
         <div v-if="requestData.menus.length > 0">
             <table class="table table-bordered table-condensed">
                 <colgroup>
+                    <col :style="{width: '20%'}" />
                     <col :style="{width: '25%'}" />
+                    <col :style="{width: '15%'}" />
                     <col :style="{width: '25%'}" />
-                    <col :style="{width: '25%'}" />
-                    <col :style="{width: '25%'}" />
+                    <col :style="{width: '15%'}" />
                 </colgroup>
-                <tr v-for="(menu,index) in requestData.menus" :key="index">
-                    <td class="text-center">메뉴번호 : {{menu.mid}}</td>
-                    <td class="text-center">메뉴이름 : {{menu.mname}}</td>
-                    <td class="text-center">메뉴가격 : {{menu.mprice}}원</td>
-                    <td class="text-center">메뉴사진 : {{menu.mimage}}</td>
+                <tr>
+                    <th></th>
+                    <th class="text-center">이름</th>
+                    <th class="text-center">가격</th>
+                    <th class="text-center">사진</th>
+                    <th class="text-center"></th>
                 </tr>
+                <tr v-for="(menu,index) in requestData.menus" :key="index">
+                    <td class="text-center">{{menu.mid}}</td>
+                    <td class="text-center">{{menu.mname}}</td>
+                    <td class="text-center">{{menu.mprice}}원</td>
+                    <td class="text-center">{{menu.mimage}}</td>
+                    <td>
+                        <b-button v-b-modal.modMenu>수정</b-button>
+                        <b-button v-b-modal.delMenu>삭제</b-button>       
+                    </td>
+                        <!-- 메뉴 수정하는 모달 창 -->
+                        <b-modal id="modMenu" ref="modal" 
+                            title="메뉴 수정" @ok="modhandleSubmit">
+                            <form ref="form">
+                                <b-form-group  
+                                    label-for="input" invalid-feedback="required">
+                                    이름<b-form-input v-model="newname" :placeholder= "menu.mname" :value="menu.mname" requried></b-form-input>
+                                    <b-form-checkbox v-model="newissig" requried>메인메뉴</b-form-checkbox> 
+                                    가격 <b-form-input v-model="newprice" :placeholder= "menu.mprice" required></b-form-input>
+                                    <!-- 이미지 업로드 or 이미지 주소 복사(현재는 이미지 주소) -->
+                                    이미지 <b-form-input v-model="newimage" :placeholder= "menu.mimage" required></b-form-input>
+                                </b-form-group>
+                            </form>
+                        </b-modal>
+
+                        <!-- 메뉴 삭제하기 모달 창-->
+                        <b-modal id="delMenu" title="메뉴삭제" @ok= delhandleSubmit(menu.mid)><p>{{menu.mname}}을(를) 정말 삭제 하시겠습니까?</p></b-modal>
+                    </tr>
             </table>
         </div>
         <div v-else>
@@ -68,7 +113,12 @@ export default {
             requestData: {
                 rst: [],
                 menus: []
-            }
+            },
+            newissig:false,
+            newname:'',
+            newprice:'',
+            newimage:'',
+            menuid:''
         }
     },
     mounted() {
@@ -85,10 +135,56 @@ export default {
         })
     },
     methods: {
-        regHandler() {
-        }
-    },
-    
+        //메뉴등록처리
+        resetModal() {
+            this.newissig = false,
+            this.newname = '',
+            this.newprice = '',
+            this.newimage = ''
+        },
+        reghandleOk(bvModalEvt) {
+        bvModalEvt.preventDefault()
+        this.reghandleSubmit()
+        console.log("Ok Sign")
+        },
+        reghandleSubmit: function() {
+            axios.post(BACKEND_URL + '/menu/reg' , { 
+                'mrid':this.rid, 
+                'missig': this.newissig, 
+                'mname':this.newname,
+                'mprice':this.newprice, 
+                'mimage':this.newimage
+                }).then(response => {
+                console.log(response.data)
+                this.$nextTick(() => {
+                    this.$bvModal.hide('regMenu')
+                        })
+                })
+        },
+
+        //메뉴수정처리
+        modhandleSubmit: function() {
+            console.log("mod 도달")
+            axios.post(BACKEND_URL + '/menu/mod' , { 'mrid':this.rid, 'missig': this.newissig, 
+                'mname':this.newname,'mprice':this.newprice, 'mimage':this.newimage}).then(response => {
+                console.log(response.data)
+                this.$nextTick(() => {
+                    this.$bvModal.hide('modMenu')
+                        })
+                })
+        },
+
+        //메뉴삭제처리
+        delhandleSubmit: function(mid) {
+            console.log("삭제할 메뉴 번호:"+mid);
+            axios.post(BACKEND_URL + '/menu/del?mid=' + mid).then(response => {
+                console.log(response.data)
+                this.$nextTick(() => {
+                    this.$bvModal.hide('delMenu')
+                    })
+                })
+        },
+    }
 }
 </script>
 
