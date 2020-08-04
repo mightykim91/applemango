@@ -84,8 +84,8 @@ public class ReviewController {
     }
 
     //글 삭제(Request Parameter로 리뷰id 받아와야함)
-    @DeleteMapping(value = "/delete/{reviewId}")
-    public Object deleteReview(@PathVariable long reviewId){
+    @DeleteMapping(value = "/delete")
+    public Object deleteReview(@RequestParam long reviewId){
         
         return reviewservice.deleteReview(reviewId);
     }

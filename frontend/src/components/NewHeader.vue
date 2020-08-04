@@ -2,10 +2,12 @@
     <v-app-bar app color="transparent" height="80">
         <v-row id="nav-menus">
             <v-col align-self="center" cols="3">
-                <v-toolbar-title v-on:click="home" style="cursor:grab">APPLE<br>MANGO</v-toolbar-title>
+                <!-- <v-toolbar-title v-on:click="home" style="cursor:grab"></v-toolbar-title> -->
+                <img id="logo" src="../assets/applemango.png"/>
             </v-col>
             <v-col align-self="center" cols="2">
                 <v-select
+                :select="searchFilter"
                 hide-details 
                 solo 
                 :items="searchOptions"
@@ -31,6 +33,8 @@
 
 <script>
 
+import logo from '../assets/applemango.png'
+
 export default {
 
     name : 'NewHeader',
@@ -38,7 +42,8 @@ export default {
         return {
             searchOptions : ['거리순', '평점순'],
             searchWord:'',
-            searchFilter: '',
+            searchFilter: '거리순',
+            navLogo: logo
         }
     },
     methods:{
@@ -51,5 +56,9 @@ export default {
 </script>
 
 <style scoped>
+#logo{
+    width:100px;
+    height:70px;
+}
 </style>
 
