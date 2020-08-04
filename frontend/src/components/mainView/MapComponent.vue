@@ -2,8 +2,8 @@
   <v-container id="map" style="border-bottom:solid 1px">
       <!--Sample Map Image-->
       <v-row>
-          <v-col cols="9">
-            <img src="https://lh3.googleusercontent.com/proxy/13xKKMVriIztYzWu3CoUX6Z4-MeF0NYRqSPwHnuRKZpXZrRP_W0gNKCOTYj1tqP94iAWWkadIPAZn2fruAYgCJZzLvNvPDRFtqTtmQ2KBW5yYB9QwGIu5KqQ_2JXxSftvnkMlDvYozU2L6BHmJJ9Z9zeNJy70VCjCfgC2K0m7cIrQorTUBYJZPdw2QBF_fCRcn6jeGtsB-5aci-yTGhigcXzcNqN2K8n0CfDMEKKTblkz6GgdVgyhy5puWa4xkzkOLMwkIConmKkK7QwJE5-YOlgYycY_lMCqZxPOCOp3FH9-yp1w7izferri96uQO3SxIWAf0Q">
+          <v-col cols="9" id="map-component">
+            지도
           </v-col>
           <v-col cols="3">
               <v-simple-table>
@@ -35,5 +35,7 @@ export default {
 </script>
 
 <style>
-
+#map-component{
+    background-color: bisque;
+}
 </style>
