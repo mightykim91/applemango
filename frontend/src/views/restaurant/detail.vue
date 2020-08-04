@@ -1,6 +1,5 @@
 <template>
 <div class="detail">
-    <detail-header/>
     <div class="container">
         
         <div class = "rstInfo">
@@ -90,7 +89,6 @@
 
 <script>
 import axios from 'axios';
-import Header from '@/components/Header.vue'
 import Review from '@/components/review/ReviewList.vue';
 import constants from '../../constants.js'
 
@@ -105,7 +103,6 @@ export default {
         rid: Number
     },
     components: {
-        'detail-header' : Header,
         'detail-review' : Review
     },
     data: () => {
