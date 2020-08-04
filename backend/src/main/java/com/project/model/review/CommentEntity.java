@@ -1,4 +1,4 @@
-package com.project.model;
+package com.project.model.review;
 
 import java.time.LocalDateTime;
 

@@ -1,4 +1,4 @@
-package com.project.controller;
+package com.project.controller.review;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -6,10 +6,9 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.project.dao.UserDAO;
-import com.project.model.Review;
-import com.project.service.ReviewService;
-import com.project.model.ReviewUpdateRequest;
+import com.project.dao.user.UserDAO;
+import com.project.model.review.*;
+import com.project.service.review.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,14 +39,14 @@ public class ReviewController {
 
     @GetMapping(value = "")
     public Object getAllReview(){
-        List<Review> allReview = reviewservice.findAll();
-        return new ResponseEntity<List<Review>>(allReview, HttpStatus.OK);
+        List<ReviewEntity> allReview = reviewservice.findAll();
+        return new ResponseEntity<List<ReviewEntity>>(allReview, HttpStatus.OK);
         
     }
 
     @PostMapping(value = "/new")
-    public Object createPost(@RequestBody Review newReview){
-        Review review = new Review(
+    public Object createPost(@RequestBody ReviewEntity newReview){
+        ReviewEntity review = new ReviewEntity(
             newReview.getUserId(),
             newReview.getTitle(),
             newReview.getDescription(),
@@ -65,9 +64,9 @@ public class ReviewController {
     //Read Single Review
     @GetMapping(value = "/{reviewId}")
     public Object getReview(@PathVariable long reviewId){
-        Optional<Review> review = reviewservice.getReview(reviewId);
+        Optional<ReviewEntity> review = reviewservice.getReview(reviewId);
         if (review.isPresent()){
-            return new ResponseEntity<Optional<Review>>(review, HttpStatus.OK);
+            return new ResponseEntity<Optional<ReviewEntity>>(review, HttpStatus.OK);
         }
         return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
     }
@@ -75,8 +74,8 @@ public class ReviewController {
     //Read reviews by id 
     @GetMapping(value = "/reviews/{userId}")
     public Object getReviewByUserId(@PathVariable String userId){
-        List<Review> reviews = reviewservice.getReviewByUserId(userId);
-        return new ResponseEntity<List<Review>>(reviews, HttpStatus.OK);
+        List<ReviewEntity> reviews = reviewservice.getReviewByUserId(userId);
+        return new ResponseEntity<List<ReviewEntity>>(reviews, HttpStatus.OK);
     }
 
     @PutMapping(value = "/update/{reviewId}")

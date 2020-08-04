@@ -8,7 +8,7 @@ import com.project.model.instagram.InstaEntity;
 import com.project.model.instagram.MenuPictureUpdateRequest;
 import com.project.dao.instagram.InstaDAO;
 import com.project.dao.restaurant.MenuChangeDAO;
-import com.project.model.restaurant.Menu;
+import com.project.model.restaurant.MenuEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,7 +37,7 @@ public class InstaService {
 	public Object updateInstaPicture(MenuPictureUpdateRequest request) {
         System.out.println("mid : " + request.getMid());
         
-        Optional<Menu> menuEntity = MenuDao.findByMid(request.getMid());
+        Optional<MenuEntity> menuEntity = MenuDao.findByMid(request.getMid());
         
         menuEntity.ifPresent(r -> {
             System.out.println(r);
@@ -47,7 +47,7 @@ public class InstaService {
         
         System.out.println("Service input test - code 13131322");
         
-        return new ResponseEntity<Optional<Menu>>(menuEntity, HttpStatus.OK);
+        return new ResponseEntity<Optional<MenuEntity>>(menuEntity, HttpStatus.OK);
         
 	}
 }

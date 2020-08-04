@@ -1,7 +1,7 @@
-package com.project.controller;
+package com.project.controller.review;
 
-import com.project.model.CommentEntity;
-import com.project.service.CommentService;
+import com.project.model.review.CommentEntity;
+import com.project.service.review.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
