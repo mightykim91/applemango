@@ -1,11 +1,18 @@
 package com.project.controller.user;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 
 import com.project.model.user.UserEntity;
+import com.project.model.user.FavorEntity;
+import com.project.model.Review;
 import com.project.service.user.*;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +32,8 @@ public class UserController {
 
     
     private UserService userService;
+    private FavorService favorService;
+
 
     public UserController(UserService userService){
         this.userService = userService;
@@ -53,6 +62,17 @@ public class UserController {
        
         return session.toString();
     }
+
+    @GetMapping(value = "/favors/{uid}")
+    public Object getFavorByUserId(@PathVariable String uid){
+        System.out.println("테스트1");
+        List<FavorEntity> favors = favorService.getFavorsByUid(uid);
+        System.out.println("테스트3");
+        return 0;
+        //return new ResponseEntity<List<FavorEntity>>(favors, HttpStatus.OK);
+    }
+
+
 
     // @PutMapping("/edit/{seq}")
     // public Object edit(@RequestBody @Valid UserEntity param, @PathVariable("seq") @Min(1) String uid){

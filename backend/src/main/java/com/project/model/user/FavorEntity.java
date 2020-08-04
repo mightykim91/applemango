@@ -19,17 +19,30 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@NoArgsConstructor
 @Table(name="userfavor")
 public class FavorEntity {
     
-    @Id
+
+    @Id 
     @Column(name = "uid")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String uid;
 
-    @Id
     @Column(name = "rid")
     private int rid;
 
+    public FavorEntity(){};
+
+    public FavorEntity(String uid, int rid){
+        this.uid = uid;
+        this.rid = rid;
+    }
+
+    public String getUid(){
+        return this.uid;
+    }
+    public int getRid(){
+        return this.rid;
+    }
 
 }
