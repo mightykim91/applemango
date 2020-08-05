@@ -3,7 +3,7 @@ package com.project.service.restaurant;
 import java.util.List;
 
 import com.project.dao.restaurant.MenuDAO;
-import com.project.model.restaurant.Menu;
+import com.project.model.restaurant.MenuEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,12 +16,12 @@ public class MenuService {
     MenuDAO mDao;
     
     //save
-    public Object regMenu(Menu newMenu){
+    public Object regMenu(MenuEntity newMenu){
         return mDao.save(newMenu);
     }
 
     //식당에 딸린 메뉴 전체 조회
-    public List<Menu> listMenu(int mrid) {
+    public List<MenuEntity> listMenu(int mrid) {
         return mDao.findAllByMrid(mrid);
     }
 

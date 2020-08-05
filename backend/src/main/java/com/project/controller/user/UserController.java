@@ -8,12 +8,14 @@ import javax.validation.constraints.Min;
 
 import com.project.model.user.UserEntity;
 import com.project.model.user.FavorEntity;
-import com.project.model.Review;
+import com.project.model.review.*;
 import com.project.service.user.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import com.project.model.user.*;
+import com.project.service.user.*;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -75,6 +77,13 @@ public class UserController {
         return new ResponseEntity<List<FavorEntity>>(favors, HttpStatus.OK);
     }
 
+
+
+    @GetMapping("/info")
+    public Object userInfo(@RequestParam("uid") String userId){
+        
+        return userService.userInfo(userId);
+    }
 
 
     // @PutMapping("/edit/{seq}")

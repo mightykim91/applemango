@@ -12,7 +12,7 @@ import javax.persistence.PersistenceUnit;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.lang.Object;
-import com.project.dao.user.UserDAO;
+import com.project.dao.user.*;
 import com.project.model.user.UserEntity;
 
 import io.swagger.annotations.ApiResponse;
@@ -84,6 +84,14 @@ public class UserService {
         session.invalidate();
 
         return session;
+    }
+
+    //김연수추가
+    public Object userInfo(String userId){
+        
+        UserEntity user = userDAO.getUserByUid(userId);
+
+        return user;
     }
 
 

@@ -41,12 +41,18 @@
                   </p>
                   <div fixed class="d-flex justify-space-between mt-auto">
                       <p>#해시태그 #여기들어가야함</p>
-                      <v-btn @click="commentToShow = review.reviewId; commentSwitch = !commentSwitch"
-                      x-small>
+                      <div>
+                      <v-btn v-if="userInfo.uid == review.userId" small class="mr-3">
+                          <span class="font-weight-bold" to>리뷰 수정 하기</span>
+                      </v-btn>
+                      <v-btn 
+                      @click="commentToShow = review.reviewId; commentSwitch = !commentSwitch"
+                      small>
                         <!-- <span v-if="commentSwitch === true">댓글 닫기</span> -->
                         <span v-if="toggleComment(review.reviewId)" class="font-weight-bold">댓글 닫기</span>
                         <span v-else class="font-weight-bold">댓글 보기</span>
                       </v-btn>
+                      </div>
                   </div>
               </v-col>
               <!-- <v-col v-if="commentToShow === review.reviewId" style="background-color:white"> -->
@@ -56,9 +62,32 @@
                 <comment-form v-on:create="refresh" v-bind:reid="review.reviewId"></comment-form>
                 <p v-if="filteredComments.length === 0">댓글이 아직 없습니다 ㅠㅠ</p>
                 <h4 v-else class="text-left mb-2">댓글 목록</h4>
-                <v-card v-for="comment in filteredComments" :key="comment.id" class="text-left mb-1">
-                    <v-card-subtitle class="font-weight-bold">작성자: {{ comment.userId }}</v-card-subtitle>
-                    <v-card-text>{{ comment.content }}</v-card-text>
+                <v-card v-for="(comment,index) in filteredComments" :key="index" 
+                class="text-left mb-1">
+                    <v-card-subtitle 
+                    class="font-weight-bold d-flex justify-content-between">
+                        작성자: {{ comment.userId }}
+                        <div class="d-inline">
+                            <!--댓글 수정-->
+                            <v-icon small
+                            v-if="commentToEdit == false"
+                            @click="commentToEdit = comment.id"
+                            >fa-edit
+                            </v-icon> |
+
+                            <!--댓글 삭제 버튼-->
+                            <v-icon small color="red"
+                            id="delete-comment" v-on:click="deleteComment(comment.id)">
+                            fa-trash
+                            </v-icon>
+                        </div>
+                    </v-card-subtitle>
+                    <v-card-text v-if="commentToEdit == false">{{ comment.content }}</v-card-text>
+                    <v-card-text v-if="commentToEdit == comment.id">
+                        <v-textarea solo flat no-resize v-bind:placeholder="comment.content" v-model="comment.content"></v-textarea>
+                        <v-btn @click="editComment(comment)">수정</v-btn>
+                        <v-btn @click="commentToEdit = false">취소</v-btn>
+                    </v-card-text>
                 </v-card>
               </v-col>
             </v-expand-transition>
@@ -71,11 +100,12 @@
 <script>
 import axios from 'axios'
 import CommentForm from '../review/CommentForm'
+import constants from '../../constants.js'
 //import ReviewList from '../review/ReviewList.vue'
 
 //local
 // const BACKEND_URL = "http://localhost:8080/"
-const BACKEND_URL = "http://i3a503.p.ssafy.io:8080/"
+const BACKEND_URL = constants.URL
 
 export default {
     name: "Review",
@@ -91,6 +121,8 @@ export default {
             commentToShow:'',
             commentSwitch: false,
             isLoggedIn: '',
+            userInfo:'',
+            commentToEdit: false,
         }
     },
     methods:{
@@ -113,16 +145,28 @@ export default {
                 return v === this.commentToShow
             })
         },
-        // getCookie: function(){
-        //     if(this.$cookies.get('auth-token')){
-        //         console.log(this.$cookies.get('auth-token'))
-        //         return this.isLoggedIn = true
-        //     }
-
-        // }
+        editComment: function(comment){
+            this.commentToEdit = false
+            axios.put(BACKEND_URL + 'comment/modify', comment)
+            .then(response => {
+                this.comments = response.data
+            })
+            
+        },
+        deleteComment: function(commentId){
+            if (confirm('댓글을 삭제하시겠습니까?')) {
+                console.log(commentId)
+                axios.delete(BACKEND_URL + 'comment/delete', { params: { 'commentId': commentId }})
+                .then(response => {
+                    console.log(response)
+                    this.comments = response.data
+                })
+            }
+        },
         refresh: function(data){
             this.comments.unshift(data)
-        }
+        },
+        //Method to open comment editing window
     },
     mounted(){
         axios.get(`${BACKEND_URL}review`)
@@ -135,6 +179,14 @@ export default {
             this.comments = response.data;
             console.log(response)
         })
+        //login check
+        if (this.$cookies.isKey('auth-token')) {
+            this.isLoggedIn = true
+            axios.get(`${BACKEND_URL}user/info`, {params: {'uid':`${this.$cookies.get('auth-token')}`}})
+            .then(reponse => {
+                this.userInfo = reponse.data
+            })
+        }
     },
     watch: {
         commentToShow: function(){

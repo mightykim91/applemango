@@ -12,7 +12,7 @@ import java.sql.Date;
 @Entity
 @Table(name = "restaurantinfo")
 
-public class Restaurant {
+public class RestaurantEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int rid; // 식당 id
     private String rname; //식당 이름
@@ -25,10 +25,10 @@ public class Restaurant {
     private String rdescription; //식당 정보
     private Date rcreatedate; //식당 정보 등록
 
-    public Restaurant(){};
+    public RestaurantEntity(){};
     
 
-    public Restaurant(String rname, String rbranch, String ruid, String rphone, String raddr) {
+    public RestaurantEntity(String rname, String rbranch, String ruid, String rphone, String raddr) {
         this.rname = rname;
         this.rbranch = rbranch;
         this.ruid = ruid;
@@ -37,7 +37,7 @@ public class Restaurant {
     }
 
 
-    public Restaurant(String rname, String rbranch, String ruid, String rphone, String raddr, String rlat, String rlng, String rdescription, Date rcreatedate){
+    public RestaurantEntity(String rname, String rbranch, String ruid, String rphone, String raddr, String rlat, String rlng, String rdescription, Date rcreatedate){
         this.rname = rname;
         this.rbranch = rbranch;
         this.ruid = ruid;

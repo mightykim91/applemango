@@ -2,7 +2,7 @@ package com.project.controller.restaurant;
 
 import java.util.List;
 
-import com.project.model.restaurant.Menu;
+import com.project.model.restaurant.MenuEntity;
 import com.project.service.restaurant.MenuService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +24,10 @@ public class MenuController {
 
     //레스토랑 메뉴 등록하기
     @PostMapping("/reg")
-    public Object MenuReg(@RequestBody Menu menu){
+    public Object MenuReg(@RequestBody MenuEntity menu){
         System.out.println(menu.getMid());
         
-        Menu menutmp = new Menu(menu.getMid(), menu.getMrid(), menu.getMissig(), menu.getMname(), menu.getMprice(), menu.getMimage());
+        MenuEntity menutmp = new MenuEntity(menu.getMid(), menu.getMrid(), menu.getMissig(), menu.getMname(), menu.getMprice(), menu.getMimage());
         if(menuService.regMenu(menutmp) == menutmp) {
             System.out.println("성공");
             return new ResponseEntity<Object>(HttpStatus.OK);
@@ -38,14 +38,14 @@ public class MenuController {
 
     //레스토랑 메뉴 가져오기
     @GetMapping("/list")
-    public ResponseEntity<List<Menu>> MenuList(@RequestParam int mrid){
+    public ResponseEntity<List<MenuEntity>> MenuList(@RequestParam int mrid){
         // int mrid = Integer.parseInt(strmrid);
         // System.out.println("mrid:"+mrid);
         System.out.println("메뉴리스트도달");
-        List<Menu> result = menuService.listMenu(mrid);
+        List<MenuEntity> result = menuService.listMenu(mrid);
         System.out.println("List 개수:"+ result.size());
 
-        return new ResponseEntity<List<Menu>>(result, HttpStatus.OK);
+        return new ResponseEntity<List<MenuEntity>>(result, HttpStatus.OK);
     }
 
     //메뉴 상세 조회하기
