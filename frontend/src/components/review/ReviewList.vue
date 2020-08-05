@@ -14,19 +14,23 @@
             <!--리뷰 작성페이지 링크 종료-->
         </div>
         <!--리뷰 헤더 종료-->
-
         <!--리뷰 grid 시작-->
         <v-container
         class="rounded mx-0 mx-auto mb-2"
         style="background-color:#EFEBE9"
-        v-for="review in reviews" v-bind:key="review.id">
+        v-for="review in reviews" v-bind:key="review.reviewId"
+        :id="review.title">
           <v-row class="ma-1">
               <v-col cols="4">
                   <v-img src="https://images.pexels.com/photos/704569/pexels-photo-704569.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
                   contain aspect-ratio="1.5"></v-img>
               </v-col>
               <v-col cols="8" class="text-left d-flex flex-column">
-                  <h1>{{ review.title }}</h1>
+                  <div class="d-flex align-center justify-space-between">
+                      <h1>{{ review.title }}</h1>
+                      <!--리뷰 삭제 버튼-->
+                      <v-icon v-on:click="deleteReview(review.reviewId)" color="red">fa-trash</v-icon>
+                  </div>
                   <div class="d-flex">
                       <div class="mr-2">평점: 
                           <v-rating style="display:inline" 
@@ -42,16 +46,20 @@
                   <div fixed class="d-flex justify-space-between mt-auto">
                       <p>#해시태그 #여기들어가야함</p>
                       <div>
-                      <v-btn v-if="userInfo.uid == review.userId" small class="mr-3">
-                          <span class="font-weight-bold" to>리뷰 수정 하기</span>
-                      </v-btn>
-                      <v-btn 
-                      @click="commentToShow = review.reviewId; commentSwitch = !commentSwitch"
-                      small>
-                        <!-- <span v-if="commentSwitch === true">댓글 닫기</span> -->
-                        <span v-if="toggleComment(review.reviewId)" class="font-weight-bold">댓글 닫기</span>
-                        <span v-else class="font-weight-bold">댓글 보기</span>
-                      </v-btn>
+                        <!--리뷰수정버튼(리뷰 작성자에게만 표시)-->
+                        <v-btn v-if="userInfo.uid == review.userId" 
+                        small 
+                        class="mr-3 font-weight-bold"
+                        :to="{ name: 'ReviewEditForm', params:{rid:review.reviewId}}"
+                        @click="editReview(review)">
+                            리뷰 수정 하기
+                        </v-btn>
+                        <v-btn 
+                        @click="commentToShow = review.reviewId; commentSwitch = !commentSwitch"
+                        small>
+                            <span v-if="toggleComment(review.reviewId)" class="font-weight-bold">댓글 닫기</span>
+                            <span v-else class="font-weight-bold">댓글 보기</span>
+                        </v-btn>
                       </div>
                   </div>
               </v-col>
@@ -59,7 +67,7 @@
             <v-expand-transition>
               <v-col v-if="toggleComment(review.reviewId)" style="background-color:white">
                 <!-- <comment-form v-on:create="registerComment" v-bind:reid="review.reviewId"></comment-form> -->
-                <comment-form v-on:create="refresh" v-bind:reid="review.reviewId"></comment-form>
+                <comment-form v-on:create="createComment" v-bind:reid="review.reviewId"></comment-form>
                 <p v-if="filteredComments.length === 0">댓글이 아직 없습니다 ㅠㅠ</p>
                 <h4 v-else class="text-left mb-2">댓글 목록</h4>
                 <v-card v-for="(comment,index) in filteredComments" :key="index" 
@@ -95,11 +103,12 @@
         </v-container>
         <!--리뷰 grid 종료-->
     </div>
+    
 </template>
 
 <script>
 import axios from 'axios'
-import CommentForm from '../review/CommentForm'
+import CommentForm from '../review/CommentForm.vue'
 import constants from '../../constants.js'
 //import ReviewList from '../review/ReviewList.vue'
 
@@ -123,13 +132,13 @@ export default {
             isLoggedIn: '',
             userInfo:'',
             commentToEdit: false,
+            
         }
     },
     methods:{
-        registerComment: function(commentData){
+        createComment: function(commentData){
             axios.post(`${BACKEND_URL}comment/new`,commentData)
             .then(response => {
-                console.log(commentData)
                 console.log(response.data)
                 this.comments.unshift(response.data) //새로운댓글 배열에 추가후 배열의 처음으로 이동.
             })
@@ -163,17 +172,33 @@ export default {
                 })
             }
         },
+        deleteReview: function(reviewId){
+            if (confirm('정말 삭제하시겠습니까?')) {
+                axios.delete(BACKEND_URL + 'review/delete', {params: { 'reviewId': reviewId }})
+                .then(response => {
+                    alert('성공적으로 삭제되었습니다')
+                    console.log(response)
+                    this.reviews = response.data
+                })
+            }
+
+            
+        },
         refresh: function(data){
             this.comments.unshift(data)
         },
         //Method to open comment editing window
     },
     mounted(){
+
+        //Get all reviews
         axios.get(`${BACKEND_URL}review`)
         .then(response => {
             this.reviews = response.data;
             console.log(response)
         })
+
+        //Get All comments
         axios.get(`${BACKEND_URL}comment/all`)
         .then(response => {
             this.comments = response.data;
@@ -191,12 +216,12 @@ export default {
     watch: {
         commentToShow: function(){
             this.filteredComments = this.comments.filter(comment => {
-                return comment.reviewId === this.commentToShow
+                return comment.review.reviewId === this.commentToShow
             })
         },
         comments: function(){
             this.filteredComments = this.comments.filter(comment => {
-                return comment.reviewId === this.commentToShow
+                return comment.review.reviewId === this.commentToShow
             })
         },
     }
