@@ -37,7 +37,7 @@
         <div v-else>
         등록된 메뉴 정보가 없습니다.
         </div></div>
-        <detail-review/>
+        <detail-review v-bind:restaurantId="rid"/>
     </div>
 </div>
 </template>
