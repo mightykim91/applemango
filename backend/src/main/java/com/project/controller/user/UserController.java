@@ -54,6 +54,10 @@ public class UserController {
     // }
 
 
+    //회원가입
+      
+
+    //로그인
     @GetMapping("/login")
     public Object userLogin(@RequestParam("uid")String uid,@RequestParam("upw") String upw, HttpSession session){
        
