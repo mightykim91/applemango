@@ -11,6 +11,7 @@ import com.project.model.user.FavorEntity;
 import com.project.model.Review;
 import com.project.service.user.*;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -30,9 +31,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class UserController {
 
-    
+    @Autowired
     private UserService userService;
-    private FavorService favorService;
+    
+    @Autowired
+    private FavorService favorservice;
 
 
     public UserController(UserService userService){
@@ -63,13 +66,13 @@ public class UserController {
         return session.toString();
     }
 
-    @GetMapping(value = "/favors/{uid}")
-    public Object getFavorByUserId(@PathVariable String uid){
-        System.out.println("테스트1");
-        List<FavorEntity> favors = favorService.getFavorsByUid(uid);
+    @GetMapping(value = "/favors/list/{uid}")
+    public Object getFavors(@PathVariable String uid){
+        System.out.println("테스트1" + uid);
+        //List<FavorEntity> favors = favorservice.findAll();
+        List<FavorEntity> favors = favorservice.getFavorByUid(uid);
         System.out.println("테스트3");
-        return 0;
-        //return new ResponseEntity<List<FavorEntity>>(favors, HttpStatus.OK);
+        return new ResponseEntity<List<FavorEntity>>(favors, HttpStatus.OK);
     }
 
 

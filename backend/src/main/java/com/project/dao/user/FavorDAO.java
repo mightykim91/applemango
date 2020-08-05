@@ -10,8 +10,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface FavorDAO extends JpaRepository<FavorEntity,String>{
     
-    public List<FavorEntity> findAllByUid(String uid);
-
-    public FavorEntity findByRid(String rid);
-    public FavorEntity findByUid(String uid);
+    
+    //public List<FavorEntity> findAll();
+    
+    public List<FavorEntity> findByUid(String uid);
 }

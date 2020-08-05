@@ -23,25 +23,14 @@ public class FavorService {
     @Autowired
     FavorDAO favorDao;
 
-    @Autowired
-    RestaurantDAO restaurantDao;
-
     public List<FavorEntity> findAll(){
         return favorDao.findAll();
     }
 
-    public Object save(FavorEntity newReview){
-        return favorDao.save(newReview); 
-    }
 
-
-
-    public List<FavorEntity> getFavorlistByUid(String uid){
-        return favorDao.findAllByUid(uid);
-    }
-
-    public List<FavorEntity> getFavorsByUid(String uid){
-        return favorDao.findAllByUid(uid);
+    public List<FavorEntity> getFavorByUid(String uid){
+        //return favorDao.findAll();
+        return favorDao.findByUid(uid);
     }
 
    

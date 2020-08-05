@@ -11,11 +11,21 @@
         <v-container fluid>
             <v-row>
                 <v-card flat class="text-xs-center ma-3" v-for="favors in favorlist" v-bind:key="favors.rid">                    
-                    <button>{{favors}}</button>
+                    <button>{{favors}}</button><br>
+                    <button>{{favors.uid}}</button><br>
+                    <button>{{favors.rid}}</button>
                 </v-card>
             </v-row>
         </v-container>
 
+        <v-list>
+            <template  v-for="favors in favorlist">
+                <v-list-item :key="favors.fid">
+                    {{favors}}
+
+                </v-list-item>
+            </template>
+        </v-list>
     </div>
 
     </div>
@@ -36,6 +46,7 @@
                     password : ''
                 },
                 favorlist : {
+                    fid : '',
                     uid : '',
                     rid : ''
                 }
@@ -48,7 +59,13 @@
 
         mounted(){
             
-            axios.get(`${BACKEND_URL}user/favors/${this.$cookies.get('auth-token')}`)
+            axios.get(`${BACKEND_URL}user/favors/list/${this.$cookies.get('auth-token')}`)
+            .then(response => {
+                this.favorlist = response.data;
+                console.log(response);
+            })
+
+            axios.get(`${BACKEND_URL}user/favors/detail/${this.data.favorlist.rid}`)
             .then(response => {
                 this.favorlist = response.data;
                 console.log(response);
