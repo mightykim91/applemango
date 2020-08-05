@@ -35,38 +35,23 @@
             </b-modal>
         <hr>
         <div v-if="requestData.menus.length > 0">
-            <table class="table table-bordered table-condensed">
-                <colgroup>
-                    <col :style="{width: '20%'}" />
-                    <col :style="{width: '25%'}" />
-                    <col :style="{width: '15%'}" />
-                    <col :style="{width: '25%'}" />
-                    <col :style="{width: '15%'}" />
-                </colgroup>
-                <tr>
-                    <th></th>
-                    <th class="text-center">이름</th>
-                    <th class="text-center">가격</th>
-                    <th class="text-center">사진</th>
-                    <th class="text-center"></th>
-                </tr>
-                <tr v-for="(menu,index) in requestData.menus" :key="index">
-                    <td class="text-center">{{menu.mid}}</td>
-                    <td class="text-center">{{menu.mname}}</td>
-                    <td class="text-center">{{menu.mprice}}원</td>
-                    <td class="text-center"><img id = "menuimg" :src="menu.mimage"/></td>
-                    <td>
-                        <b-link v-b-modal.modMenu>수정</b-link><br>
-                        <b-link v-b-modal.delMenu>삭제</b-link>       
-                    </td>
-                        <!-- 메뉴 수정하는 모달 창 -->
+            <v-container fluid>
+            <v-row>
+                <v-card flat v-for="(menu,index) in requestData.menus" :key="index">
+                    <div v-if="menu.mimage.length > 10" ><v-img :src="menu.mimage"  id="menuimg"></v-img></div>
+                    <div v-else><v-img src="../../assets/noimage.png"  id="menuimg"></v-img></div>
+                    <div v-if="menu.missig" ><v-img src="../../assets/star.png" style="width:5%" id = "sigimg"></v-img></div>
+                    {{menu.mname}} / {{menu.mprice}}원
+                    <b-link v-b-modal.modMenu>수정</b-link>&nbsp;
+                    <b-link v-b-modal.delMenu>삭제</b-link>
+
+                    <!-- 메뉴 수정하는 모달 창 -->
                         <b-modal id="modMenu" title="메뉴 수정" @ok="modhandleSubmit">
                             <form>
                                 <b-form-group invalid-feedback="required">
-                                    {{menu.mname}}
-                                    이름<b-form-input v-model="newname" :placeholder= "menu.mname" :value="menu.mname" requried></b-form-input>
+                                    이름<b-form-input v-model="newname" :placeholder="menu.mname" :value="menu.mname"/>
                                     <b-form-checkbox v-model="newissig" requried>메인메뉴</b-form-checkbox> 
-                                    가격 <b-form-input v-model="newprice" :placeholder= "menu.mprice " required></b-form-input>
+                                    가격 <b-form-input v-model="newprice" :placeholder= "menu.mprice" required></b-form-input>
                                     <!-- 이미지 업로드 or 이미지 주소 복사(현재는 이미지 주소) -->
                                     이미지 <b-form-input v-model="newimage" :placeholder= "menu.mimage" required></b-form-input>
                                 </b-form-group>
@@ -75,8 +60,9 @@
 
                         <!-- 메뉴 삭제하기 모달 창-->
                         <b-modal id="delMenu" title="메뉴삭제" @ok= delhandleSubmit(menu.mid)><p>{{menu.mname}}을(를) 정말 삭제 하시겠습니까?</p></b-modal>
-                    </tr>
-            </table>
+                </v-card>
+            </v-row>
+        </v-container>
         </div>
         <div v-else>
         등록된 메뉴 정보가 없습니다.
