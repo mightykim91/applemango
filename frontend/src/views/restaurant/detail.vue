@@ -46,7 +46,7 @@
                     <b-link v-b-modal.delMenu>삭제</b-link>
 
                     <!-- 메뉴 수정하는 모달 창 -->
-                        <b-modal id="modMenu" title="메뉴 수정" @ok="modhandleSubmit">
+                        <b-modal id="modMenu" title="메뉴 수정" @ok="modhandleSubmit(menu.mid)">
                             <form>
                                 <b-form-group invalid-feedback="required">
                                     이름<b-form-input v-model="newname" :placeholder="menu.mname" :value="menu.mname"/>
@@ -145,9 +145,9 @@ export default {
         },
 
         //메뉴수정처리
-        modhandleSubmit: function() {
+        modhandleSubmit: function(mid) {
             console.log("mod 도달")
-            axios.post(BACKEND_URL + '/menu/mod' , { 'mrid':this.rid, 'missig': this.newissig, 
+            axios.post(BACKEND_URL + '/menu/mod?mid='+ mid , { 'mrid':this.rid, 'missig': this.newissig, 
                 'mname':this.newname,'mprice':this.newprice, 'mimage':this.newimage}).then(response => {
                 console.log(response.data)
                 this.$nextTick(() => {

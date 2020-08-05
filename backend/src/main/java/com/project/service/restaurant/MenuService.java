@@ -36,6 +36,7 @@ public class MenuService {
             m.setMissig(modmenu.getmissig());
             m.setMprice(modmenu.getMprice());
             m.setMimage(modmenu.getMimage());
+            mDao.save(m);
         });
         return new ResponseEntity<Optional<MenuEntity>>(menu, HttpStatus.OK);
     }

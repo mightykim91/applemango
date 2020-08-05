@@ -51,8 +51,9 @@ public class MenuController {
 
     //메뉴 수정
     @PostMapping(value="/mod")
-    public Object MenuMod(@RequestBody MenuEntity menu) {
-        System.out.println("menu/mod 레스토랑 번호:" + menu.getMrid()+ "메뉴이름:" + menu.getMname());
+    public Object MenuMod(@RequestParam int mid, @RequestBody MenuEntity menu) {
+        menu.setMid(mid);
+        System.out.println("menu/mod 레스토랑 번호:" + menu.getMrid()+ "메뉴번호:" + mid);
         return menuService.modMenu(menu);
     }
 
