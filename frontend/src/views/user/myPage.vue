@@ -8,14 +8,14 @@
         <h1>즐겨찾기 리스트</h1>
         
         <!--크롤링 데이터 리스트 컨테이너-->
-
-
+    <v-container id="favorlist" style="border-bottom:solid 1px">
+        
         <v-list>
             <template  v-for="favors in favorlist">
                 <v-list-item :key="favors.fid" v-bind:to= "{ name: 'storeDetail', params: { rid: favors.frid }}">
-                    <v-list-item-action>
-
-                    </v-list-item-action>
+                    <v-list-item-avatar>
+                        <v-img :src="favors.restaurant.rid"></v-img>
+                    </v-list-item-avatar>
                     <v-list-item-content>
                     <v-list-item-title v-text="favors.restaurant.rname"></v-list-item-title>
                     <v-list-item-subtitle v-text="favors.restaurant.rbranch"></v-list-item-subtitle>
@@ -23,6 +23,7 @@
                 </v-list-item>
             </template>
         </v-list>
+    </v-container>
     </div>
 
     </div>
