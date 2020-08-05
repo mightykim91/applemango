@@ -122,6 +122,9 @@ export default {
       CommentForm,
       //ReviewList
     },
+    props:{
+        restaurantId:Number
+    },
     data(){
         return {
             reviews: [],
@@ -190,11 +193,13 @@ export default {
         //Method to open comment editing window
     },
     mounted(){
-
-        //Get all reviews
+        //Get all reviews and filter by restaurant id
         axios.get(`${BACKEND_URL}review`)
         .then(response => {
             this.reviews = response.data;
+            this.reviews = this.reviews.filter(review => {
+                return review.restaurantId === this.restaurantId
+            })
             console.log(response)
         })
 
