@@ -13,6 +13,8 @@ import detail from '@/views/restaurant/detail.vue';
 
 import comment from '@/views/admin/instagramComment.vue';
 
+import mypage from '@/views/user/myPage.vue';
+
 Vue.use(VueRouter);
 
 
@@ -92,7 +94,14 @@ export const router = new VueRouter({
       name:'comment',
       component: comment,
       
+    },
+    {  // 마이페이지 메인
+      path: '/mypage',
+      name:'mypage',
+      component: mypage,
+      
     }
+
     
   ]
 });
