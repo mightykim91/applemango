@@ -1,7 +1,7 @@
-package com.project.service;
+package com.project.service.review;
 
 import com.project.dao.review.CommentDAO;
-import com.project.model.CommentEntity;
+import com.project.model.review.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,7 +36,7 @@ public class CommentService {
 
     public Object deleteComment(long commentId){
         dao.deleteById(commentId);
-        return new ResponseEntity<String>(HttpStatus.OK);
+        return new ResponseEntity<List<CommentEntity>>(dao.findAll(),HttpStatus.OK);
     }
 
     public Object modifyComment(CommentEntity request){
@@ -46,7 +46,7 @@ public class CommentService {
             c.setModifiedDate(LocalDateTime.now());
             dao.save(c);
         });
-        return new ResponseEntity<Optional<CommentEntity>>(comment, HttpStatus.OK);
+        return new ResponseEntity<List<CommentEntity>>(dao.findAll(), HttpStatus.OK);
 
     }
     

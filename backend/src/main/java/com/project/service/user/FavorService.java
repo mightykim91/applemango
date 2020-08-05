@@ -4,12 +4,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import com.project.model.Review;
 import com.project.dao.restaurant.RestaurantDAO;
-import com.project.dao.review.ReviewDao;
 import com.project.dao.user.FavorDAO;
-import com.project.model.ReviewUpdateRequest;
-import com.project.model.restaurant.Restaurant;
+import com.project.model.restaurant.RestaurantEntity;
 import com.project.model.user.FavorEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;

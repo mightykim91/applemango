@@ -1,4 +1,4 @@
-package com.project.model;
+package com.project.model.review;
 
 import java.time.LocalDateTime;
 
@@ -15,7 +15,7 @@ import javax.persistence.GenerationType;
 
 @Entity
 @Table(name = "reviewinfo")
-public class Review {
+public class ReviewEntity {
 
     @Id
     @Column(name = "reid")
@@ -47,10 +47,10 @@ public class Review {
     private LocalDateTime modifiedDate;
 
     //Default Constructor
-    public Review(){};
+    public ReviewEntity(){};
     
     //Basic Constructor including username, review title, content, star
-    public Review(String userId, String title, String description, int star){
+    public ReviewEntity(String userId, String title, String description, int star){
         this.userId = userId;
         this.title = title;
         this.description = description;

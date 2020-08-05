@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Optional;
 
 import com.project.dao.user.UserDAO;
-import com.project.model.Review;
-import com.project.service.ReviewService;
+
+
+import com.project.model.review.*;
+import com.project.service.review.*;
+
 import com.project.service.instagram.InstaService;
-import com.project.model.ReviewUpdateRequest;
 import com.project.model.instagram.InstaEntity;
 import com.project.model.instagram.MenuPictureUpdateRequest;
 

@@ -18,8 +18,12 @@ import javax.persistence.PersistenceUnit;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.lang.Object;
+
 import com.project.dao.user.UserDAO;
 import com.project.model.user.Role;
+
+import com.project.dao.user.*;
+
 import com.project.model.user.UserEntity;
 
 import io.swagger.annotations.ApiResponse;
@@ -93,6 +97,7 @@ public class UserService implements UserDetailsService {
         return session;
     }
 
+
     @Override
     public UserDetails loadUserByUsername(String uid) throws UsernameNotFoundException {
         Optional<UserEntity> userEntityWrapper = userDAO.findByUid(uid);
@@ -107,6 +112,16 @@ public class UserService implements UserDetailsService {
         }
 
         return new User(userEntity.getUid(), userEntity.getUpw(), authorities);
+
+    }
+    
+    //김연수추가
+    public Object userInfo(String userId){
+        
+        UserEntity user = userDAO.getUserByUid(userId);
+
+        return user;
+
     }
 
 

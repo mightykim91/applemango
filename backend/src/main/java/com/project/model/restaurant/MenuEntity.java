@@ -9,7 +9,7 @@ import javax.persistence.*;
 // @Builder
 @Entity
 @Table(name = "menu")
-public class Menu {
+public class MenuEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int mid;
     private int mrid;
@@ -18,9 +18,9 @@ public class Menu {
     private int mprice;
     private String mimage;
     
-    public Menu() {}
+    public MenuEntity() {}
 
-    public Menu(int mid, int mrid, String missig, String mname,int mprice, String mimage) {
+    public MenuEntity(int mid, int mrid, String missig, String mname,int mprice, String mimage) {
         this.mid = mid;
         this.mrid = mrid;
         this.missig = missig;

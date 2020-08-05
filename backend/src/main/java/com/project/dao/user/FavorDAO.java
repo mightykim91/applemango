@@ -1,6 +1,5 @@
 package com.project.dao.user;
 
-import com.project.model.restaurant.Restaurant;
 import com.project.model.user.FavorEntity;
 
 import java.util.List;
