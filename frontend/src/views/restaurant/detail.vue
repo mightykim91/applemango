@@ -12,13 +12,10 @@
         주소 {{requestData.rst.raddr}}
         </font></pre>
         </div>
-
         <br clear="left">
-
         <div class="menuInfo">
-            
             <!-- 메뉴 등록 모달 창 -->
-            Menu <b-button v-b-modal.regMenu>등록</b-button>
+            <h1 style="text-align: left;">Menu <b-button v-b-modal.regMenu>등록</b-button></h1>
                  
             <b-modal id="regMenu" ref="modal" 
                 title="메뉴 등록" @show="resetModal" @hidden="resetModal" @ok="reghandleOk">
@@ -68,6 +65,9 @@
         등록된 메뉴 정보가 없습니다.
         </div></div>
         <detail-review/>
+        <h1 style="text-align: left;">위치 정보</h1><hr>
+        <div v-if="requestData.rst.rlat != 0"><div id="map">지도</div></div>
+        <div v-else>위치 정보가 없습니다.</div>
     </div>
 </div>
 </template>
@@ -79,6 +79,7 @@ import constants from '../../constants.js'
 
 //local
 const BACKEND_URL = constants.URL
+const MAP_URL = constants.MAP
 //AWS
 // const BACKEND_URL = 'http://i3a503.p.ssafy.io'
 
@@ -100,7 +101,10 @@ export default {
             newname:'',
             newprice:'',
             newimage:'',
-            menuid:''
+            menuid:'',
+
+            lat:'',
+            lng:''
         }
     },
     mounted() {
@@ -108,6 +112,9 @@ export default {
         .then(response => {
             console.log(response.data)
             this.requestData.rst = response.data
+            this.lat = this.requestData.rst.rlat
+            this.lng = this.requestData.rst.rlng
+            console.log(this.lat + this.lng)
         })
 
         axios.get(BACKEND_URL + '/menu/list', {params: {'mrid':this.rid}})
@@ -115,6 +122,17 @@ export default {
             console.log(response.data)
             this.requestData.menus = response.data
         })
+
+        if (window.kakao && window.kakao.maps) {
+            this.initMap(this.lat, this.lng);
+        } else {
+            const script = document.createElement('script');
+            /* global kakao */
+            script.onload = () => kakao.maps.load(this.initMap(this.lat, this.lng));
+            //script.src = 'http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=a367e1fe90bc271522126e07ddfc6338'
+            script.src = MAP_URL
+            document.head.appendChild(script);
+        }
     },
     methods: {
         //메뉴등록처리
@@ -166,6 +184,16 @@ export default {
                     })
                 })
         },
+        //지도
+        initMap(lat, lng) {
+            var container = document.getElementById('map');
+            var options = {
+              center: new kakao.maps.LatLng(lat, lng),
+              level: 5
+            };
+            var map = new kakao.maps.Map(container, options);
+            map.setMapTypeId(kakao.maps.MapTypeId);
+        }
     }
 }
 </script>
@@ -191,4 +219,5 @@ export default {
 .content {font-size: 25px;}
 #sigimg {float:left}
 #menuimg {width: 240px; height:200px;}
+#map {width: 100%; height:480px;}
 </style>

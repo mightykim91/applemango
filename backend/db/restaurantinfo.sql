@@ -7,7 +7,7 @@ CREATE TABLE `restaurantinfo` (
   `ruid` varchar(31) NOT NULL,
   `rphone` varchar(31) NOT NULL,
   `raddr` varchar(124) DEFAULT NULL,
-  `rimage` varchar(200) DEFAULT NULL,
+  `rimage` text DEFAULT NULL,
   `rname` varchar(31) NOT NULL,        
   `rbranch` varchar(31) DEFAULT NULL,
   `rlat` DECIMAL(13,10) DEFAULT NULL,
@@ -20,3 +20,4 @@ CREATE TABLE `restaurantinfo` (
 
 
 insert into restaurantinfo (rid,ruid,rname,rphone,raddr) values (1,'test', 'testname','021234567','testaddr');
+insert into restaurantinfo (rlat, rlng) values (37.525682, 127.027399) where restaurantinfo.rid = 1;
