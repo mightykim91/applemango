@@ -1,10 +1,13 @@
 package com.project.model.review;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -45,6 +48,10 @@ public class ReviewEntity {
     @LastModifiedDate
     @Column(name = "remodifieddate")
     private LocalDateTime modifiedDate;
+
+    //Column for comment
+    @OneToMany(mappedBy = "review", cascade=CascadeType.ALL, orphanRemoval = true)
+    private List<CommentEntity> comments;
 
     //Default Constructor
     public ReviewEntity(){};
