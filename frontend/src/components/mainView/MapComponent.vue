@@ -1,5 +1,5 @@
 <template>
-  <v-container id="mainmap" style="border-bottom:solid 1px">
+  <v-container id="main" style="border-bottom:solid 1px">
       <!--Sample Map Image-->
     
     <!-- 지도 API 
@@ -28,16 +28,27 @@
 </template>
 
 <script>
+import axios from 'axios';
 import constants from '../../constants.js'
+const BACKEND_URL = constants.URL
 const MAP_URL = constants.MAP
 export default {
     name: 'MapComponent',
     data(){
         return {
-            nearByRestaurants: ['음식점1', '음식점2', '음식점3']
+            nearByRestaurants: ['음식점1', '음식점2', '음식점3'],
+            addr : '서울특별시 강남구 역삼동 테헤란로 212',
+            uid : this.$parent.uid,
+            userInfo : []
         }
     },
      mounted() {
+        axios.get(BACKEND_URL + '/user/info', {params: {'uid':this.uid}})
+        .then(response => {
+            this.userInfo = response.data
+            this.addr = this.userInfo.uaddr
+        })
+
         if (window.kakao && window.kakao.maps) {
             this.initMap();
         } else {
@@ -50,16 +61,37 @@ export default {
         }
     },
     methods: {
+        //지도
         initMap() {
             var container = document.getElementById('map');
             var options = {
               center: new kakao.maps.LatLng(37.501320, 127.039654),
               level: 5
             };
-
             var map = new kakao.maps.Map(container, options);
-            map.setMapTypeId(kakao.maps.MapTypeId);
-        }
+            //map.setMapTypeId(kakao.maps.MapTypeId);
+
+            var geocoder = new kakao.maps.services.Geocoder();
+            
+            geocoder.addressSearch(this.addr, (result, status) => {
+                // 정상적으로 검색이 완료됐으면 
+                if (status == kakao.maps.services.Status.OK) {
+                    var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                    // 결과값으로 받은 위치를 마커로 표시합니다
+                    var marker = new kakao.maps.Marker({
+                        map: map,
+                        position: coords
+                    });
+                    // 인포윈도우로 장소에 대한 설명을 표시합니다
+                    var infowindow = new kakao.maps.InfoWindow({
+                        content: '<div style="width:150px;text-align:center;padding:6px 0;">내 주소</div>'
+                    });
+                    infowindow.open(map, marker);
+                    // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+                    map.setCenter(coords);
+                }
+            });
+        }//end of initMap
     }
 }
 </script>
