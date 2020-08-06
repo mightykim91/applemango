@@ -6,7 +6,6 @@ from IPython.display import Image, display
 import shutil
 
 CHANNELS = 3 # number of image channels (RGB)
-
 def build_graph(hub_module_url, target_image_path):
   # Step 1) Prepare pre-trained model for extracting image features.
   module = hub.Module(hub_module_url)
@@ -54,23 +53,26 @@ def build_graph(hub_module_url, target_image_path):
   return input_byte, similarity
 
 
-import glob
-input_img_paths = glob.glob('./google_images_download/downloads/홍콩반점/*.jpg')
+# import glob
+# input_img_paths = glob.glob('./google_images_download/downloads/홍콩반점/*.jpg')
 
 # 2. target이미지 및 비교 이미지 다운로드 
 target_image_url = "https://t1.daumcdn.net/cfile/tistory/993CB63B5D4B863F3B"
-# input_image1_url = "https://th3.tmon.kr/thumbs/image/ca9/338/813/747a4f277_700x700_95_FIT_1548187062.jpg"
-# input_image2_url = "https://m.jnmall.kr/web/product/big/20200622/10657e1efb69a7bc468339e9b752427b.jpg"
-# input_image3_url = "https://t1.daumcdn.net/cfile/tistory/994AC73E5DF4B0EC14"
-# input_image4_url = "https://img.hankyung.com/photo/202001/01.21343681.1.jpg"
-# input_image_urls = [input_image1_url, input_image2_url, input_image3_url, input_image4_url]
 
-target_img_path = 'target_img.jpg'
+input_image1_url = "https://th3.tmon.kr/thumbs/image/ca9/338/813/747a4f277_700x700_95_FIT_1548187062.jpg"
+input_image2_url = "https://m.jnmall.kr/web/product/big/20200622/10657e1efb69a7bc468339e9b752427b.jpg"
+input_image3_url = "https://t1.daumcdn.net/cfile/tistory/994AC73E5DF4B0EC14"
+input_image4_url = "https://img.hankyung.com/photo/202001/01.21343681.1.jpg"
+input_image_urls = [input_image1_url, input_image2_url, input_image3_url, input_image4_url]
+
+target_img_path = target_image_url
+input_img_paths = input_image_urls
+# target_img_path = 'target_img.jpg'
 # input_img_paths = []
 # urllib.error.URLError : url에서 다운받을때 해당 에러가능성있음
 # wget -q {target_image_url} -O {target_img_path}
 
-wget.download(target_image_url,target_img_path)
+# wget.download(target_image_url,target_img_path)
 
 # input_image= "./google_images_download/downloads/연돈"
 # for input_path in 
@@ -84,14 +86,15 @@ wget.download(target_image_url,target_img_path)
 #       input_img_paths.append(input_path)
 #     except:
 #       print("url error")
-print(input_img_paths)
 
 tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 # tf.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
 # Load bytes of image files
 # image_bytes = [tf.gfile.GFile(name, 'rb').read() for name in [[target_img_path] + input_img_paths]]
+
 image_bytes = [tf.io.gfile.GFile(name, 'rb').read() for name in ([target_img_path] + input_img_paths)]
+print(image_bytes)
 
 hub_module_url = "https://tfhub.dev/google/imagenet/mobilenet_v2_100_96/feature_vector/1" #@param {type:"string"}
 
