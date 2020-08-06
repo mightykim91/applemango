@@ -16,6 +16,7 @@
     "vue": "^2.6.11",
     "vue-cookies": "^1.7.3",
     "vue-router": "^3.3.4",
+    "vuejs-daum-postcode": "^1.0.4",
     "vuetify": "^2.3.6"
   },
   "devDependencies": {

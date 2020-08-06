@@ -14,6 +14,7 @@ import detail from '@/views/restaurant/detail.vue';
 import comment from '@/views/admin/instagramComment.vue';
 
 import mypage from '@/views/user/myPage.vue';
+import addressmodal from '@/components/user/AddressForm.vue'
 
 Vue.use(VueRouter);
 
@@ -101,7 +102,12 @@ export const router = new VueRouter({
       name:'mypage',
       component: mypage,
       
-    }
+    },
+    {
+      path: '/addressmodal',
+      name: 'addressmodal',
+      component: addressmodal
+    },
 
     
   ]

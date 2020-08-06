@@ -18,6 +18,7 @@ import javax.persistence.PersistenceUnit;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.lang.Object;
+import java.time.LocalDateTime;
 
 import com.project.dao.user.UserDAO;
 import com.project.model.user.Role;
@@ -48,6 +49,30 @@ public class UserService implements UserDetailsService {
     // @Autowired
     // SessionFactory sf;
 
+
+
+    //회원가입
+	public Object signUp(@RequestBody UserEntity request) {
+        System.out.println(request);
+        UserEntity newUser = new UserEntity();
+        newUser.setUid(request.getUid());
+        newUser.setUpw(request.getUpw());
+        newUser.setUkind(request.getUkind());
+        newUser.setUname(request.getUname());
+        newUser.setUemail(request.getUemail());
+        newUser.setUphone(request.getUphone());
+        newUser.setUaddr(request.getUaddr());
+        newUser.setUinstagramid(request.getUinstagramid());
+        newUser.setUcreatedate(LocalDateTime.now());
+        
+        userDAO.save(newUser);
+        
+        return new ResponseEntity<UserEntity>(newUser, HttpStatus.OK);
+	}
+    
+
+
+    //로그인
     public Object login(final String uid, final String upw, final HttpSession session) {
 
         final Optional<UserEntity> user = userDAO.findByUidAndUpw(uid, upw);
@@ -123,6 +148,10 @@ public class UserService implements UserDetailsService {
         return user;
 
     }
+
+
+
+
 
 
   

@@ -57,7 +57,11 @@ public class UserController {
 
 
     //회원가입
-      
+    @PostMapping("/signup")
+    public Object signUp(@RequestBody UserEntity request){
+        return userService.signUp(request);
+    }
+
 
     //로그인
     @GetMapping("/login")
@@ -66,12 +70,16 @@ public class UserController {
         return userService.login(uid,upw,session);
     }
 
+
+    //로그아웃
     @GetMapping("/logout")
     public Object userLogout(HttpSession session){
        
         return session.toString();
     }
 
+
+    //즐겨찾기 리스트 반환
     @GetMapping(value = "/favors/list/{uid}")
     public Object getFavors(@PathVariable String uid){
         System.out.println("테스트1" + uid);

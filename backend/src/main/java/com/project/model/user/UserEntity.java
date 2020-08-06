@@ -17,7 +17,7 @@ import java.time.ZoneId;
 @Table(name = "userinfo")
 public class UserEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id 
     private String uid;
     private String upw;
     private int ukind;
@@ -25,16 +25,12 @@ public class UserEntity {
     private String uemail;
     private String uphone;
     private String uaddr;
-    private String uaddrsido;
-    private String uaddrgu;
-    private String uaddrdong;
-    private String uaddrdetail;
     private String uinstagramid;
-    private Date ucreatedate;
+    private LocalDateTime ucreatedate;
 
     public UserEntity(){};
     
-    public UserEntity(String uid, String upw,int ukind,String uname,String uemail,String uphone,String uaddr,String uaddrsido,String uaddrgu,String uaddrdong,String uaddrdetail, String uinstagramid, Date ucreatedate){
+    public UserEntity(String uid, String upw,int ukind,String uname,String uemail,String uphone,String uaddr,String uinstagramid, LocalDateTime ucreatedate){
       
         this.uid = uid;
         this.upw = upw;
@@ -43,24 +39,8 @@ public class UserEntity {
         this.uemail = uemail;
         this.uphone = uphone;
         this.uaddr = uaddr;
-        this.uaddrsido = uaddrsido;
-        this.uaddrgu = uaddrgu;
-        this.uaddrdong = uaddrdong;
-        this.uaddrdetail = uaddrdetail;
         this.uinstagramid = uinstagramid;
         this.ucreatedate = ucreatedate;
-    }
-
-    public String getUid(){
-        return uid;
-    }
-
-    public String getUpw(){
-        return upw;
-    }
-
-    public String getUemail(){
-        return uemail;
     }
     
 }
