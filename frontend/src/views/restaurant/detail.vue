@@ -1,7 +1,6 @@
 <template>
 <div class="detail">
-    <div class="container">
-        
+    <div class="container">   
         <div class = "rstInfo">
         <p><font class="titlefont">{{requestData.rst.rname}} </font> {{requestData.rst.rbranch}} 지점</p><hr>
         <!-- 이미지 값 requestData.rst.rimg값으로 나중에 변경 -->
@@ -102,9 +101,6 @@ export default {
             newprice:'',
             newimage:'',
             menuid:'',
-
-            lat:'',
-            lng:''
         }
     },
     mounted() {
@@ -112,8 +108,6 @@ export default {
         .then(response => {
             console.log(response.data)
             this.requestData.rst = response.data
-            this.lat = this.requestData.rst.rlat
-            this.lng = this.requestData.rst.rlng
             console.log(this.lat + this.lng)
         })
 
@@ -124,11 +118,11 @@ export default {
         })
 
         if (window.kakao && window.kakao.maps) {
-            this.initMap(this.lat, this.lng);
+            this.initMap();
         } else {
             const script = document.createElement('script');
             /* global kakao */
-            script.onload = () => kakao.maps.load(this.initMap(this.lat, this.lng));
+            script.onload = () => kakao.maps.load(this.initMap());
             //script.src = 'http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=a367e1fe90bc271522126e07ddfc6338'
             script.src = MAP_URL
             document.head.appendChild(script);
@@ -184,18 +178,40 @@ export default {
                     })
                 })
         },
+
         //지도
-        initMap(lat, lng) {
+        initMap() {
             var container = document.getElementById('map');
             var options = {
-              center: new kakao.maps.LatLng(lat, lng),
+              center: new kakao.maps.LatLng(37.501320, 127.039654),
               level: 5
             };
             var map = new kakao.maps.Map(container, options);
-            map.setMapTypeId(kakao.maps.MapTypeId);
-        }
-    }
-}
+            //map.setMapTypeId(kakao.maps.MapTypeId);
+
+            var geocoder = new kakao.maps.services.Geocoder();
+            
+            geocoder.addressSearch('제주특별자치도 제주시 첨단로 242', (result, status) => {
+                // 정상적으로 검색이 완료됐으면 
+                if (status == kakao.maps.services.Status.OK) {
+                    var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                    // 결과값으로 받은 위치를 마커로 표시합니다
+                    var marker = new kakao.maps.Marker({
+                        map: map,
+                        position: coords
+                    });
+                    // 인포윈도우로 장소에 대한 설명을 표시합니다
+                    var infowindow = new kakao.maps.InfoWindow({
+                        content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
+                    });
+                    infowindow.open(map, marker);
+                    // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+                    map.setCenter(coords);
+                }
+            });
+        }//end of initMap
+    }//end of methods 
+}//end of export default
 </script>
 
 <style>
