@@ -101,6 +101,9 @@ export default {
             newprice:'',
             newimage:'',
             menuid:'',
+
+            name:'멀캠',
+            addr:'서울특별시 강남구 역삼동 테헤란로 212'
         }
     },
     mounted() {
@@ -109,6 +112,9 @@ export default {
             console.log(response.data)
             this.requestData.rst = response.data
             console.log(this.lat + this.lng)
+
+            this.addr = this.requestData.rst.raddr
+            this.name = this.requestData.rst.rname
         })
 
         axios.get(BACKEND_URL + '/menu/list', {params: {'mrid':this.rid}})
@@ -191,7 +197,7 @@ export default {
 
             var geocoder = new kakao.maps.services.Geocoder();
             
-            geocoder.addressSearch('제주특별자치도 제주시 첨단로 242', (result, status) => {
+            geocoder.addressSearch(this.addr, (result, status) => {
                 // 정상적으로 검색이 완료됐으면 
                 if (status == kakao.maps.services.Status.OK) {
                     var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
@@ -202,7 +208,7 @@ export default {
                     });
                     // 인포윈도우로 장소에 대한 설명을 표시합니다
                     var infowindow = new kakao.maps.InfoWindow({
-                        content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
+                        content: '<div style="width:150px;text-align:center;padding:6px 0;">'+this.name+'</div>'
                     });
                     infowindow.open(map, marker);
                     // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
