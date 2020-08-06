@@ -13,9 +13,10 @@
 <script>
 
 import axios from 'axios'
+import constants from '../../constants.js'
 //local BACKEND_URL
 // const BACKEND_URL = 'http://localhost:8080'
-const BACKEND_URL = 'http://i3a503.p.ssafy.io:8080'
+const BACKEND_URL = constants.URL
 
 export default {
     name: "ReviewForm",
@@ -35,7 +36,7 @@ export default {
     },
     methods:{
         createReview: function(){
-            axios.post(`${BACKEND_URL}/review/new`, this.requestData)
+            axios.post(`${BACKEND_URL}review/new`, this.requestData)
             .then(response => {
                 console.log(response.data)
                 this.$router.push({ name: 'Review' })

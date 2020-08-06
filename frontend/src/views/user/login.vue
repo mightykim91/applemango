@@ -4,7 +4,11 @@
     <div id="login">
     <header/>
     <div class="login">
+        {{_csrf.parameterName}}
         <h2 class="comm__title">LOGIN</h2>
+
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
         <div class="ipt__box">
             <input type="text" class="ipt" placeholder="ID" v-model="user.id">
         </div>

@@ -3,6 +3,12 @@ package com.project.service.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +18,12 @@ import javax.persistence.PersistenceUnit;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.lang.Object;
+
+import com.project.dao.user.UserDAO;
+import com.project.model.user.Role;
+
 import com.project.dao.user.*;
+
 import com.project.model.user.UserEntity;
 
 import io.swagger.annotations.ApiResponse;
@@ -21,13 +32,14 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     @Autowired
     UserDAO userDAO;
@@ -35,7 +47,6 @@ public class UserService {
 
     // @Autowired
     // SessionFactory sf;
-
 
     public Object login(final String uid, final String upw, final HttpSession session) {
 
@@ -86,12 +97,31 @@ public class UserService {
         return session;
     }
 
+
+    @Override
+    public UserDetails loadUserByUsername(String uid) throws UsernameNotFoundException {
+        Optional<UserEntity> userEntityWrapper = userDAO.findByUid(uid);
+        UserEntity userEntity = userEntityWrapper.get();
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        if (("admin").equals(uid)) {
+            authorities.add(new SimpleGrantedAuthority(Role.ADMIN.getValue()));
+        } else {
+            authorities.add(new SimpleGrantedAuthority(Role.MEMBER.getValue()));
+        }
+
+        return new User(userEntity.getUid(), userEntity.getUpw(), authorities);
+
+    }
+    
     //김연수추가
     public Object userInfo(String userId){
         
         UserEntity user = userDAO.getUserByUid(userId);
 
         return user;
+
     }
 
 

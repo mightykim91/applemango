@@ -6,11 +6,14 @@ import Join from '@/views/user/Join.vue';
 import insta from '@/views/restaurant/Receive-insta.vue';
 import Review from '@/components/review/ReviewList.vue';
 import CreateReview from '@/components/review/CreateReview.vue';
+import ReviewEditForm from '@/components/review/ReviewEditForm.vue';
 import reg from '@/components/restaurant/reg.vue';
 import mystore from '@/views/restaurant/mystore.vue';
 import detail from '@/views/restaurant/detail.vue';
 
 import comment from '@/views/admin/instagramComment.vue';
+
+import mypage from '@/views/user/myPage.vue';
 
 Vue.use(VueRouter);
 
@@ -79,12 +82,27 @@ export const router = new VueRouter({
         rid: String(route.params.rid)
       })
     },
+    {
+      path: '/review/edit/:rid',
+      name: 'ReviewEditForm',
+      component: ReviewEditForm,
+      props: route => ({
+        rid: Number(route.params.rid)
+      })
+    },
     {  // 인스타그램 게시물 조회, 댓글, 대댓글 기능
       path: '/instagram/comment',
       name:'comment',
       component: comment,
       
+    },
+    {  // 마이페이지 메인
+      path: '/mypage',
+      name:'mypage',
+      component: mypage,
+      
     }
+
     
   ]
 });
