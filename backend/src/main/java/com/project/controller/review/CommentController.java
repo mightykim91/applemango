@@ -1,5 +1,6 @@
 package com.project.controller.review;
 
+import com.project.model.review.CommentCreationRequest;
 import com.project.model.review.CommentEntity;
 import com.project.service.review.*;
 
@@ -28,7 +29,7 @@ public class CommentController {
     }
 
     @PostMapping("/new")
-    public Object createComment(@RequestBody CommentEntity request){
+    public Object createComment(@RequestBody CommentCreationRequest request){
         return service.createComment(request);
     }
 

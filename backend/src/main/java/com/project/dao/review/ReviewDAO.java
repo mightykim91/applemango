@@ -14,5 +14,7 @@ public interface ReviewDAO extends JpaRepository<ReviewEntity, Long>{
     //Get all reviews of written by certain user
     public List<ReviewEntity> findByUserId(String userId);
 
+    public ReviewEntity findReviewById(long id);
+
 
 }

@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -29,8 +31,9 @@ public class CommentEntity {
     @Column(name = "cmid")
     private long id; //댓글 아이디
 
-    @Column(name = "cmreid") //해당 리뷰 아이디(FK설정)
-    private long reviewId;
+    @ManyToOne //해당 리뷰 아이디(FK설정)
+    @JoinColumn(name = "cmreid")
+    private ReviewEntity review;
 
     @Column(name="cmuid")
     private String userId; //작성자 아이디
@@ -45,4 +48,15 @@ public class CommentEntity {
     @LastModifiedDate
     @Column(name = "cmmodifieddate") //댓글 수정일
     private LocalDateTime modifiedDate;
+
+    public CommentEntity(ReviewEntity review, String userId, String content){
+        this.review = review;
+        this.userId = userId;
+        this.content = content;
+    }
+
+    @Override
+    public String toString(){
+        return userId + content;
+    }
 }
