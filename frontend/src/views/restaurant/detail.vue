@@ -12,32 +12,62 @@
         주소 {{requestData.rst.raddr}}
         </font></pre>
         </div>
-
         <br clear="left">
-
         <div class="menuInfo">
-        <p>메뉴정보</p>
+            <!-- 메뉴 등록 모달 창 -->
+            <h1 style="text-align: left;">Menu <b-button v-b-modal.regMenu>등록</b-button></h1>
+                 
+            <b-modal id="regMenu" ref="modal" 
+                title="메뉴 등록" @show="resetModal" @hidden="resetModal" @ok="reghandleOk">
+                <form ref="form">
+                    <b-form-group  
+                        label-for="input" invalid-feedback="required">
+                        이름<b-form-input v-model="newname"  required></b-form-input>
+                        <b-form-checkbox v-model="newissig" requried>메인메뉴 </b-form-checkbox> 
+                        가격 <b-form-input v-model="newprice" required></b-form-input>
+                        <!-- 이미지 업로드 or 이미지 주소 복사(현재는 이미지 주소) -->
+                        이미지 <b-form-input v-model="newimage" required></b-form-input>
+                    </b-form-group>
+                </form>
+            </b-modal>
         <hr>
         <div v-if="requestData.menus.length > 0">
-            <table class="table table-bordered table-condensed">
-                <colgroup>
-                    <col :style="{width: '25%'}" />
-                    <col :style="{width: '25%'}" />
-                    <col :style="{width: '25%'}" />
-                    <col :style="{width: '25%'}" />
-                </colgroup>
-                <tr v-for="(menu,index) in requestData.menus" :key="index">
-                    <td class="text-center">메뉴번호 : {{menu.mid}}</td>
-                    <td class="text-center">메뉴이름 : {{menu.mname}}</td>
-                    <td class="text-center">메뉴가격 : {{menu.mprice}}원</td>
-                    <td class="text-center">메뉴사진 : {{menu.mimage}}</td>
-                </tr>
-            </table>
+            <v-container fluid>
+            <v-row>
+                <v-card flat v-for="(menu,index) in requestData.menus" :key="index">
+                    <div v-if="menu.mimage.length > 10" ><v-img :src="menu.mimage"  id="menuimg"></v-img></div>
+                    <div v-else><v-img src="../../assets/noimage.png"  id="menuimg"></v-img></div>
+                    <div v-if="menu.missig" ><v-img src="../../assets/star.png" style="width:5%" id = "sigimg"></v-img></div>
+                    {{menu.mname}} / {{menu.mprice}}원
+                    <b-link v-b-modal.modMenu>수정</b-link>&nbsp;
+                    <b-link v-b-modal.delMenu>삭제</b-link>
+
+                    <!-- 메뉴 수정하는 모달 창 -->
+                        <b-modal id="modMenu" title="메뉴 수정" @ok="modhandleSubmit(menu.mid)">
+                            <form>
+                                <b-form-group invalid-feedback="required">
+                                    이름<b-form-input v-model="newname" :placeholder="menu.mname" :value="menu.mname"/>
+                                    <b-form-checkbox v-model="newissig" requried>메인메뉴</b-form-checkbox> 
+                                    가격 <b-form-input v-model="newprice" :placeholder= "menu.mprice" required></b-form-input>
+                                    <!-- 이미지 업로드 or 이미지 주소 복사(현재는 이미지 주소) -->
+                                    이미지 <b-form-input v-model="newimage" :placeholder= "menu.mimage" required></b-form-input>
+                                </b-form-group>
+                            </form>
+                        </b-modal>
+
+                        <!-- 메뉴 삭제하기 모달 창-->
+                        <b-modal id="delMenu" title="메뉴삭제" @ok= delhandleSubmit(menu.mid)><p>{{menu.mname}}을(를) 정말 삭제 하시겠습니까?</p></b-modal>
+                </v-card>
+            </v-row>
+        </v-container>
         </div>
         <div v-else>
         등록된 메뉴 정보가 없습니다.
         </div></div>
-        <detail-review v-bind:restaurantId="rid"/>
+        <detail-review/>
+        <h1 style="text-align: left;">위치 정보</h1><hr>
+        <div v-if="requestData.rst.rlat != 0"><div id="map">지도</div></div>
+        <div v-else>위치 정보가 없습니다.</div>
     </div>
 </div>
 </template>
@@ -49,6 +79,7 @@ import constants from '../../constants.js'
 
 //local
 const BACKEND_URL = constants.URL
+const MAP_URL = constants.MAP
 //AWS
 // const BACKEND_URL = 'http://i3a503.p.ssafy.io'
 
@@ -65,7 +96,15 @@ export default {
             requestData: {
                 rst: [],
                 menus: []
-            }
+            },
+            newissig:false,
+            newname:'',
+            newprice:'',
+            newimage:'',
+            menuid:'',
+
+            lat:'',
+            lng:''
         }
     },
     mounted() {
@@ -73,6 +112,9 @@ export default {
         .then(response => {
             console.log(response.data)
             this.requestData.rst = response.data
+            this.lat = this.requestData.rst.rlat
+            this.lng = this.requestData.rst.rlng
+            console.log(this.lat + this.lng)
         })
 
         axios.get(BACKEND_URL + '/menu/list', {params: {'mrid':this.rid}})
@@ -80,12 +122,79 @@ export default {
             console.log(response.data)
             this.requestData.menus = response.data
         })
-    },
-    methods: {
-        regHandler() {
+
+        if (window.kakao && window.kakao.maps) {
+            this.initMap(this.lat, this.lng);
+        } else {
+            const script = document.createElement('script');
+            /* global kakao */
+            script.onload = () => kakao.maps.load(this.initMap(this.lat, this.lng));
+            //script.src = 'http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=a367e1fe90bc271522126e07ddfc6338'
+            script.src = MAP_URL
+            document.head.appendChild(script);
         }
     },
-    
+    methods: {
+        //메뉴등록처리
+        resetModal() {
+            this.newissig = false,
+            this.newname = '',
+            this.newprice = '',
+            this.newimage = ''
+        },
+        reghandleOk(bvModalEvt) {
+        bvModalEvt.preventDefault()
+        this.reghandleSubmit()
+        console.log("Ok Sign")
+        },
+        reghandleSubmit: function() {
+            axios.post(BACKEND_URL + '/menu/reg' , { 
+                'mrid':this.rid, 
+                'missig': this.newissig, 
+                'mname':this.newname,
+                'mprice':this.newprice, 
+                'mimage':this.newimage
+                }).then(response => {
+                console.log(response.data)
+                this.$nextTick(() => {
+                    this.$bvModal.hide('regMenu')
+                        })
+                })
+        },
+
+        //메뉴수정처리
+        modhandleSubmit: function(mid) {
+            console.log("mod 도달")
+            axios.post(BACKEND_URL + '/menu/mod?mid='+ mid , { 'mrid':this.rid, 'missig': this.newissig, 
+                'mname':this.newname,'mprice':this.newprice, 'mimage':this.newimage}).then(response => {
+                console.log(response.data)
+                this.$nextTick(() => {
+                    this.$bvModal.hide('modMenu')
+                        })
+                })
+        },
+
+        //메뉴삭제처리
+        delhandleSubmit: function(mid) {
+            console.log("삭제할 메뉴 번호:"+mid);
+            axios.get(BACKEND_URL + '/menu/del?mid=' + mid).then(response => {
+                console.log(response.data)
+                this.$nextTick(() => {
+                    this.$bvModal.hide('delMenu')
+                    })
+                })
+        },
+        //지도
+        initMap(lat, lng) {
+            var container = document.getElementById('map');
+            var options = {
+              center: new kakao.maps.LatLng(lat, lng),
+              level: 5
+            };
+            var map = new kakao.maps.Map(container, options);
+            map.setMapTypeId(kakao.maps.MapTypeId);
+        }
+    }
 }
 </script>
 
@@ -109,4 +218,6 @@ export default {
 .titlefont {font-size: 50px;}
 .content {font-size: 25px;}
 #sigimg {float:left}
+#menuimg {width: 240px; height:200px;}
+#map {width: 100%; height:480px;}
 </style>

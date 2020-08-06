@@ -1,8 +1,6 @@
 <template>
-    <div class="mystore">
-        <mystore-header/>
         <div class="container">
-        <br><br>
+        <!-- 
         <router-link :to="{ name: 'receiveInsta' }">인스타그램 사진 링크</router-link><hr>
         <p>{{this.$route.params.ruid}}님의 가게 정보</p>
         
@@ -26,27 +24,34 @@
                     </td>
                 </tr>
         </table>
-    </div>
+    
+        -->
+        <br><br>
+         <div class="left">
+            <ul>
+            <b-nav-item>즐겨찾기</b-nav-item>
+            <b-nav-item>리뷰관리</b-nav-item>
+            <b-nav-item>회원정보</b-nav-item>
+            <b-nav-item>Instagram</b-nav-item>
+            </ul>
+         </div>
+
     </div>
 </template>
 
 <script>
     import axios from 'axios';
-    import Header from '@/components/Header.vue'
     import constants from "../../constants.js";
-      const BACKEND_URL = constants.URL
-
-
+    const BACKEND_URL = constants.URL
     export default {
         name:'mystore',
         props: {
         ruid: String //declare props type
         },
         components: {
-            'mystore-header' : Header
+            
         },
         mounted() {
-
             axios.get(BACKEND_URL + '/rst/list?uid='+this.$route.params.ruid).then(({ data }) => {
                 this.rsts = data;
             })
@@ -72,5 +77,16 @@
     width:60%;
     text-align:left;
 }
-
+.left{
+    position:fixed; 
+    top:10%; 
+    left:0px; 
+    width:250px; 
+    height:80%; 
+    background-color: transparent;
+    padding:40px 0; 
+    overflow: hidden
+  }
+.left ul {padding: 0 30px; list-style:none;}
+.left ul li { font-size:25px;  height:75px;} 
 </style>
