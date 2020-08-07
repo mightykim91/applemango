@@ -4,7 +4,6 @@
     
     <!-- 지도 API 
     <dmap/> -->
-      
       <v-row>
           <v-col cols="9" id="map">
               지도
@@ -12,7 +11,7 @@
           <v-col cols="3">
               <v-simple-table>
                   <thead>
-                      <tr><th id="nearby-restaurant-info" class="text-center">주변 음식점</th></tr>
+                      <tr><th id="nearby-restaurant-info" class="text-center">  주변 음식점</th></tr>
                   </thead>
                   <tbody>
                       <tr v-for="rest in nearByRestaurants" v-bind:key="rest.id">
@@ -43,7 +42,8 @@ export default {
         }
     },
      mounted() {
-        axios.get(BACKEND_URL + '/user/info', {params: {'uid':this.uid}})
+         console.log(this.uid)
+        axios.get(BACKEND_URL + 'user/info', {params: {'uid':this.uid}})
         .then(response => {
             this.userInfo = response.data
             this.addr = this.userInfo.uaddr

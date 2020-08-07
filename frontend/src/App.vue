@@ -5,9 +5,11 @@
         <v-col cols="1" class="px-1"><router-link :to="{name: 'Login'}" class="black--text">로그인</router-link></v-col>
         <v-col cols="1" class="px-1"><router-link :to="{name: 'SignUp'}" class="black--text">회원가입</router-link></v-col>
         
+
       </v-row>
       <v-row justify="end" no-gutters v-else>
         <v-col cols="1" class="px-1"><span v-on:click="logout" class="text--black" style="cursor:grab">로그아웃</span></v-col>
+        <v-col cols="1" class="px-1"><router-link :to="{name: 'mystore', params: { ruid: $cookies.get('auth-token')}}" class="black--text">My Store</router-link></v-col>
       </v-row>
     </v-system-bar>
     <navigation/>
@@ -36,7 +38,7 @@ const BACKEND_URL = constants.URL
 export default {
   data() {
     return {
-      uid : this.$cookies.isKey('auth-token')
+      uid : this.$cookies.get('auth-token')
     }
   },
   components: {

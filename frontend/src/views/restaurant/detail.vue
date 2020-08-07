@@ -30,11 +30,11 @@
                 </form>
             </b-modal>
         <hr>
-        <div v-if="requestData.menus.length > 0">
+        <div v-if="requestData.menus">
             <v-container fluid>
             <v-row>
                 <v-card flat v-for="(menu,index) in requestData.menus" :key="index">
-                    <div v-if="menu.mimage.length > 10" ><v-img :src="menu.mimage"  id="menuimg"></v-img></div>
+                    <div v-if="menu.mimage" ><v-img :src="menu.mimage"  id="menuimg"></v-img></div>
                     <div v-else><v-img src="../../assets/noimage.png"  id="menuimg"></v-img></div>
                     <div v-if="menu.missig" ><v-img src="../../assets/star.png" style="width:5%" id = "sigimg"></v-img></div>
                     {{menu.mname}} / {{menu.mprice}}원
@@ -64,7 +64,7 @@
         등록된 메뉴 정보가 없습니다.
         </div></div>
         <detail-review/>
-        <h1 style="text-align: left;">위치 정보</h1><hr>
+        <h1 style="text-align: left;">Location</h1><hr>
         <div v-if="requestData.rst.rlat != 0"><div id="map">지도</div></div>
         <div v-else>위치 정보가 없습니다.</div>
     </div>
@@ -107,19 +107,21 @@ export default {
         }
     },
     mounted() {
-        axios.get(BACKEND_URL + '/rst/detail', {params: {'rid':this.rid}})
+        axios.get(BACKEND_URL + 'rst/detail', {params: {'rid':this.rid}})
         .then(response => {
             console.log(response.data)
             this.requestData.rst = response.data
-            console.log(this.lat + this.lng)
 
             this.addr = this.requestData.rst.raddr
             this.name = this.requestData.rst.rname
+
+            console.log("이름 주소"+this.name+this.addr)
+
         })
 
-        axios.get(BACKEND_URL + '/menu/list', {params: {'mrid':this.rid}})
+        axios.get(BACKEND_URL + 'menu/list', {params: {'mrid':this.rid}})
         .then(response => {
-            console.log(response.data)
+            console.log("menu list:" + response.data)
             this.requestData.menus = response.data
         })
 
@@ -148,7 +150,7 @@ export default {
         console.log("Ok Sign")
         },
         reghandleSubmit: function() {
-            axios.post(BACKEND_URL + '/menu/reg' , { 
+            axios.post(BACKEND_URL + 'menu/reg' , { 
                 'mrid':this.rid, 
                 'missig': this.newissig, 
                 'mname':this.newname,
@@ -165,7 +167,7 @@ export default {
         //메뉴수정처리
         modhandleSubmit: function(mid) {
             console.log("mod 도달")
-            axios.post(BACKEND_URL + '/menu/mod?mid='+ mid , { 'mrid':this.rid, 'missig': this.newissig, 
+            axios.post(BACKEND_URL + 'menu/mod?mid='+ mid , { 'mrid':this.rid, 'missig': this.newissig, 
                 'mname':this.newname,'mprice':this.newprice, 'mimage':this.newimage}).then(response => {
                 console.log(response.data)
                 this.$nextTick(() => {
@@ -177,7 +179,7 @@ export default {
         //메뉴삭제처리
         delhandleSubmit: function(mid) {
             console.log("삭제할 메뉴 번호:"+mid);
-            axios.get(BACKEND_URL + '/menu/del?mid=' + mid).then(response => {
+            axios.get(BACKEND_URL + 'menu/del?mid=' + mid).then(response => {
                 console.log(response.data)
                 this.$nextTick(() => {
                     this.$bvModal.hide('delMenu')
