@@ -1,6 +1,6 @@
 <template>
         <div class="container">
-        <!-- 
+        
         <router-link :to="{ name: 'receiveInsta' }">인스타그램 사진 링크</router-link><hr>
         <p>{{this.$route.params.ruid}}님의 가게 정보</p>
         
@@ -25,7 +25,7 @@
                 </tr>
         </table>
     
-        -->
+       
         <br><br>
          <div class="left">
             <ul>
@@ -52,7 +52,8 @@
             
         },
         mounted() {
-            axios.get(BACKEND_URL + '/rst/list?uid='+this.$route.params.ruid).then(({ data }) => {
+            axios.get(BACKEND_URL + 'rst/list?uid='+this.$route.params.ruid).then(({ data }) => {
+                console.log(BACKEND_URL + '/rst/list?uid='+this.$route.params.ruid)
                 this.rsts = data;
             })
         },
