@@ -1,5 +1,4 @@
 # 사람 filter
-
 import cv2
 import numpy as np
 from os import listdir

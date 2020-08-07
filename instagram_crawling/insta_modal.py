@@ -12,10 +12,6 @@ from collections import OrderedDict
 warnings.filterwarnings(action='ignore') # 경고 메세지 제거
 
 def modal_images(url):
-
-# url = "https://www.instagram.com/p/CDKgLtvph8Q/"  # 한장의 사진
-
-# [2] chromedriver을 통해 웹을 띄운다.
     driver = webdriver.Chrome(
         executable_path= "C:/Users/multicampus/chromedriver_win32/chromedriver.exe"
     )
@@ -34,8 +30,6 @@ def modal_images(url):
 
     # first_button = '//*[@id="react-root"]/section/main/div/div/article/div[2]/div/div[1]/div[2]/div/button'
     first_button = '//*[@id="react-root"]/section/main/div/div[1]/article/div/div[2]/div/div[1]/div[2]/div/button'
-
-      
     second_button='//*[@id="react-root"]/section/main/div/div[1]/article/div/div[2]/div/div[1]/div[2]/div/button[2]'
     # second_button = '//*[@id="react-root"]/section/main/div/div/article/div[2]/div/div[1]/div[2]/div/button[2]'
     

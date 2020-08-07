@@ -13,6 +13,7 @@ from datetime import datetime
 import requests
 from insta_modal import modal_images
 
+from similarity import inter_similarity
 
 warnings.filterwarnings(action='ignore') # 경고 메세지 제거
 # 1. 인스타 그램 url 생성
@@ -54,17 +55,11 @@ passbutton="""//*[@id="react-root"]/section/main/div/div/div/div/button"""
 driver.find_element_by_xpath(passbutton).click()
 time.sleep(3)
 
-# [4] 해쉬태그에 input값을 넣어 해당 데이터들을 modal_page에 append시킴
-# 1. bsObj 에 담아놓은 모든 데이터들의 좋아요 갯수를 체크해나간다.
-# 2. 좋아요을 기준으로 이미지를 sort 시킨다. 
-# 3. 어떤 이미지를 선택한다면 해당 이미지의 계정명, 이미지, 태그를 출력가능해야함
-# 추후 계획 : 우리플랫폼 db유저들만 체크, 게시글내용을 자연어 처리하여 긍정 or 부정을 판단
-
 SCROLL_PAUSE_TIME = 1.0
 modal_page = []
 cnt = 0 
 # cnt 10당 => 약 120~150개사이의 데이터를 축적
-while cnt < 20:
+while cnt < 50:
     cnt += 1
     pageString = driver.page_source
     bsObj = BeautifulSoup(pageString, 'lxml')
@@ -135,16 +130,19 @@ for i in tqdm(range(num_of_data)):
     account = account.replace('on Instagram','')
     account = account.replace(' ','')
 
-    ##########################
+    #########################################################################
     # DB와 인스타 계정비교
-    ########################## 
+    #########################################################################
+    
     # if False:    # db에 계정이 없으면 continue
     #     continue
 
     # 계정이 있으면 진행
     url = "https://www.instagram.com"+modal_page[i]
     src_list = modal_images(url)    # 이미지 url
-
+    
+    img = inter_similarity(src_list)
+    
     # file_data[num]["instaid"] = account
     data["instaid"] = account
 
