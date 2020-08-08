@@ -16,9 +16,12 @@
     "vue": "^2.6.11",
     "vue-cookies": "^1.7.3",
     "vue-router": "^3.3.4",
+    "vuejs-daum-postcode": "^1.0.4",
     "vuetify": "^2.3.6"
   },
   "devDependencies": {
+    "@fortawesome/fontawesome-free": "^5.14.0",
+    "@mdi/font": "^5.4.55",
     "@vue/cli-plugin-babel": "~4.4.0",
     "@vue/cli-plugin-eslint": "~4.4.0",
     "@vue/cli-service": "~4.4.0",

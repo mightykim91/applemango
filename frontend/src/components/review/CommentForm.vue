@@ -21,7 +21,8 @@
                   dark v-on:click="submit">댓글 등록</v-btn> -->
                   <v-btn
                   height="100px" 
-                  dark v-on:click.prevent="registerComment">댓글 등록</v-btn>
+                  dark 
+                  v-on:click="submit">댓글 등록</v-btn>
               </v-col>
           </v-row>
       </v-container>
@@ -29,11 +30,11 @@
 </template>
 
 <script>
-import axios from 'axios'
+
 
 //local
 // const BACKEND_URL = "http://localhost:8080/"
-const BACKEND_URL = "http://i3a503.p.ssafy.io:8080/"
+
 
 export default {
     name:'CommentForm',
@@ -43,7 +44,7 @@ export default {
     data(){
         return {
             commentData:{
-                reviewId:this.reid, //need to revise this too!
+                reviewId: this.reid, //need to revise this too!
                 userId:'test', //For testing purpose, need to be revised later.
                 content:'',
             }
@@ -53,17 +54,17 @@ export default {
         submit: function(){
             this.$emit("create",this.commentData)
             console.log(this.commentData)
+            
         },
-        registerComment: function(){
-            axios.post(`${BACKEND_URL}comment/new`,this.commentData)
-            .then(response => {
-                console.log(this.commentData)
-                console.log(response.data)
-                this.$emit("create", response.data)
-                this.commentData.content = ''
-                // this.comments.unshift(response.data) //새로운댓글 배열에 추가후 배열의 처음으로 이동.
-            })
-        }
+        // registerComment: function(){
+        //     axios.post(`${BACKEND_URL}comment/new`,this.commentData)
+        //     .then(response => {
+        //         console.log(response.data)
+        //         this.$emit("create", response.data)
+        //         this.commentData.content = ''
+        //         // this.comments.unshift(response.data) //새로운댓글 배열에 추가후 배열의 처음으로 이동.
+        //     })
+        // }
         
     }
 

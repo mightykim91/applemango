@@ -5,6 +5,11 @@
     <header/>
     <div class="login">
         <h2 class="comm__title">LOGIN</h2>
+
+        
+        
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
         <div class="ipt__box">
             <input type="text" class="ipt" placeholder="ID" v-model="user.id">
         </div>
@@ -20,10 +25,13 @@
 <script>
     import axios from 'axios'
     import constants from "../../constants.js";
+
     const BACKEND_URL = constants.URL
 
 
     export default  {
+        name : 'login',
+
         data() {
             return {
                 user : {

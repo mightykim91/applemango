@@ -2,7 +2,7 @@
 
 <template>
     <div id="receive-insta">
-    <main-header/>
+
     <div>
     <br><br>
         <h1>인스타 크롤링 사진 데이터 리스트</h1>
@@ -24,7 +24,7 @@
     </div>
 </template>
 <script>
-import Header from '../../components/Header.vue'
+
 import axios from 'axios'
 import constants from "../../constants.js";
     const BACKEND_URL = constants.URL
@@ -33,7 +33,7 @@ import constants from "../../constants.js";
     export default  {
         name: "InstaReceive",
          components :{
-            'main-header' : Header
+            
         },
         data() {
            return {
