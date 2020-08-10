@@ -18,29 +18,17 @@ def modal_images(url):
     # 해당 url을 driver로 할당
     driver.get(url)
     time.sleep(1)
-
     img_list = []
-    # [3] 첫번째 (>) 버튼
-    # pageString = driver.page_source
-    # bsObj = BeautifulSoup(pageString, 'lxml')
-    # line = bsObj.find_all(name='div', attrs={"class":"KL4Bh"})
-    # title = line.select('img')
-    # real = title.attrs['src']
-    # modal_page.append(real)
-
-    # first_button = '//*[@id="react-root"]/section/main/div/div/article/div[2]/div/div[1]/div[2]/div/button'
     first_button = '//*[@id="react-root"]/section/main/div/div[1]/article/div/div[2]/div/div[1]/div[2]/div/button'
     second_button='//*[@id="react-root"]/section/main/div/div[1]/article/div/div[2]/div/div[1]/div[2]/div/button[2]'
-    # second_button = '//*[@id="react-root"]/section/main/div/div/article/div[2]/div/div[1]/div[2]/div/button[2]'
-    
+
+    # [1] modal의 모든 img 태그 정보 추출
     for cnt in range(1,10):
-        # 첫번째 사진은 무조건 plus
         pageString = driver.page_source
         soup = BeautifulSoup(pageString, 'lxml')
         img = soup.select("img[srcset]")
         img_list += img
         img_list = list(set(img_list))
-
         if cnt == 1:
             try:
                 driver.find_element_by_xpath(first_button).click()
@@ -55,7 +43,7 @@ def modal_images(url):
                 break
         time.sleep(0.5)
 
-    # print(img_list)
+    # [2] img태그에서 url만 추출
     src_list = []
     for pic in img_list:
         if pic['class'] != ['FFVAD']:
@@ -69,6 +57,3 @@ def modal_images(url):
     src_list = list(set(src_list))
 
     return src_list
-
-# url = "https://www.instagram.com/p/CCK6V4hnlY2/" # 여러장의 사진
-# modal_images(url)
