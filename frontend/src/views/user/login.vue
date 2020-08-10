@@ -4,9 +4,10 @@
     <div id="login">
     <header/>
     <div class="login">
-        {{_csrf.parameterName}}
         <h2 class="comm__title">LOGIN</h2>
 
+        
+        
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
         <div class="ipt__box">
@@ -24,10 +25,13 @@
 <script>
     import axios from 'axios'
     import constants from "../../constants.js";
+
     const BACKEND_URL = constants.URL
 
 
     export default  {
+        name : 'login',
+
         data() {
             return {
                 user : {

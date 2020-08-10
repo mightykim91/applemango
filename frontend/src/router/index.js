@@ -4,7 +4,6 @@ import MainView from '@/views/MainView.vue';
 import login from '@/views/user/login.vue';
 import Join from '@/views/user/Join.vue';
 import insta from '@/views/restaurant/Receive-insta.vue';
-
 import Review from '@/components/review/ReviewList.vue';
 import CreateReview from '@/components/review/CreateReview.vue';
 import ReviewEditForm from '@/components/review/ReviewEditForm.vue';
@@ -15,6 +14,7 @@ import detail from '@/views/restaurant/detail.vue';
 import comment from '@/views/admin/instagramComment.vue';
 
 import mypage from '@/views/user/myPage.vue';
+import addressmodal from '@/components/user/AddressForm.vue'
 
 Vue.use(VueRouter);
 
@@ -44,15 +44,12 @@ export const router = new VueRouter({
       name: 'receiveInsta',
       component: insta
     },
+    //레스토랑 등록 페이지
     {
       path: '/rst/reg',
       component: reg,
     },
-    // {
-    //   path: '/rst/mystore/:ruid?',
-    //   name: 'mystore',
-    //   component: mystore
-    // },
+    //레스토랑 My Store (사업장 관리) 페이지
     {
       path: '/rst/mystore/:ruid',
       name: 'mystore',
@@ -61,6 +58,7 @@ export const router = new VueRouter({
         ruid: String(route.params.ruid)
       })
     },
+    //레스토랑 detail 페이지
     {
       path: '/rst/detail/:rid',
       name: 'storeDetail',
@@ -69,12 +67,7 @@ export const router = new VueRouter({
         rid: Number(route.params.rid)
       })
     },
-    // {
-    //   path: '/rst/detail/:rid?',
-    //   name:'detail',
-    //   component: detail
-      
-    // },
+  
     //리뷰리스트 출력
     {
       path: '/review',
@@ -109,7 +102,12 @@ export const router = new VueRouter({
       name:'mypage',
       component: mypage,
       
-    }
+    },
+    {
+      path: '/addressmodal',
+      name: 'addressmodal',
+      component: addressmodal
+    },
 
     
   ]

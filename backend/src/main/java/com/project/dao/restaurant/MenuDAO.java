@@ -1,6 +1,7 @@
 package com.project.dao.restaurant;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.project.model.restaurant.MenuEntity;
 
@@ -10,10 +11,6 @@ public interface MenuDAO extends JpaRepository<MenuEntity, String> {
     //public List<Menu> findAll();
 
     public List<MenuEntity> findAllByMrid(int mrid);
-
-    public Object findByMname(String mname);
-    public MenuEntity findByMid(int mid);
-
-
-    
+    public Optional<MenuEntity> findByMid(int mid);
+ 
 }

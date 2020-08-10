@@ -1,14 +1,17 @@
 <template>
-  <v-container id="map" style="border-bottom:solid 1px">
+  <v-container id="main" style="border-bottom:solid 1px">
       <!--Sample Map Image-->
+    
+    <!-- 지도 API 
+    <dmap/> -->
       <v-row>
-          <v-col cols="9" id="map-component">
-            지도
+          <v-col cols="9" id="map">
+              지도
           </v-col>
           <v-col cols="3">
               <v-simple-table>
                   <thead>
-                      <tr><th id="nearby-restaurant-info" class="text-center">주변 음식점</th></tr>
+                      <tr><th id="nearby-restaurant-info" class="text-center">  주변 음식점</th></tr>
                   </thead>
                   <tbody>
                       <tr v-for="rest in nearByRestaurants" v-bind:key="rest.id">
@@ -17,20 +20,79 @@
                   </tbody>
               </v-simple-table>
           </v-col>
-      </v-row>  
+      </v-row> 
+      
   </v-container>
+  
 </template>
 
 <script>
+import axios from 'axios';
+import constants from '../../constants.js'
+const BACKEND_URL = constants.URL
+const MAP_URL = constants.MAP
 export default {
-
     name: 'MapComponent',
     data(){
         return {
-            nearByRestaurants: ['음식점1', '음식점2', '음식점3']
+            nearByRestaurants: ['음식점1', '음식점2', '음식점3'],
+            addr : '서울특별시 강남구 역삼동 테헤란로 212',
+            uid : this.$parent.uid,
+            userInfo : []
         }
-    }
+    },
+     mounted() {
+         console.log(this.uid)
+        axios.get(BACKEND_URL + 'user/info', {params: {'uid':this.uid}})
+        .then(response => {
+            this.userInfo = response.data
+            this.addr = this.userInfo.uaddr
+        })
 
+        if (window.kakao && window.kakao.maps) {
+            this.initMap();
+        } else {
+            const script = document.createElement('script');
+            /* global kakao */
+            script.onload = () => kakao.maps.load(this.initMap);
+            //script.src = 'http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=a367e1fe90bc271522126e07ddfc6338'
+            script.src = MAP_URL;
+            document.head.appendChild(script);
+        }
+    },
+    methods: {
+        //지도
+        initMap() {
+            var container = document.getElementById('map');
+            var options = {
+              center: new kakao.maps.LatLng(37.501320, 127.039654),
+              level: 5
+            };
+            var map = new kakao.maps.Map(container, options);
+            //map.setMapTypeId(kakao.maps.MapTypeId);
+
+            var geocoder = new kakao.maps.services.Geocoder();
+            
+            geocoder.addressSearch(this.addr, (result, status) => {
+                // 정상적으로 검색이 완료됐으면 
+                if (status == kakao.maps.services.Status.OK) {
+                    var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                    // 결과값으로 받은 위치를 마커로 표시합니다
+                    var marker = new kakao.maps.Marker({
+                        map: map,
+                        position: coords
+                    });
+                    // 인포윈도우로 장소에 대한 설명을 표시합니다
+                    var infowindow = new kakao.maps.InfoWindow({
+                        content: '<div style="width:150px;text-align:center;padding:6px 0;">내 주소</div>'
+                    });
+                    infowindow.open(map, marker);
+                    // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+                    map.setCenter(coords);
+                }
+            });
+        }//end of initMap
+    }
 }
 </script>
 

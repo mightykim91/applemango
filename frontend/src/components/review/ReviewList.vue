@@ -2,7 +2,7 @@
     <div class="review-table">
         <!--리뷰 헤더 시작-->
         <div class="d-flex justify-space-between mb-2">
-            <h1 class="text-left">식당 리뷰들</h1>
+            <h1 style="text-align: left;">Review</h1>
 
             <!--params 안에 동적라우팅 변수 추후에 변경 요망-->
             <!--리뷰 작성페이지 링크 시작-->

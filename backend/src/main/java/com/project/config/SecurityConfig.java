@@ -29,8 +29,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     //김연수 추가
-    @Value("${security.enable-csrf}")
-    private boolean csrfEnabled;
+//     @Value("${security.enable-csrf}")
+//     private boolean csrfEnabled;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -39,16 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-        // //김연수 추가
-        // super.configure(http);
-
-        if (!csrfEnabled) {
-            http.csrf().disable();
-        }
-        // //끝
-
-
+        http
+        .csrf().disable();
         http.authorizeRequests()
                 .antMatchers("/member/**").authenticated()
                 .antMatchers("/admin/**").authenticated()
