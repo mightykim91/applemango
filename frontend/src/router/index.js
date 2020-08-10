@@ -10,6 +10,7 @@ import ReviewEditForm from '@/components/review/ReviewEditForm.vue';
 import reg from '@/components/restaurant/reg.vue';
 import mystore from '@/views/restaurant/mystore.vue';
 import detail from '@/views/restaurant/detail.vue';
+import AdminPage from '@/views/admin/AdminPage.vue'; //김연수 추가
 
 import comment from '@/views/admin/instagramComment.vue';
 
@@ -108,6 +109,13 @@ export const router = new VueRouter({
       name: 'addressmodal',
       component: addressmodal
     },
+    //관리자 페이지
+    //김연수 추가
+    {
+      path: '/admin',
+      name: 'AdminPage',
+      component: AdminPage
+    }
 
     
   ]
