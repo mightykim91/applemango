@@ -38,24 +38,9 @@
                     <div v-else><v-img src="../../assets/noimage.png"  id="menuimg"></v-img></div>
                     <div v-if="menu.missig" ><v-img src="../../assets/star.png" style="width:5%" id = "sigimg"></v-img></div>
                     {{menu.mname}} / {{menu.mprice}}원
-                    <b-link v-b-modal.modMenu>수정</b-link>&nbsp;
-                    <b-link v-b-modal.delMenu>삭제</b-link>
+                    <b-link v-b-modal = "'modMenu'" @click="sendInfo(menu)">수정</b-link>&nbsp;
+                    <b-link v-b-modal = "'delMenu'" @click="sendInfo(menu)">삭제</b-link>
 
-                    <!-- 메뉴 수정하는 모달 창 -->
-                        <b-modal id="modMenu" title="메뉴 수정" @ok="modhandleSubmit(menu.mid)">
-                            <form>
-                                <b-form-group invalid-feedback="required">
-                                    이름<b-form-input v-model="newname" :placeholder="menu.mname" :value="menu.mname"/>
-                                    <b-form-checkbox v-model="newissig" requried>메인메뉴</b-form-checkbox> 
-                                    가격 <b-form-input v-model="newprice" :placeholder= "menu.mprice" required></b-form-input>
-                                    <!-- 이미지 업로드 or 이미지 주소 복사(현재는 이미지 주소) -->
-                                    이미지 <b-form-input v-model="newimage" :placeholder= "menu.mimage" required></b-form-input>
-                                </b-form-group>
-                            </form>
-                        </b-modal>
-
-                        <!-- 메뉴 삭제하기 모달 창-->
-                        <b-modal id="delMenu" title="메뉴삭제" @ok= delhandleSubmit(menu.mid)><p>{{menu.mname}}을(를) 정말 삭제 하시겠습니까?</p></b-modal>
                 </v-card>
             </v-row>
         </v-container>
@@ -63,6 +48,22 @@
         <div v-else>
         등록된 메뉴 정보가 없습니다.
         </div></div>
+        <!-- 메뉴 수정하는 모달 창 -->
+        <b-modal id="modMenu" title="메뉴 수정" @ok="modhandleSubmit(mid)">
+            <form>
+                <b-form-group invalid-feedback="required">
+                    이름<b-form-input v-model="newname" />
+                    <b-form-checkbox v-model="newissig" requried>메인메뉴</b-form-checkbox> 
+                    가격 <b-form-input v-model="newprice"  required></b-form-input>
+                    <!-- 이미지 업로드 or 이미지 주소 복사(현재는 이미지 주소) -->
+                    이미지 <b-form-input v-model="newimage" required></b-form-input>
+                 </b-form-group>
+            </form>
+        </b-modal>
+
+        <!-- 메뉴 삭제하기 모달 창-->
+        <b-modal id="delMenu" title="메뉴삭제" @ok= delhandleSubmit(mid)><p>{{newname}}을(를) 정말 삭제 하시겠습니까?</p></b-modal>
+
         <detail-review/>
         <h1 style="text-align: left;">Location</h1><hr>
         <div v-if="requestData.rst.rlat != 0"><div id="map">지도</div></div>
@@ -96,6 +97,7 @@ export default {
                 rst: [],
                 menus: []
             },
+            mid:'',
             newissig:false,
             newname:'',
             newprice:'',
@@ -189,6 +191,14 @@ export default {
                 this.facebookLogin();
                     
             })
+        },
+        sendInfo(menu) {
+            this.mid = menu.mid,
+            this.newname = menu.mname,
+            this.newprice = menu.mprice,
+            this.newissig = menu.missig,
+            this.newimage = menu.mimage
+            console.log("sendInfo확인"+this.newname)
         },
 
         //메뉴삭제처리

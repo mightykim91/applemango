@@ -1,6 +1,6 @@
 <template>
   <v-container id="main" style="border-bottom:solid 1px">
-      <!--Sample Map Image-->
+    <!--Sample Map Image-->
     
     <!-- 지도 API 
     <dmap/> -->
@@ -29,6 +29,7 @@
 <script>
 import axios from 'axios';
 import constants from '../../constants.js'
+//import { eventBus } from "../../App.vue"
 const BACKEND_URL = constants.URL
 const MAP_URL = constants.MAP
 export default {
@@ -37,16 +38,25 @@ export default {
         return {
             nearByRestaurants: ['음식점1', '음식점2', '음식점3'],
             addr : '서울특별시 강남구 역삼동 테헤란로 212',
-            uid : this.$parent.uid,
+            mapuid : this.$cookies.get('auth-token'),
             userInfo : []
         }
     },
-     mounted() {
-         console.log(this.uid)
-        axios.get(BACKEND_URL + 'user/info', {params: {'uid':this.uid}})
+    // created() {
+    //     eventBus.$on('sendUid', uid => {
+    //         console.log("받은 데이터"+ uid)
+    //         this.mapuid = uid;
+    //     });
+    // },
+    mounted() {
+        //console.log('mapuid:'+this.mapuid)
+    
+        axios.get(BACKEND_URL + 'user/info?uid='+this.mapuid)
         .then(response => {
             this.userInfo = response.data
             this.addr = this.userInfo.uaddr
+            this.initMap()
+            console.log('user/info?uid='+this.mapuid+' addr:'+this.addr)
         })
 
         if (window.kakao && window.kakao.maps) {

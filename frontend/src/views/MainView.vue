@@ -5,9 +5,6 @@
 </template>
 
 <script>
-
-// import Header from '../components/Header.vue'
-// import NewHeader from '../components/NewHeader.vue'
 import MapComponent from '../components/mainView/MapComponent.vue'
 
 export default {
@@ -17,13 +14,8 @@ export default {
     },
     // data() {
     //     return {
-           
     //     }
-       
-    // },
-    // components :{
-    //     'main-header' : NewHeader
-    // },
+    // }
     // methods: {
         
     // }
