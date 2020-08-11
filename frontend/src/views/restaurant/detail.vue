@@ -185,10 +185,9 @@ export default {
                 this.$nextTick(() => {
                     this.$bvModal.hide('modMenu')
                 })
-                 if (response.data.status){
-                        alert("변경사항이 반영되었습니다.");
-                        this.facebookLogin();
-                    }
+                 
+                this.facebookLogin();
+                    
             })
         },
 
@@ -254,7 +253,7 @@ export default {
             fjs.parentNode.insertBefore(js, fjs);
             
             }(document, 'script', 'facebook-jssdk'));
-        
+            
         }, //end of facebookInit() 
         facebookLogin(){
           //처음 로그인 
@@ -271,7 +270,7 @@ export default {
 
                 });
             }
-
+                console.dir("페이스북 로그인 완료");
             }, //response
           { scope: 'public_profile , email,instagram_basic,ads_management,pages_show_list, instagram_manage_comments,pages_read_engagement,business_management'}, // 허락받을 데이터를 정한다. public_profile과 email 로 (이름,id, 프로필사진과 이메일에 대한 동의를 구한다.) business_managementsms 는 IG media기능
             
@@ -316,6 +315,7 @@ export default {
             .then(({ data }) => {
                 console.dir("댓글 :'"+ msg + " '을 적었습니다.");
                 console.dir(data);
+                alert("변경사항이 반영되어 "+this.instagramName +"님께 인스타그램에 댓글을 달았습니다.");
             });
         },//end of postComment
 
