@@ -82,8 +82,8 @@ export default {
          
         }(document, 'script', 'facebook-jssdk'));
         
-      },
-        Login(){
+      }, //end of Init() 
+        facebookLogin(){
           //처음 로그인 
           window.FB.login(  // 참고:  https://developers.facebook.com/docs/reference/javascript/FB.login/v7.0 + 출처: https://parkjihwan.tistory.com/9
             response =>{
@@ -124,13 +124,6 @@ export default {
           
          
       }, //login
-      facebookLogin(){
-        if(localStorage.getItem('JWT_token')) return alert('이미 로그인 되어 있습니다.');
-        this.Login();
-      },
-      facebookLogout(){
-        this.Logout();
-      },
        
       GetAccountsId(){ //accesstoken 를 가지고 pageid 를 가져온다.
         axios
@@ -162,7 +155,7 @@ export default {
             this.postList = data.data;
             console.dir("게시물 목록:");
             console.dir(this.postList);
-            // this.selectedPostid = this.postList[1].id;
+            this.selectedPostid = this.postList[0].id;
           });
       },
       GetPostNum(){// MediaId를 가지고 게시물 리스트(Post들의 각 MediaId)를 가져온다
@@ -176,7 +169,7 @@ export default {
                     'timestamp'].join(',')
         axios
           .get(`https://graph.facebook.com/v7.0/`+ this.selectedPostid + `?fields=${fields}&access_token=`+ this.accesstoken)
-          //.get(`https://graph.facebook.com/v7.0/`+ this.postList[0].id + `?fields=id,media_type,media_url,owner,timestamp&access_token=`+ this.accesstoken)
+          //.get(`https://graph.facebook.com/v7.0/`+ this.postList[0].id + `?fields=id,media_type,media_url,owner,timestamp&access_token=`+ this.accesstoken) //첫번째 게시물의 데이터만 가져온다.
           .then(({ data }) => {
             console.dir("선택된 게시물 데이터");
           if(data.media_type=="IMAGE"){ //image 가 1개면 하나만 등록 
@@ -263,11 +256,12 @@ export default {
         imgList:{}, //받아온 imgList
         accesstoken: 'EAAwHQEzKWuMBAM1Q8hPdQxM2ZBU4xiVZAqXCRy2ZCpDQTmMkUny4LupkHAZCHjOPp3pDenmIoDlPnGBlBtNstIC6b03kpd3eJRnph4ZAAokNDsKtrZCpwcbAVPyieOoVVue0hdBKqIanOaZCFuDifcXKzgMpgRoPh70OVMZB2cve4uvqSgbaKYpXtRWlWJN5P1OCyiphZBUC7OQZDZD',
         pageid:'',
+        selectedPostid:'', //선택된 게시물의 id 
         igUserid:'', // IG User Id
-        message:'댓글을 입력해주세요', // 게시글 댓글리스트 
+        message:'누구 님 축하드립니다. 올리신 피드가 메뉴사진으로 선정되었습니다. 10%쿠폰 발행해드렸습니다. AppleMango 웹에서 확인해주세요.', // 게시글 댓글리스트 
         comments:{}, // 게시글의 댓글 정보
         replies:{}, //댓글의 대댓글 정보
-        selectedPostid:'', //선택된 게시물의 id 
+       
         selectedComment: '', // toggle 로 선택된 댓글 
         selectedReply:'', // toggle 로 선택된 대댓글 
       
@@ -287,18 +281,15 @@ export default {
     igUserid:function(){ //GetUserId를 수행해서 igUserid가 바뀌면 
        this.GetMediaId(); // Post(게시물)들의 MediaId List를 가져오는 함수 실행 
     },
-    postList:function(){ //GetMediaId를 수행해서 postList가 바뀌면 
-      this.GetPostNum(); // Post(게시물)들의 MediaId List중 0번 인덱스 게시물을 가져오는 함수 실행 
+ //   selectedPostid:function(){ //GetMediaId를 수행해서 postList가 바뀌고 selectedPostid가 바뀌면
+  //    this.GetPostNum(); // Post(게시물)들의 MediaId List중 0번 인덱스 게시물을 가져오는 함수 실행 
+  //  },
+    selectedPostid:function(){ // GetPostNum을 수행해서 imgList 가 바뀌면 
+      this.postComment(); //게시물의 댓글을 보내는 함수 실행 
     },
-    selectedPostid:function(){ //GetMediaId를 수행해서 postList가 바뀌면 
-      this.GetPostNum(); // Post(게시물)들의 MediaId List중 0번 인덱스 게시물을 가져오는 함수 실행 
-    },
-    imgList:function(){ // GetPostNum을 수행해서 imgList 가 바뀌면 
-      this.GetComment(); //게시물의 댓글을 조회하는 함수 실행 
-    },
-    selectedComment:function(){ // GetComment를 수행해서 selectedComment 가 바뀌면 
-      this.GetReplies(); // 선택된 댓글의 대댓글을 조회하는 함수 실행 
-    },
+//    selectedComment:function(){ // GetComment를 수행해서 selectedComment 가 바뀌면 
+//      this.GetReplies(); // 선택된 댓글의 대댓글을 조회하는 함수 실행 
+//    },
   },
 }
 </script>
