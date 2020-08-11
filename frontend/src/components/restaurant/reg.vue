@@ -114,7 +114,7 @@ export default {
 
             //confirmation
             
-            axios.post(BACKEND_URL + 'register/restaurants', this.requestInfo)
+            axios.post(BACKEND_URL + 'register/restaurant', this.requestInfo)
             .then( response => { 
             console.log('response : ', JSON.stringify(response, null, 2)) 
             if (response.data == "success") {
