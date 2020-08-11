@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import axios from 'axios';
 
+import { store } from './store/store.js'
 import { router } from './router/index.js';
 import VueCookies from 'vue-cookies'
 import vuetify from './plugins/vuetify';
@@ -18,6 +19,7 @@ Vue.config.productionTip = false
 
 new Vue({
   render: h => h(App),
+  store,
   vuetify,
   router
 }).$mount('#app')

@@ -2,6 +2,7 @@ package com.project.config;
 
 import com.project.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value; //김연수 추가
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -26,6 +27,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    //김연수 추가
+//     @Value("${security.enable-csrf}")
+//     private boolean csrfEnabled;
 
     @Override
     public void configure(WebSecurity web) throws Exception {

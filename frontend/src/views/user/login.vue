@@ -37,7 +37,7 @@
                 user : {
                     id : '',
                     password : ''
-                }
+                },
             }
         },
         methods : {
@@ -53,10 +53,10 @@
                         //alert(response.data.object);
                         this.setCookies(this.user.id);
                         //alert(ses);
+                        this.$store.commit('login', response.data.object)
                         
                     }
-
-                    this.$router.push({ path: '/'})
+                    this.$router.push({name:'Home'})
                 })
 
                 //alert(this.$cookies.get('auth-token'));
@@ -65,7 +65,6 @@
 
             setCookies(token) {
                 this.$cookies.set('auth-token', token)
-                this.isLoggedIn = true
                 
             },
 
