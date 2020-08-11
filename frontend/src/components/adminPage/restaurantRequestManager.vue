@@ -4,17 +4,23 @@
     <hr>
     <table class="table table-borderless" v-if="requests.length > 0">
         <thead class="text-center">
-            <th scope="col">#</th>
+            <th scope="col">No.</th>
             <th scope="col">식당이름</th>
             <th scope="col">요청자</th>
             <th scope="col"> </th>
         </thead>
         <tbody class="text-center">
-            <tr scope="col" v-for="(request, index) in requests" v-bind:key="request.id">
+            <tr 
+            class="text-body-1"
+            scope="col" 
+            v-for="(request, index) in requests" 
+            v-bind:key="request.id">
                 <th>{{ index + 1 }}</th>
                 <td>{{ request.restaurantInfo.rname }}</td>
                 <td>{{ request.userName.uname }}</td>
-                <restaurantRequestManagerDetail v-bind:request="request" v-on:refresh="refresher"></restaurantRequestManagerDetail>
+                <restaurantRequestManagerDetail
+                v-bind:request="request" 
+                v-on:refresh="refresher"></restaurantRequestManagerDetail>
             </tr>
         </tbody>
     </table>

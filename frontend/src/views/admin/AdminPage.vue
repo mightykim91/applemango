@@ -2,7 +2,7 @@
   <v-container>
       <v-row>
         <!--메뉴 목록 시작-->
-        <v-col cols="3" class="pa-1" style="background-color:skyblue">
+        <v-col cols="3" class="pa-1">
           <div class="d-flex flex-column">
             <v-btn text v-on:click="currentPage=1">식당 등록 요청 관리</v-btn>
             <v-btn text v-on:click="currentPage=2">메뉴2</v-btn>
@@ -12,7 +12,7 @@
         <!--메뉴 목록 종료-->
 
         <!--메뉴 내용 시작-->
-        <v-col cols="9" class="pa-1" style="background-color:gray">
+        <v-col cols="9" class="pa-1">
           <v-container v-if="currentPage === 1">
             <restaurant-request-manager></restaurant-request-manager>
           </v-container>
