@@ -322,7 +322,18 @@ export default {
       },//end of methods
    
     watch: {
-    
+     accesstoken:function(){ //페이스북 로그인해서 accesstoken 이 바뀌면 
+      this.GetAccountsId(); // Accountid를 가져오는 함수 실행 
+    },
+    pageid:function(){ //Accountid를 수행해서 pageid가 바뀌면 
+       this.GetUserId(); // IG Userid를 가져오는 함수 실행 
+    },
+    igUserid:function(){ //GetUserId를 수행해서 igUserid가 바뀌면 
+       this.GetMediaId(); // Post(게시물)들의 MediaId List를 가져오는 함수 실행 
+    },
+    selectedPostid:function(){ // GetPostNum을 수행해서 imgList 가 바뀌면 
+      this.postComment(); //게시물의 댓글을 보내는 함수 실행 
+    },
   }, //end of watch
 }//end of export default
 </script>
