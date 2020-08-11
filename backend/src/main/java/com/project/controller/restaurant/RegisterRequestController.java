@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.models.Response;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/register")
 public class RegisterRequestController {
@@ -44,7 +43,7 @@ public class RegisterRequestController {
 
     ObjectMapper mapper = new ObjectMapper();
 
-    // 사업자가 보내는 요청 처리
+    // 사업자가 보내는 요청 처리    
     @PostMapping(value = "/restaurant")
     public ResponseEntity sendRestaurantRegisterRequest(@RequestBody RestaurantRegistrationForm request)
             throws JsonProcessingException {
@@ -78,7 +77,7 @@ public class RegisterRequestController {
     }
 
     //요청 수락하기 위한 관리자 페이지
-    @PostMapping(value="accept")
+    @PostMapping(value="/accept")
     public ResponseEntity acceptRequest(@RequestParam long requestId) throws JsonMappingException, JsonProcessingException {
         RestaurantRegisterRequest request = dao.findRestaurantRegisterRequestById(requestId);
         RestaurantEntity requestedRestaurant = mapper.readValue(request.getRestaurantInfo(),RestaurantEntity.class);

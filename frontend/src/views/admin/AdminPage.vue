@@ -5,8 +5,7 @@
         <v-col cols="3" class="pa-1">
           <div class="d-flex flex-column">
             <v-btn text v-on:click="currentPage=1">식당 등록 요청 관리</v-btn>
-            <v-btn text v-on:click="currentPage=2">메뉴2</v-btn>
-            <p class="my-2">메뉴3</p>
+            <v-btn text v-on:click="currentPage=2">회원 관리</v-btn>
           </div>
         </v-col>
         <!--메뉴 목록 종료-->

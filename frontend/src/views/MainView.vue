@@ -11,10 +11,10 @@
 import MapComponent from '../components/mainView/MapComponent.vue'
 
 export default {
-    name : 'main',
+    name : 'Home',
     components: {
         'map-component': MapComponent
-    }
+    },
     // data() {
     //     return {
            
