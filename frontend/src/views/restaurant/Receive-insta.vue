@@ -75,7 +75,7 @@ import constants from "../../constants.js";
         },
         mounted(){
             
-            axios.get(`${BACKEND_URL}/instagram/all`)
+            axios.get(`${BACKEND_URL}instagram/all`)
             .then(response => {
                 this.instadatalist = response.data;
                 console.log(response);
