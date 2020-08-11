@@ -15,8 +15,8 @@ import requests
 from insta_modal import modal_images
 from server import SELECT
 from cnn_predict import Predict
-from cnn_train import CNN
-from bing import bing_filter, bing_crawling
+from person import person_filter
+
 warnings.filterwarnings(action='ignore') # 경고 메세지 제거
 
 #식당에 대한 정보를 입력
@@ -26,22 +26,6 @@ en_name = input('식당의 영어명을 입력하세요 : ')
 irid = int(input('식당의 rid값을 입력하세요: '))
 ko_search = list(input().split())
 en_search = list(input().split())
-
-#########################################################################
-# 0. cnn 학습데이터 생성 및 훈련 
-#########################################################################
-
-# [1] 폴더 유무 필터링
-k_categories, e_categories = bing_filter(ko_search,en_search)
-print(k_categories, e_categories)
-# [2] bing.com에서 크롤링 한뒤 저장
-if len(e_categories) > 0:
-    bing_crawling(k_categories,e_categories)
-
-# [3] 학습 시작
-print(e_categories)
-if len(e_categories) > 0:
-    CNN(en_search)
 
 #########################################################################
 # 1. 인스타 그램 url 생성 
@@ -137,6 +121,7 @@ for i in tqdm(range(num_of_data)):
         "rbranch" : "", # 지점명은 일단 비워두자
         "instaid" : "",
         "iurl" : "",
+        "ifood": "",
         "likes" : "",
         "idate" : "",
     }
@@ -179,9 +164,17 @@ for i in tqdm(range(num_of_data)):
     print("src_list ==>", src_list)
     
     # [2] 사전에 학습된 cnn 모델로 음식 이미지 판단하고 url을 넘김
-    res = Predict(src_list)
+    # res_url : 음식이 담긴 url
+    # res_menu : 음식의 종류
+    res_url_menu = Predict(src_list, en_search) 
+    print("음식 분류 완료!!!!!!!!!!!!!!!!!")
+
+    # [3] 해당 url에서 사람 이미지 필터링
+    res = person_filter(res_url_menu)
+    print("사람 필터링 완료!!!!!!!!!!!!!!!!!")
     print("res ==>", res)
-    # [3] 기타 계정 정보 추출
+
+    # [4] 기타 계정 정보 추출
     # 좋아요
     likes = 0
     if total.find("Likes") != -1:
@@ -199,11 +192,14 @@ for i in tqdm(range(num_of_data)):
     # if total.find("Comments") != -1:
     #     comments = total[total.find(",")+2: total.find("Comments")]
 
-    for img_url in res:
+    for food_info in res:
+        food_info[0] = img_url
+        food_info[1] = food
         data["irid"] = irid
         data["rname"] = en_name 
         data["instaid"] = account
         data["iurl"] = img_url
+        data["ifood"] = food
         data["likes"] = int(likes)
         data["idate"] = my_date.isoformat()
         file_data.append(data)
