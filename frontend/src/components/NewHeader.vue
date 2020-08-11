@@ -3,7 +3,7 @@
         <v-row id="nav-menus">
             <v-col align-self="center" cols="3">
                 <!-- <v-toolbar-title v-on:click="home" style="cursor:grab"></v-toolbar-title> -->
-                <img id="logo" src="../assets/applemango.png"/>
+                <img id="logo" v-on:click="home" style="cursor:grab" src="../assets/applemango.png"/>
             </v-col>
             <v-col align-self="center" cols="2">
                 <v-select
@@ -48,7 +48,7 @@ export default {
     },
     methods:{
         home: function(){
-            this.$router.push({name: 'Home'})
+            this.$router.push({ name: 'Home' })
         }
     }
 

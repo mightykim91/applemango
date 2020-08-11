@@ -1,19 +1,22 @@
 <template>
   <v-dialog v-model="dialog" persistent max-width="500">
         <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            color="primary"
+        
+          <v-icon
+            id="search"
+            color="black"
             dark
             v-bind="attrs"
             v-on="on"
           >
-            주소 검색
-          </v-btn>
+            fa-search
+          </v-icon>
+        
         </template>
         <v-card>
           <div class="d-flex justify-space-between">
             <v-card-title class="headline">주소 검색하기</v-card-title>
-            <v-icon class="p-3" @click="dialog=false; requestParam.keyword=''; responseData=''">fa-times</v-icon>
+            <v-icon class="p-3" @click="dialog=false; requestParam.keyword=''; responseData=''; selectedAddress=''">fa-times</v-icon>
           </div>
           <v-card-text>
               <div class="d-flex justify-space-between text-right mt-2">
@@ -44,17 +47,20 @@
               <v-card v-if="selectedAddress">
                   <v-card-title class="text-subtitle-2">{{ selectedAddress }}</v-card-title>
                   <v-card-text>
-                    <v-text-field 
-                    label="자세한 주소"
-                    placeholder="자세한 주소를 입력해주세요"
-                    height="5px" 
-                    outlined></v-text-field>
+                    <label for="address-detail">자세한 주소</label>
+                    <input 
+                    type="text" 
+                    class="form-control" 
+                    id="address-detail" 
+                    placeholder="자세한 주소를 적어주세요"
+                    v-model="addressDetail"
+                    >
                   </v-card-text>
-                  <v-card-actions>
-                      <button 
+                  <div class="text-right p-4">
+                      <v-btn color="#FFF176"
                       @click="sendAddress"
-                      >입력</button>
-                  </v-card-actions>
+                      >입력</v-btn>
+                  </div>
               </v-card>
           </v-card-text>
           <!-- <v-card-actions>
@@ -88,6 +94,7 @@ export default {
             totalPage:0,
             pageNow: 1,
             selectedAddress:'',
+            addressDetail:'',
         }
     },
     watch: {
@@ -133,7 +140,8 @@ export default {
             this.dialog = false
             this.requestParam.keyword=''; 
             this.responseData='';
-            this.$emit("insertAddress",this.selectedAddress)
+            const fullAddress = this.selectedAddress + " " + this.addressDetail
+            this.$emit("insertAddress",fullAddress)
             this.selectedAddress = ""
         }
     },
