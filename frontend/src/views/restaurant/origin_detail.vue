@@ -38,9 +38,24 @@
                     <div v-else><v-img src="../../assets/noimage.png"  id="menuimg"></v-img></div>
                     <div v-if="menu.missig" ><v-img src="../../assets/star.png" style="width:5%" id = "sigimg"></v-img></div>
                     {{menu.mname}} / {{menu.mprice}}원
-                    <b-link v-b-modal = "'modMenu'" @click="sendInfo(menu)">수정</b-link>&nbsp;
-                    <b-link v-b-modal = "'delMenu'" @click="sendInfo(menu)">삭제</b-link>
+                    <b-link v-b-modal.modMenu>수정</b-link>&nbsp;
+                    <b-link v-b-modal.delMenu>삭제</b-link>
 
+                    <!-- 메뉴 수정하는 모달 창 -->
+                        <b-modal id="modMenu" title="메뉴 수정" @ok="modhandleSubmit(menu.mid)">
+                            <form>
+                                <b-form-group invalid-feedback="required">
+                                    이름<b-form-input v-model="newname" :placeholder="menu.mname" :value="menu.mname"/>
+                                    <b-form-checkbox v-model="newissig" requried>메인메뉴</b-form-checkbox> 
+                                    가격 <b-form-input v-model="newprice" :placeholder= "menu.mprice" required></b-form-input>
+                                    <!-- 이미지 업로드 or 이미지 주소 복사(현재는 이미지 주소) -->
+                                    이미지 <b-form-input v-model="newimage" :placeholder= "menu.mimage" required></b-form-input>
+                                </b-form-group>
+                            </form>
+                        </b-modal>
+
+                        <!-- 메뉴 삭제하기 모달 창-->
+                        <b-modal id="delMenu" title="메뉴삭제" @ok= delhandleSubmit(menu.mid)><p>{{menu.mname}}을(를) 정말 삭제 하시겠습니까?</p></b-modal>
                 </v-card>
             </v-row>
         </v-container>
@@ -48,22 +63,6 @@
         <div v-else>
         등록된 메뉴 정보가 없습니다.
         </div></div>
-        <!-- 메뉴 수정하는 모달 창 -->
-        <b-modal id="modMenu" title="메뉴 수정" @ok="modhandleSubmit(mid)">
-            <form>
-                <b-form-group invalid-feedback="required">
-                    이름<b-form-input v-model="newname" />
-                    <b-form-checkbox v-model="newissig" requried>메인메뉴</b-form-checkbox> 
-                    가격 <b-form-input v-model="newprice"  required></b-form-input>
-                    <!-- 이미지 업로드 or 이미지 주소 복사(현재는 이미지 주소) -->
-                    이미지 <b-form-input v-model="newimage" required></b-form-input>
-                 </b-form-group>
-            </form>
-        </b-modal>
-
-        <!-- 메뉴 삭제하기 모달 창-->
-        <b-modal id="delMenu" title="메뉴삭제" @ok= delhandleSubmit(mid)><p>{{newname}}을(를) 정말 삭제 하시겠습니까?</p></b-modal>
-
         <detail-review/>
         <h1 style="text-align: left;">Location</h1><hr>
         <div v-if="requestData.rst.rlat != 0"><div id="map">지도</div></div>
@@ -81,7 +80,7 @@ import constants from '../../constants.js'
 const BACKEND_URL = constants.URL
 const MAP_URL = constants.MAP
 //AWS
-
+// const BACKEND_URL = 'http://i3a503.p.ssafy.io'
 
 export default {
     name:'Detail',
@@ -97,26 +96,15 @@ export default {
                 rst: [],
                 menus: []
             },
-            mid:'',
             newissig:false,
             newname:'',
             newprice:'',
             newimage:'',
             menuid:'',
-            name:'멀캠',
-            addr:'서울특별시 강남구 역삼동 테헤란로 212',
 
-            instagramName:'@myunggi_moon',
-            message:'님 축하드립니다. 올리신 피드가 메뉴사진으로 선정되었습니다. 10%쿠폰 발행해드렸습니다. AppleMango 웹에서 확인해주세요.',
-            accesstoken: 'EAAwHQEzKWuMBAM1Q8hPdQxM2ZBU4xiVZAqXCRy2ZCpDQTmMkUny4LupkHAZCHjOPp3pDenmIoDlPnGBlBtNstIC6b03kpd3eJRnph4ZAAokNDsKtrZCpwcbAVPyieOoVVue0hdBKqIanOaZCFuDifcXKzgMpgRoPh70OVMZB2cve4uvqSgbaKYpXtRWlWJN5P1OCyiphZBUC7OQZDZD',
-            pageid:'',
-            igUserid:'',
-            selectedPostid:'',
-            
+            name:'멀캠',
+            addr:'서울특별시 강남구 역삼동 테헤란로 212'
         }
-    },
-    created() {
-        if(!window.FB) this.facebookInit();
     },
     mounted() {
         axios.get(BACKEND_URL + 'rst/detail', {params: {'rid':this.rid}})
@@ -179,26 +167,13 @@ export default {
         //메뉴수정처리
         modhandleSubmit: function(mid) {
             console.log("mod 도달")
-            axios
-            .post(BACKEND_URL + 'menu/mod?mid='+ mid , { 'mrid':this.rid, 'missig': this.newissig, 
-                'mname':this.newname,'mprice':this.newprice, 'mimage':this.newimage})
-            .then(response => {
+            axios.post(BACKEND_URL + 'menu/mod?mid='+ mid , { 'mrid':this.rid, 'missig': this.newissig, 
+                'mname':this.newname,'mprice':this.newprice, 'mimage':this.newimage}).then(response => {
                 console.log(response.data)
                 this.$nextTick(() => {
                     this.$bvModal.hide('modMenu')
+                        })
                 })
-                 
-                this.facebookLogin();
-                    
-            })
-        },
-        sendInfo(menu) {
-            this.mid = menu.mid,
-            this.newname = menu.mname,
-            this.newprice = menu.mprice,
-            this.newissig = menu.missig,
-            this.newimage = menu.mimage
-            console.log("sendInfo확인"+this.newname)
         },
 
         //메뉴삭제처리
@@ -245,106 +220,8 @@ export default {
         },//end of initMap
         
         //send comment using instagram Graph API
-        facebookInit(){
-            window.fbAsyncInit = function() {
-            window.FB.init({
-                appId      : '3385672468159203',
-                cookie     : true,                     // Enable cookies to allow the server to access the session.
-                xfbml      : true,                     // Parse social plugins on this webpage.
-                version    : 'v7.0'           // Use this Graph API version for this call.
-            });
-            window.FB.AppEvents.logPageView(); 
-            };
-            (function(d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/ko_KR/sdk.js#xfbml=1&version=v2.9&appId=3385672468159203";
-            fjs.parentNode.insertBefore(js, fjs);
-            
-            }(document, 'script', 'facebook-jssdk'));
-            
-        }, //end of facebookInit() 
-        facebookLogin(){
-          //처음 로그인 
-          window.FB.login(  // 참고:  https://developers.facebook.com/docs/reference/javascript/FB.login/v7.0 + 출처: https://parkjihwan.tistory.com/9
-            response =>{
-              if (response.status === 'connected') {
-                
-                const accessToken =response.authResponse.accessToken;
-                
-                window.FB.api('/me',{ fields : 'id,name,email,picture'} ,res => {
-                    console.log('Successful login for: ' + res.name);
-                    console.log('accessToken: ' + accessToken);
-                  this.accesstoken=accessToken; //accesstoken 저장 
-
-                });
-            }
-                console.dir("페이스북 로그인 완료");
-            }, //response
-          { scope: 'public_profile , email,instagram_basic,ads_management,pages_show_list, instagram_manage_comments,pages_read_engagement,business_management'}, // 허락받을 데이터를 정한다. public_profile과 email 로 (이름,id, 프로필사진과 이메일에 대한 동의를 구한다.) business_managementsms 는 IG media기능
-            
-          ); 
-    
-        }, //end of facebookLogin
-        GetAccountsId(){ //accesstoken 를 가지고 pageid 를 가져온다.
-            axios
-            .get(`https://graph.facebook.com/v7.0/me/accounts?access_token=`+ this.accesstoken)
-            //
-            .then(({data}) => {
-                this.pageid=data.data[0].id;
-               
-                console.dir('pageid는 '+ this.pageid+ ' 입니다.');
-            
-            });
-          
-        },//end of GetAccountsId
-         GetUserId(){ //pageid 를 가지고 Userid를 가져온다.
-            axios
-            .get(`https://graph.facebook.com/v7.0/`+ this.pageid + `?fields=instagram_business_account&access_token=`+ this.accesstoken)
-            .then(({ data }) => {
-                console.dir(data);
-                this.igUserid= data.instagram_business_account.id;
-                console.dir("IG userid는 "+ this.igUserid+"입니다.");
-                
-            });
-        },//end of GetUserId
-        GetMediaId(){ //Userid를 가지고 MediaId를 가져온다.
-            axios
-            .get(`https://graph.facebook.com/v7.0/`+ this.igUserid + `/media?access_token=`+ this.accesstoken)
-            .then(({ data }) => {
-                
-                this.selectedPostid = data.data[0].id;
-                
-            });
-        },//end of GetMediaId
-        postComment(){ // 게시글 id(media id) 를 가지고 게시글에 댓글을 답니다.
-            const msg = this.instagramName + this.message;
-            axios
-            .post(`https://graph.facebook.com/v7.0/`+ this.selectedPostid + `/comments?access_token=`+ this.accesstoken,{message: msg })
-            .then(({ data }) => {
-                console.dir("댓글 :'"+ msg + " '을 적었습니다.");
-                console.dir(data);
-                alert("변경사항이 반영되어 "+this.instagramName +"님께 인스타그램에 댓글을 달았습니다.");
-            });
-        },//end of postComment
-
-      },//end of methods
-   
-    watch: {
-     accesstoken:function(){ //페이스북 로그인해서 accesstoken 이 바뀌면 
-      this.GetAccountsId(); // Accountid를 가져오는 함수 실행 
-    },
-    pageid:function(){ //Accountid를 수행해서 pageid가 바뀌면 
-       this.GetUserId(); // IG Userid를 가져오는 함수 실행 
-    },
-    igUserid:function(){ //GetUserId를 수행해서 igUserid가 바뀌면 
-       this.GetMediaId(); // Post(게시물)들의 MediaId List를 가져오는 함수 실행 
-    },
-    selectedPostid:function(){ // GetPostNum을 수행해서 imgList 가 바뀌면 
-      this.postComment(); //게시물의 댓글을 보내는 함수 실행 
-    },
-  }, //end of watch
+        
+    }//end of methods 
 }//end of export default
 </script>
 
