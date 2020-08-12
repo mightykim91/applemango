@@ -60,6 +60,9 @@ export default {
                         //alert(ses);
                     }
                     //this.$router.push({ path: '/'}) 같은 페이지로 새로고침 시 오류
+                    
+                    //Vuex통해 로그인 상태관리
+                    this.$store.commit('logout')
                     location.reload();
                 })
         },

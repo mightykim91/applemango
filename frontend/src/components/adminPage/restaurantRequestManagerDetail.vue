@@ -73,7 +73,7 @@ export default {
     },
     methods:{
         registerRestaurant: function(){
-            axios.post(BACKEND_URL + 'register/accept', {params: {requestId: parseInt(this.request.requestId)}})
+            axios.post(BACKEND_URL + 'register/accept?requestId=' + this.request.requestId)
             .then(response => {
                 console.log(response.data)
             })

@@ -12,7 +12,7 @@
         <div>
         <v-form class = "sign-up-form">
 
-            <v-text-field label="ID" :rules="rules" hide-details="auto" v-model="requestData.uid"></v-text-field>
+            <v-text-field label="ID" :rules="rulesid" hide-details="auto" v-model="requestData.uid"></v-text-field>
             <v-text-field label="Password" v-model="requestData.upw"></v-text-field>
             <v-text-field label="Name" v-model="requestData.uname"></v-text-field>
             <v-text-field label="Email" v-model="requestData.uemail"></v-text-field>
@@ -89,10 +89,10 @@
                     uid    : "",
                     upw    : "",
                     uname  : "",
-                    uemail : 's',
-                    uphone : 's',
+                    uemail : "",
+                    uphone : "",
                     uaddr  :"",
-                    uinstagramid:'s',
+                    uinstagramid:"",
                 },
                 user : {
                     id : '',
@@ -102,10 +102,10 @@
                     address : ""
                 },
                 
-                // rules: [
-                //     value => !!value || 'Required.',
-                //     value => (value && value.length >= 6) || 'Min 6 characters',
-                // ],
+                rulesid: [
+                    value => !!value || 'Required.',
+                    value => (value && value.length >= 6) || 'Min 6 characters',
+                ],
             }
         },
         methods : {
