@@ -16,9 +16,11 @@
         <div class="ipt__box">
             <input type="password" class="ipt" placeholder="Password" v-model="user.password" @keyup.enter="login()">
         </div>
-        <div class="ipt__btn">
-            <a href="#" class="btn btn--confirm btn--large" v-on:click="login()">LOGIN</a>
-        </div>
+
+        <v-btn dark v-on:click="login()">로그인</v-btn>
+
+        <v-btn yellow @click="$router.push({ name: 'SignUp' })">회원가입</v-btn>
+
     </div>
     </div>
 </template>
