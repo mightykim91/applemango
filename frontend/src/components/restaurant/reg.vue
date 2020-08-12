@@ -92,6 +92,7 @@ const BACKEND_URL = constants.URL
 
 export default {
     name:'reg',
+    props:{ruid:String},
     components: {
       AddressSearch
     },
@@ -113,7 +114,7 @@ export default {
             })
 
             //confirmation
-            
+            this.requestInfo.userName = this.ruid
             axios.post(BACKEND_URL + 'register/restaurant', this.requestInfo)
             .then( response => { 
             console.log('response : ', JSON.stringify(response, null, 2)) 
