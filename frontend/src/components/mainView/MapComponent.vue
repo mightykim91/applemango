@@ -1,6 +1,6 @@
 <template>
   <v-container id="main" style="border-bottom:solid 1px">
-    <!--Sample Map Image-->
+      <!--Sample Map Image-->
     
     <!-- 지도 API 
     <dmap/> -->
@@ -28,35 +28,28 @@
 
 <script>
 import axios from 'axios';
-import constants from '../../constants.js'
-//import { eventBus } from "../../App.vue"
+import constants from '../../constants.js';
+import {router} from '../../router/index.js';
+
 const BACKEND_URL = constants.URL
 const MAP_URL = constants.MAP
 export default {
     name: 'MapComponent',
+    
     data(){
         return {
             nearByRestaurants: ['음식점1', '음식점2', '음식점3'],
             addr : '서울특별시 강남구 역삼동 테헤란로 212',
-            mapuid : this.$cookies.get('auth-token'),
+            uid : this.$parent.uid,
             userInfo : []
         }
     },
-    // created() {
-    //     eventBus.$on('sendUid', uid => {
-    //         console.log("받은 데이터"+ uid)
-    //         this.mapuid = uid;
-    //     });
-    // },
-    mounted() {
-        //console.log('mapuid:'+this.mapuid)
-    
-        axios.get(BACKEND_URL + 'user/info?uid='+this.mapuid)
+     mounted() {
+         console.log(this.uid)
+        axios.get(BACKEND_URL + 'user/info', {params: {'uid':this.uid}})
         .then(response => {
             this.userInfo = response.data
             this.addr = this.userInfo.uaddr
-            this.initMap()
-            console.log('user/info?uid='+this.mapuid+' addr:'+this.addr)
         })
 
         if (window.kakao && window.kakao.maps) {
@@ -101,6 +94,31 @@ export default {
                     map.setCenter(coords);
                 }
             });
+            geocoder.addressSearch("강남구 테헤란로4길 27", (result, status) => {
+                // 정상적으로 검색이 완료됐으면 
+                if (status == kakao.maps.services.Status.OK) {
+                    var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                    // 결과값으로 받은 위치를 마커로 표시합니다
+                    var marker = new kakao.maps.Marker({
+                        map: map,
+                        position: coords
+                    });
+                    // 인포윈도우로 장소에 대한 설명을 표시합니다
+                    var infowindow = new kakao.maps.InfoWindow({
+                        content: '<div style="width:150px;text-align:center;padding:6px 0;">홍콩반점0410</div>'
+                    });
+                    infowindow.open(map, marker);  
+                    kakao.maps.event.addListener(marker, 'click', function() {
+                        // 해당 매장으로 이동
+                        router.push({ name: 'storeDetail', params: { rid: '1' }});
+                        //<router-link :to="{ name: "storeDetail", params: { rid: 1 }}"> 홍콩반점0410<br>강남역점 </router-link>
+                    });
+                    //infowindow.open(map, marker);
+                    // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+                    map.setCenter(coords);
+                }
+            });
+            
         }//end of initMap
     }
 }
