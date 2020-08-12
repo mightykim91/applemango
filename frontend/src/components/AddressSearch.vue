@@ -75,7 +75,7 @@
 import axios from 'axios'
 
 const API_KEY = 'U01TX0FVVEgyMDIwMDgxMTAwMTEwNDExMDA0NTU='
-const REQUEST_URL = 'http://www.juso.go.kr/addrlink/addrLinkApi.do'
+const REQUEST_URL = 'https://www.juso.go.kr/addrlink/addrLinkApi.do'
 
 export default {
 

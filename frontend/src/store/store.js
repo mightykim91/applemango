@@ -37,6 +37,10 @@ export const store = new Vuex.Store({
                      state.userInfo.isOwner = true;
                      state.userType = 'Admin';
                  }
+             },
+             //로그아웃시 유저 타입 초기화 
+             logout(state){
+                 state.userType = ''
              }
          },
          getters: {
