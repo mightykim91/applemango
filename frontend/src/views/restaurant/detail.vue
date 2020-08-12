@@ -145,7 +145,8 @@ export default {
                 likes : '',
                 idate : ''
 
-            }
+            },
+            instaflag:'', //수정버튼을 누르면 인스타의 현재 사진을 저장한다.
         }
     },
     created() {
@@ -228,9 +229,9 @@ export default {
                 this.$nextTick(() => {
                     this.$bvModal.hide('modMenu')
                 })
-                 
-                this.facebookLogin();
-                    
+                if(this.instaflag != this.newimage){
+                     this.facebookLogin(); //사진이 바뀌었으면 댓글을 보낸다.
+                }     
 
                 //메뉴사진 초기화
                 axios.get(BACKEND_URL + 'menu/list', {params: {'mrid':this.rid}})
@@ -246,6 +247,7 @@ export default {
             this.newprice = menu.mprice,
             this.newissig = menu.missig,
             this.newimage = menu.mimage
+            this.instaflag =menu.mimage; //수정하기전에 이미지를 저장한다.
             console.log("sendInfo확인"+this.newname)
         },
 
@@ -380,8 +382,8 @@ export default {
         //모달에서 메뉴 사진 선택 url 변경
         changePicture: function(url,instaid){
             this.newimage = url;
-
-            alert(url + " " + instaid)
+            console.dir("!!!!!!!!!!!!판도라의 상자!!!!!!!! 인스타 사진의 주인:"+ instaid)// this.instagramName=instaid; // 판도라의 상자 실제 주인에게 메시지가 갈 수 있음 
+            //alert(url + " " + instaid)
 
             //선택 모달 창 종료
             this.$bvModal.hide('modal-multi')
