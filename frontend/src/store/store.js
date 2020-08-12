@@ -19,7 +19,7 @@ export const store = new Vuex.Store({
            },
            userType: '', //유저타입 변수
            keyword: '', //메인화면 검색어
-           currentLocation: '', //longitude, latitude //현재 위치 정보
+           currentLocation: false, //longitude, latitude //현재 위치 정보
          },
          mutations: {
              //CHECK USERTYPE
