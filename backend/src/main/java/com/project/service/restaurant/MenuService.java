@@ -50,5 +50,10 @@ public class MenuService {
         return new ResponseEntity<String>(HttpStatus.OK);
     }
 
+    //db의 모든 메뉴 조회
+    public List<MenuEntity> getAllMenu(){
+        return mDao.findAll();
+    }
+
 
 }

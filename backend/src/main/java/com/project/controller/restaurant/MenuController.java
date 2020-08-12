@@ -49,6 +49,13 @@ public class MenuController {
         return new ResponseEntity<List<MenuEntity>>(result, HttpStatus.OK);
     }
 
+    //@전체 메뉴 목록 가져오기(김연수 추가)
+    @GetMapping(value="/all")
+    public ResponseEntity<List<MenuEntity>> GetAllMenu(){
+        List<MenuEntity> menus = menuService.getAllMenu();
+        return new ResponseEntity<List<MenuEntity>>(menus, HttpStatus.OK);
+    } 
+
     //메뉴 수정
     @PostMapping(value="/mod")
     public Object MenuMod(@RequestParam int mid, @RequestBody MenuEntity menu) {
