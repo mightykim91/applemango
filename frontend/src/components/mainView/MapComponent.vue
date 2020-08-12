@@ -116,7 +116,10 @@ export default {
                         infowindow.open(map, marker);  
                         kakao.maps.event.addListener(marker, 'click', function() {
                             // 해당 매장으로 이동
-                            router.push({ name: 'storeDetail', params: { rid: this.rlist[i].rid }});
+                           // console.dir('1');
+                           // var num = this.rlist[i].rid;
+                            router.push({ name: 'storeDetail', params: { rid: 1 }});
+                            //router.push({ name: 'storeDetail', params: { rid: '1' }});
                             //<router-link :to="{ name: "storeDetail", params: { rid: 1 }}"> 홍콩반점0410<br>강남역점 </router-link>
                         });
                         //infowindow.open(map, marker);
@@ -140,8 +143,6 @@ export default {
                 document.head.appendChild(script);
             }
         },//end of kakaoMapAPIReady
-        
-        
       
         
     }, // methods
