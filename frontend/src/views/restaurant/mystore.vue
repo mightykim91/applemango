@@ -1,7 +1,7 @@
 <template>
         <div class="container">
         
-        <router-link :to="{ name: 'receiveInsta' }">인스타그램 사진 링크</router-link><hr>
+        <!--router-link :to="{ name: 'receiveInsta' }">인스타그램 사진 링크</router-link><hr-->
         <p>{{this.$route.params.ruid}}님의 가게 정보</p>
         
         <table class="table table-bordered table-condensed">

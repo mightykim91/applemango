@@ -229,6 +229,13 @@ export default {
                  
                 this.facebookLogin();
                     
+
+                //메뉴사진 초기화
+                axios.get(BACKEND_URL + 'menu/list', {params: {'mrid':this.rid}})
+                .then(response => {
+                    console.log("menu list:" + response.data)
+                    this.requestData.menus = response.data
+                })
             })
         },
         sendInfo(menu) {
@@ -376,6 +383,7 @@ export default {
 
             //선택 모달 창 종료
             this.$bvModal.hide('modal-multi')
+            
             //    this.imageData.mimage = url;
             //    this.imageData.mid = mid;
             //    axios.post(`${BACKEND_URL}instagram/update`,this.imageData)
