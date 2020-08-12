@@ -11,6 +11,7 @@ import reg from '@/components/restaurant/reg.vue';
 import mystore from '@/views/restaurant/mystore.vue';
 import detail from '@/views/restaurant/detail.vue';
 import AdminPage from '@/views/admin/AdminPage.vue'; //김연수 추가
+import SearchResult from '@/views/search/SearchResult.vue';
 
 import comment from '@/views/admin/instagramComment.vue';
 
@@ -119,6 +120,11 @@ export const router = new VueRouter({
       path: '/admin',
       name: 'AdminPage',
       component: AdminPage
+    },
+    {
+      path: '/search/result/:keyword',
+      name: 'SearchResult',
+      component: SearchResult,
     }
 
     

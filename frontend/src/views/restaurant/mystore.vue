@@ -28,7 +28,7 @@
                     번호<b-form-input v-model="newphone"/>
                     주소<b-form-input v-model="newaddr"/>
                     <!-- 이미지 업로드 or 이미지 주소 복사(현재는 이미지 주소) -->
-                    이미지<b-form-input v-model="newimage" required></b-form-input>
+                    이미지<b-form-input v-model="newimage"/>
                     부가설명<b-form-input v-model="newdescription"/>
                  </b-form-group>
             </form>

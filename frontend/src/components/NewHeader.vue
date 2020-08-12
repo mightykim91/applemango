@@ -20,12 +20,13 @@
                 single-line 
                 solo placeholder="검색어를 입력해주세요"
                 prepend-inner-icon="fa-search"
-                v-model="searchWord"
+                v-model="keyword"
+                @keyup.enter="search"
                 ></v-text-field>
                 
             </v-col>
             <v-col align-self="center" cols="1">
-                <v-btn>검색하기</v-btn>
+                <v-btn @click="search">검색하기</v-btn>
             </v-col>
             <v-col align-self="center" cols="2">
                 <v-icon
@@ -161,7 +162,7 @@ export default {
     data(){
         return {
             searchOptions : ['거리순', '평점순'],
-            searchWord:'',
+            keyword:'',
             searchFilter: '거리순',
             navLogo: logo,
             userType: '',
@@ -200,6 +201,10 @@ export default {
     methods:{
         home: function(){
             this.$router.push({ name: 'Home' })
+        },
+        search: function(){
+            this.$store.commit('search', this.keyword)
+            this.$router.push({ name: 'SearchResult', params: { keyword: this.keyword }})
         },
 
         logout : function () {
