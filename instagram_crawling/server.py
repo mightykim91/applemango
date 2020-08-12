@@ -24,16 +24,19 @@ except mariadb.Error as e:
 cur = conn.cursor()
 
 def SELECT(uinstagramid):
-  # ALTER TABLE TABLE_NAME CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-  sql = "SELECT * FROM userinfo WHERE uinstagramid ='" + ("%s" % uinstagramid) + "'"
-  # print(sql)
-  cur.execute(sql)
-  resultList = cur.fetchall()
-  # print(len(resultList))
-  if len(resultList) > 0:
-    return True
-  else:
-    return False
+  try:
+    # ALTER TABLE TABLE_NAME CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+    sql = "SELECT * FROM userinfo WHERE uinstagramid ='" + ("%s" % uinstagramid) + "'"
+    # print(sql)
+    cur.execute(sql)
+    resultList = cur.fetchall()
+    # print(len(resultList))
+    if len(resultList) > 0:
+      return False
+    else:
+      return True
+  except:
+    print("SELECT 과정에서 에러 발생")
 
 # insert information 
 def INSERT():

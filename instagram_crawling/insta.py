@@ -24,55 +24,63 @@ baseUrl = "https://www.instagram.com/explore/tags/"
 plusUrl = input('식당명을 입력하세요 : ')
 en_name = input('식당의 영어명을 입력하세요 : ')
 irid = int(input('식당의 rid값을 입력하세요: '))
-ko_search = list(input().split())
-en_search = list(input().split())
+ko_search = list(input('식당의 음식을 입력하세요: ').split())
+en_search = list(input('식당의 음식을 영어(폴더명)로 입력하세요: ').split())
 
 #########################################################################
 # 1. 인스타 그램 url 생성 
 #########################################################################
 
+# 웹페이지를 안보이게해줌
+options = webdriver.ChromeOptions()
+options.add_argument('headless')
+options.add_argument('window-size=1920x1080')
+
 url = baseUrl + quote_plus(plusUrl)
 # [2] chromedriver 띄운다.
 driver = webdriver.Chrome(
-    executable_path= "C:/Users/multicampus/chromedriver_win32/chromedriver.exe"
-)
-
+    executable_path= "C:/Users/multicampus/chromedriver_win32/chromedriver.exe",
+    chrome_options=options)
 driver.get(url)
 time.sleep(2)
 
 # [3] 로그인 하기
 # 로그인 버튼 클릭
-login_section = '//*[@id="react-root"]/section/nav/div[2]/div/div/div[3]/div/span/a[1]/button'
-driver.find_element_by_xpath(login_section).click()
-time.sleep(2)
+try:
+    login_section = '//*[@id="react-root"]/section/nav/div[2]/div/div/div[3]/div/span/a[1]/button'
+    driver.find_element_by_xpath(login_section).click()
+    time.sleep(2)
 
-# 계정, 비밀번호 압력
-elem_login = driver.find_element_by_name("username")
-elem_login.clear()
-elem_login.send_keys('silver_jae@naver.com')
-time.sleep(1)
-elem_login = driver.find_element_by_name('password')
-elem_login.clear()
-elem_login.send_keys('ssafy%qks')
-time.sleep(0.5)
+    # 계정, 비밀번호 압력
+    elem_login = driver.find_element_by_name("username")
+    elem_login.clear()
+    elem_login.send_keys('silver_jae@naver.com')
+    time.sleep(1)
+    elem_login = driver.find_element_by_name('password')
+    elem_login.clear()
+    elem_login.send_keys('ssafy%qks')
+    time.sleep(0.5)
 
-# 로그인 버튼 클릭
-# xpath = """//*[@id="react-root"]/section/main/div/article/div/div[1]/div/form/div[4]/button"""
-xpath = """//*[@id="loginForm"]/div/div[3]/button/div"""
-driver.find_element_by_xpath(xpath).click()
-time.sleep(3)
+    # 로그인 버튼 클릭
+    # xpath = """//*[@id="react-root"]/section/main/div/article/div/div[1]/div/form/div[4]/button"""
+    xpath = """//*[@id="loginForm"]/div/div[3]/button/div"""
+    driver.find_element_by_xpath(xpath).click()
+    time.sleep(3)
 
-# 건너뛰기 클릭
-passbutton="""//*[@id="react-root"]/section/main/div/div/div/div/button"""
-driver.find_element_by_xpath(passbutton).click()
-time.sleep(3)
-
+    # 건너뛰기 클릭
+    passbutton="""//*[@id="react-root"]/section/main/div/div/div/div/button"""
+    driver.find_element_by_xpath(passbutton).click()
+    time.sleep(3)
+except:
+    print("인스타 로그인 에러 발생!!!")
+    
 # [4] 스크롤을 하면서 데이터 축적 cnt = 1당 약 12~ 15개의 게시글데이터를 축적
 SCROLL_PAUSE_TIME = 1.0
 modal_page = []
 cnt = 0 
-while cnt < 1:
+while cnt < 5:
     cnt += 1
+    print(cnt,"번 크롤링을 진행중입니다.")
     pageString = driver.page_source
     bsObj = BeautifulSoup(pageString, 'lxml')
     # [5] 크롤링하 데이터의 모달 페이지를 추출해내어 modal_page에 push
@@ -113,6 +121,7 @@ num_of_data = len(modal_page)
 file_data = []
 print('총 {0}개의 데이터를 수집합니다.'.format(num_of_data))
 for i in tqdm(range(num_of_data)):
+    print(i,"번째 데이터를 추출중입니다.")
     # [1] data의 구조를 미리 정의 
     data = OrderedDict()
     data = {
@@ -142,13 +151,13 @@ for i in tqdm(range(num_of_data)):
     account = account.replace('shared a post on','')
     account = account.replace('on Instagram','')
     account = account.replace(' ','')
-    print(account)
+    # print(account," 을 추출했습니다.")
 #########################################################################
 # 3. DB와 인스타 계정비교
 #########################################################################
 
     # DB에 계정이 없으면 continue
-    # if not SELECT(account):
+    # if SELECT(account):
     #     continue
 
 
@@ -166,13 +175,19 @@ for i in tqdm(range(num_of_data)):
     # [2] 사전에 학습된 cnn 모델로 음식 이미지 판단하고 url을 넘김
     # res_url : 음식이 담긴 url
     # res_menu : 음식의 종류
-    res_url_menu = Predict(src_list, en_search) 
+    if len(src_list) == 0:
+        continue
+    res_url_menu = Predict(src_list, ko_search) 
     print("음식 분류 완료!!!!!!!!!!!!!!!!!")
-
+    
     # [3] 해당 url에서 사람 이미지 필터링
     res = person_filter(res_url_menu)
     print("사람 필터링 완료!!!!!!!!!!!!!!!!!")
     print("res ==>", res)
+    
+    # [3+] 텍스트 편집
+    from text_filter import Text_Filtering_url
+    res = Text_Filtering_url(res)
 
     # [4] 기타 계정 정보 추출
     # 좋아요
@@ -191,10 +206,11 @@ for i in tqdm(range(num_of_data)):
     # comments = 0
     # if total.find("Comments") != -1:
     #     comments = total[total.find(",")+2: total.find("Comments")]
-
     for food_info in res:
-        food_info[0] = img_url
-        food_info[1] = food
+        print("##########################################################################")
+        print("food_info ==>", food_info)
+        img_url = food_info[0]
+        food = food_info[1]
         data["irid"] = irid
         data["rname"] = en_name 
         data["instaid"] = account
@@ -203,7 +219,7 @@ for i in tqdm(range(num_of_data)):
         data["likes"] = int(likes)
         data["idate"] = my_date.isoformat()
         file_data.append(data)
-        print(data)
+        # print(data)
 # json 파일로 저장
 with open(en_name + '.json', 'w', encoding="utf-8") as make_file:
     json.dump(file_data, make_file, ensure_ascii=False, indent="\t")

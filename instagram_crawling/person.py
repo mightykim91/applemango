@@ -57,6 +57,7 @@ def person_filter(res_url_menu):
                 person = person_cascade.detectMultiScale(image_gray, 1.3, 5)
                 if len(person) != 0:
                     rm_list.append(i)
+                    print(p)
                     print("사람입니다.")
                     break
         except:

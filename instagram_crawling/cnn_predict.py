@@ -6,6 +6,7 @@ from numpy import argmax
 from keras.models import load_model
 import wget
 
+ca = ["jjajangmyeon", "lamyeon", "donkkaseu" ,"udong" ,"paseuta", "gimbab" ,"samgyeobsal" ,"jjamppong", "chikin" ,"pija", "jogbal", "bossam", "tteogbokk-i", "sundaegugbab" ,"janchigugsu" ,"tangsuyug"]
 def Dataization(img_path):
     image_w = 28
     image_h = 28
@@ -45,15 +46,24 @@ def Predict(src_list, menu):
     model = load_model('bingforcnn.h5')
     predictions = model.predict(test)   # 확률을 제공
     # predict = model.predict_classes(test) # 클래스 레이블을 제공
+    # print("===============================")
+    # print(src_list)
+    # print(menu)
+    # print(len(test))
     res_url_menu = []
-    for i in range(len(test)):
+    for i in range(len(src_list)):
         print(np.max(predictions[i]))
         if np.max(predictions[i]) >= 0.9:
             tmp = []
             num = np.argmax(predictions[i])
-            print(name[i]+"의 음식분류는 "+menu[num])
+            # print(name[i],"의 음식분류는 ",menu[num])
             tmp.append(src_list[i])
             tmp.append(menu[num])
+            # print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+            # print(src_list[i])
+            # print((menu[num]))
+            # print(ca[num])
+            # tmp.append(num)
             res_url_menu.append(tmp)
 
     # [4] insta_tmp_image폴더에 있는 모든 이미지 파일 지우기

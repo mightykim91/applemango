@@ -4,19 +4,19 @@ from bs4 import BeautifulSoup
 from selenium import webdriver # webdriver 가져오기
 import time
 import os
-import time
 from similarity_measure import Similarity_Measurement
 
 ko_search = list(input("한글 음식명:").split())
 en_search = list(input("영어 음식명:").split())
 stan_search = list(input("target image url:").split())
-print(stan_search)
+# print(stan_search)
 ####################################################################################
 # 폴더의 유무 filter
 ####################################################################################
 k_categories = []
 e_categories = []
 url_categories = []
+start = time.time()
 folder_path = './cnn_sample/'
 for i in range(len(en_search)):
     k_name = ko_search[i]
@@ -25,6 +25,7 @@ for i in range(len(en_search)):
     image_dir = folder_path + e_name + '/'
     # print(image_dir)
     if os.path.exists(image_dir): # 크롤링 이미지가 존재하면 => True
+        print(k_name + "의 이미지데이터는 이미 존재합니다.")
         continue
     else:
         k_categories.append(k_name)
@@ -34,11 +35,13 @@ for i in range(len(en_search)):
 ####################################################################################
 # bing.com에서 이미지 크롤링
 ####################################################################################
-start = time.time()  # 시작 시간 저장
+
 for i in range(len(k_categories)):
     ko_name = k_categories[i]
     en_name = e_categories[i]
     url_name = url_categories[i]
+    start2 = time.time()  # 시작 시간 저장
+    print(ko_name + "의 데이터 수집 시작")
 
     baseUrl = "https://www.bing.com/images/search?q="
     baseUrl2 = "&form=HDRSC2&first=1&scenario=ImageBasicHover"
@@ -61,7 +64,7 @@ for i in range(len(k_categories)):
     ####################################################################################
     # 1. 이미지 url 수집
     ####################################################################################
-    while cnt < 30: # cnt 10당 => 약 500개 사이의 이미지 데이터 추출
+    while cnt < 20: # cnt 10당 => 약 500개 사이의 이미지 데이터 추출
         cnt += 1
         pageString = driver.page_source
         bsObj = BeautifulSoup(pageString, 'lxml')
@@ -70,6 +73,7 @@ for i in range(len(k_categories)):
                 page = line.find(name="img")["src"]
                 if page.find("data:image/jpeg") == -1:
                     url_path.append(page)
+        
         except IndexError as ider:
             print("IndexError")
         
@@ -91,18 +95,24 @@ for i in range(len(k_categories)):
         time.sleep(0.3)
         url_path = list(set(url_path))
     driver.close()
-
+    url_path = list(set(url_path))
 ####################################################################################
 # 2. 유사도 비교후 저장
 ####################################################################################
-    # cnn_sample에 폴더 만들기 (폴더는 영어이름으로만 지정)
+    # [1] cnn_sample에 폴더 만들기 (폴더는 영어이름으로만 지정)
     try:
         if not os.path.exists("./cnn_sample/"+en_name):
             os.makedirs("./cnn_sample/"+en_name)
     except OSError:
         print('Error:Creating Directory' + en_name)
+    
+    # [2] 유사도 비교
     Similarity_Measurement(url_path, en_name, url_name)
 
+    # [3] text 필터링
+    Text_Filtering_jpg(en_name)
+
+    print(ko_name , "의 걸린 시간 : " , time.time() - start2)
 
     # # print(url_path)
     # # 크롤링한 url 이미지를 jpg로 저장함

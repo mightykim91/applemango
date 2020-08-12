@@ -59,7 +59,7 @@ def build_graph(hub_module_url, target_image_path):
 ####################################################################################
 def Similarity_Measurement(url_path, en_name, url_name):
   print(en_name,"의 유사도 측정 시작")
-  print("target image==>", url_name)
+  # print("target image==>", url_name)
   target_image_url = url_name
 
   input_image_urls = url_path
@@ -97,19 +97,21 @@ def Similarity_Measurement(url_path, en_name, url_name):
       print("%d images inference time: %.2f s" % (len(similarities), time.time() - t0))
 
     # Display results
-    print("# Target image")
-    display(Image(target_img_path))
-    print("- similarity: %.2f" % similarities[0])
+    # print("# Target image")
+    # display(Image(target_img_path))
+    # print("- similarity: %.2f" % similarities[0])
 
-    print("# Input images")
+    # print("# Input images")
     rm = 0
 ####################################################################################
-# 2. 유사도 0.45이상만 저장
+# 2. 유사도 0.35이상만 저장
 ####################################################################################
     for similarity, input_img_path in zip(similarities[1:], input_img_paths):
-      display(Image(input_img_path))
-      print(input_img_path,"의 유사도는 ","- similarity: %.2f" % similarity)
-      if similarity < 0.45:
+      # display(Image(input_img_path))
+      # print(input_img_path,"의 유사도는 ","- similarity: %.2f" % similarity)
+      if similarity < 0.35:
         os.remove(input_img_path)
         rm += 1
-    print("유사도가 0.45미만인 이미지의 갯수는 ", rm, "개 입니다.")
+    # print(len(input_img_paths) - rm + "개가 수집됨")
+    print("추출된 이미지의 갯수는 %d" % (len(similarities) - rm))
+    print("유사도가 0.35미만인 이미지의 갯수는 ", rm, "개 입니다.")

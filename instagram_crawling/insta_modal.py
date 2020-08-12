@@ -12,9 +12,15 @@ from collections import OrderedDict
 warnings.filterwarnings(action='ignore') # 경고 메세지 제거
 
 def modal_images(url):
+    # 웹페이지를 안보이게해줌
+    options = webdriver.ChromeOptions()
+    options.add_argument('headless')
+    options.add_argument('window-size=1920x1080')
+    # [2] chromedriver 띄운다.
     driver = webdriver.Chrome(
-        executable_path= "C:/Users/multicampus/chromedriver_win32/chromedriver.exe"
-    )
+        executable_path= "C:/Users/multicampus/chromedriver_win32/chromedriver.exe",
+        chrome_options=options)
+        
     # 해당 url을 driver로 할당
     driver.get(url)
     time.sleep(1)
