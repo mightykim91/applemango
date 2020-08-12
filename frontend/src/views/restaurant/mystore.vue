@@ -2,32 +2,7 @@
         <div class="container">
         
         <p>{{this.$route.params.ruid}}님의 가게 정보</p>
-        
-        <!-- <table class="table table-bordered table-condensed">
-                <colgroup>
-                    <col :style="{width: '30%'}" />
-                    <col :style="{width: '50%'}" />
-                    <col :style="{width: '20%'}" />
-                </colgroup>
-                <tr>
-                    <th>가게이름</th>
-                    <th>설명</th>
-                    <th></th>
-                </tr>
-                <tr  v-for="(rst, index) in rsts" :key="index + '_rsts'">
-                    <td class="text-center"><router-link :to="{ name: 'storeDetail', params: { rid: rst.rid }}"> {{rst.rname}} ({{rst.rbranch}})</router-link></td>
-                    <td><pre>
-                        전화번호 : {{rst.rphone}}
-                        주소: {{rst.raddr}}
-                        설명: {{rst.rdescription}}
-                    </pre></td>
-                    <td>
-                        <b-button variant="warning">수정</b-button>
-                        <b-button variant="danger">삭제</b-button>
-                    </td>
-                </tr>
-        </table> -->
-        
+        <router-link :to="{name: 'reg', params: { ruid: this.$route.params.ruid}}" class="black--text">등록</router-link>
         <div v-if="rsts">
             <v-container fluid>
             <v-row>

@@ -47,8 +47,12 @@ export const router = new VueRouter({
     },
     //레스토랑 등록 페이지
     {
-      path: '/rst/reg',
+      path: '/rst/reg/:ruid',
       component: reg,
+      name: 'reg',
+      props: route => ({
+        ruid: String(route.params.ruid)
+      })
     },
     //레스토랑 My Store (사업장 관리) 페이지
     {
