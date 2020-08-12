@@ -75,6 +75,20 @@ export default {
     // beforeMount(){
     //     this.send()
     // }
+    mounted(){
+      //위치정보
+      if(navigator.geolocation){
+        console.log('geolocation is allowed')
+        navigator.geolocation.getCurrentPosition(function(position){
+          var lat = position.coords.latitude
+          var lon = position.coords.longitude
+          console.log(lat,lon)
+        })
+      }
+      else{
+        console.log('geolocation is not allowed')
+      }
+    }
 }
 </script>
 <style>
