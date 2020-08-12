@@ -15,7 +15,7 @@
     
     <v-main>
       <v-container fluid class="mt-12">
-        <router-view></router-view>
+        <router-view :key="$route.fullPath"></router-view>
       </v-container>
     </v-main>
     <!-- <router-view></router-view> -->
