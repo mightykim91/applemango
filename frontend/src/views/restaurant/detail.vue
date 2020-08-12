@@ -4,7 +4,9 @@
         <div class = "rstInfo">
         <p><font class="titlefont">{{requestData.rst.rname}} </font> {{requestData.rst.rbranch}} 지점</p><hr>
         <!-- 이미지 값 requestData.rst.rimg값으로 나중에 변경 -->
-        <img id="sigimg" src = "https://www.dcapp.org/sites/default/files/styles/dcapp_business_logo/public/paik-korean-noodle-centreville.jpg?itok=JBkf5XVT"/>
+        
+        <div v-if="requestData.rst.rimage" ><v-img id="sigimg" :src="requestData.rst.rimage"></v-img></div>
+        <div v-else><v-img src="../../assets/noimage.png"  id="sigimg"></v-img></div>
         <pre><font class="content">
         {{requestData.rst.rdescription}}
         번호 {{requestData.rst.rphone}} 
@@ -127,7 +129,7 @@ export default {
             this.addr = this.requestData.rst.raddr
             this.name = this.requestData.rst.rname
 
-            console.log("이름 주소"+this.name+this.addr)
+            this.initMap();
 
         })
 

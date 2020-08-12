@@ -72,14 +72,18 @@ public class RestaurantController {
         }
     }
 
-    @PutMapping("/mod")
-    public Object rstMod(@RequestBody RestaurantEntity request) {
-        System.out.println(request.toString());
+    //레스토랑 수정
+    @PostMapping(value="/mod")
+    public Object MenuMod(@RequestBody RestaurantEntity request) {
+        //request.setRid(rid);;
+        System.out.println("rst/mod 레스토랑 수정" + request.getRname()+ "주소 "+request.getRaddr());
         return restaurantService.Modrst(request);
     }
 
-    @DeleteMapping("/del") 
-    public Object rstDel(@RequestParam("rid") int rid) {
+    //레스토랑 삭제
+    @GetMapping("/del") 
+    public Object rstDel(@RequestParam int rid) {
+        System.out.println("rst/del 삭제 레스토랑 번호: "+rid);
         return restaurantService.Delrst(rid);
     }
 }//end of class
