@@ -10,8 +10,6 @@ CREATE TABLE `restaurantinfo` (
   `rimage` text DEFAULT NULL,
   `rname` varchar(31) NOT NULL,        
   `rbranch` varchar(31) DEFAULT NULL,
-  `rlat` DECIMAL(13,10) DEFAULT NULL,
-  `rlng` DECIMAL(13,10) DEFAULT NULL,
   `rdescription` varchar(124) DEFAULT NULL,
   `rcreatedate` datetime DEFAULT current_timestamp(),
   PRIMARY KEY (`rid`),

@@ -4,7 +4,9 @@
         <div class = "rstInfo">
         <p><font class="titlefont">{{requestData.rst.rname}} </font> {{requestData.rst.rbranch}} 지점</p><hr>
         <!-- 이미지 값 requestData.rst.rimg값으로 나중에 변경 -->
-        <img id="sigimg" src = "https://www.dcapp.org/sites/default/files/styles/dcapp_business_logo/public/paik-korean-noodle-centreville.jpg?itok=JBkf5XVT"/>
+        
+        <div v-if="requestData.rst.rimage" ><v-img id="sigimg" :src="requestData.rst.rimage"></v-img></div>
+        <div v-else><v-img src="../../assets/noimage.png"  id="sigimg"></v-img></div>
         <pre><font class="content">
         {{requestData.rst.rdescription}}
         번호 {{requestData.rst.rphone}} 
@@ -57,9 +59,26 @@
                     가격 <b-form-input v-model="newprice"  required></b-form-input>
                     <!-- 이미지 업로드 or 이미지 주소 복사(현재는 이미지 주소) -->
                     이미지 <b-form-input v-model="newimage" required></b-form-input>
+                    <b-button v-b-modal.modal-multi size="xl">인스타그램 사진 선택</b-button>
                  </b-form-group>
             </form>
         </b-modal>
+
+        <!-- 인스타그램 사진 선택 modal -->
+        <b-modal id="modal-multi" size="xl" title="Third Modal" ok-only>
+            <p class="my-1">인스타그램 사진 선택</p>
+
+            <v-container fluid>
+                <v-row>
+                    <v-card flat class="text-xs-center ma-3" v-for="instadata in instadatalist" v-bind:key="instadata.instaid">
+                        
+                        <v-img :src="instadata.iurl"  max-width="200" max-height="300" ></v-img>
+                        <b-button id="select-menu-picture" v-on:click="changePicture(instadata.iurl,instadata.instaid)" >사진 선택</b-button>
+                    </v-card>
+                </v-row>
+            </v-container>
+        </b-modal>
+
 
         <!-- 메뉴 삭제하기 모달 창-->
         <b-modal id="delMenu" title="메뉴삭제" @ok= delhandleSubmit(mid)><p>{{newname}}을(를) 정말 삭제 하시겠습니까?</p></b-modal>
@@ -69,6 +88,10 @@
         <div v-if="requestData.rst.rlat != 0"><div id="map">지도</div></div>
         <div v-else>위치 정보가 없습니다.</div>
     </div>
+
+
+    
+    
 </div>
 </template>
 
@@ -113,6 +136,16 @@ export default {
             igUserid:'',
             selectedPostid:'',
             
+            instadatalist : {
+                iid : '',
+                rname : '',
+                rbranch : '',
+                instaid : '',
+                iurl : '',
+                likes : '',
+                idate : ''
+
+            }
         }
     },
     created() {
@@ -127,7 +160,7 @@ export default {
             this.addr = this.requestData.rst.raddr
             this.name = this.requestData.rst.rname
 
-            console.log("이름 주소"+this.name+this.addr)
+            this.initMap();
 
         })
 
@@ -147,6 +180,14 @@ export default {
             script.src = MAP_URL
             document.head.appendChild(script);
         }
+
+
+        //기훈추가
+        axios.get(BACKEND_URL + 'instagram/select/' + this.rid) // select/{irid} 레스토랑 정보 인자로 받아와서 넣어주면 댐!
+            .then(response => {
+                this.instadatalist = response.data;
+                console.log(response);
+            })
     },
     methods: {
         //메뉴등록처리
@@ -190,6 +231,13 @@ export default {
                  
                 this.facebookLogin();
                     
+
+                //메뉴사진 초기화
+                axios.get(BACKEND_URL + 'menu/list', {params: {'mrid':this.rid}})
+                .then(response => {
+                    console.log("menu list:" + response.data)
+                    this.requestData.menus = response.data
+                })
             })
         },
         sendInfo(menu) {
@@ -329,6 +377,26 @@ export default {
             });
         },//end of postComment
 
+        //모달에서 메뉴 사진 선택 url 변경
+        changePicture: function(url,instaid){
+            this.newimage = url;
+
+            alert(url + " " + instaid)
+
+            //선택 모달 창 종료
+            this.$bvModal.hide('modal-multi')
+            
+            //    this.imageData.mimage = url;
+            //    this.imageData.mid = mid;
+            //    axios.post(`${BACKEND_URL}instagram/update`,this.imageData)
+            //     .then(response => {
+            //         console.log(this.imageData)
+            //         console.log(response.data)
+            //         this.comments.unshift(response.data) //새로운댓글 배열에 추가후 배열의 처음으로 이동.
+                    
+                    
+            //   }) 
+        } // end of changePictures
       },//end of methods
    
     watch: {

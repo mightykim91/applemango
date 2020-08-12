@@ -1,6 +1,6 @@
 <template>
   <v-app id="app">
-    <v-system-bar app>
+    <!--v-system-bar app>
       <v-row justify="end" no-gutters v-if="!this.$cookies.isKey('auth-token')">
         <v-col cols="1" class="px-1"><router-link :to="{name: 'Login'}" class="black--text">로그인</router-link></v-col>
         <v-col cols="1" class="px-1"><router-link :to="{name: 'SignUp'}" class="black--text">회원가입</router-link></v-col>
@@ -10,7 +10,7 @@
         <v-col cols="1" class="px-1"><router-link :to="{name: 'mystore', params: { ruid: $cookies.get('auth-token')}}" class="black--text">My Store</router-link></v-col>
 
       </v-row>
-    </v-system-bar>
+    </v-system-bar-->
     <navigation/>
     
     <v-main>
