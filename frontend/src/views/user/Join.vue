@@ -2,53 +2,129 @@
 
 <template>
     <div id="join">
-    <header/>
+
+    <v-app>
+        <v-main >
+
+            <v-row
+            align="center"
+            justify="center"
+            >
+            <v-col
+                cols="1"
+                sm="12"
+                md="6"
+            >
+                <v-card class="elevation-12">
+                <v-toolbar
+                    color="#FFCB3C"
+                    dark
+                    flat
+                >
+                    <v-toolbar-title>Login</v-toolbar-title>
+                    <v-spacer></v-spacer>
+                    <v-tooltip bottom>
+                    <template v-slot:activator="{ on }">
+                        <v-btn
+                        :href="source"
+                        icon
+                        large
+                        target="_blank"
+                        v-on="on"
+                        >
+                        <v-icon>mdi-code-tags</v-icon>
+                        </v-btn>
+                    </template>
+                    <span>Source</span>
+                    </v-tooltip>
+                </v-toolbar>
+                <v-card-text>
+                    <v-form>
+                    <v-text-field
+                        label="ID"
+                        name="ID"
+                        prepend-icon="mdi-account"
+                        type="text"
+                        v-model="requestData.uid"
+                        :rules="idrules"
+                    ></v-text-field>
+
+                    <v-text-field
+                        id="password"
+                        label="Password"
+                        name="password"
+                        prepend-icon="mdi-lock"
+                        type="password"
+                        v-model="requestData.upw"
+                        :rules="passwordRules"
+                    ></v-text-field>
+
+                    <v-text-field
+                        id="confirmPassword"
+                        label="confirmPassword"
+                        name="confirmPassword"
+                        prepend-icon="mdi-lock"
+                        type="password"
+                        :rules="confirmPasswordRules"
+                    ></v-text-field>
+
+
+                    <v-text-field
+                        label="Name"
+                        name="Name"
+                        prepend-icon="mdi-account"
+                        type="text"
+                        v-model="requestData.uname"
+                    ></v-text-field>
+
+                                       <v-text-field
+                        label="Email"
+                        name="Email"
+                        prepend-icon="mdi-account"
+                        type="text"
+                        v-model="requestData.uemail"
+                        :rules="emailRules"
+                    ></v-text-field>
+
+                    <v-text-field
+                        label="Address"
+                        name="Address"
+                        prepend-icon="mdi-account"
+                        type="text"
+                        v-model="requestData.uaddr"
+                    ></v-text-field>
+                    <b-button id="show-btn" @click="$bvModal.show('bv-modal-example')">주소 검색 </b-button>
+                    
+                    <v-text-field
+                        label="InstagramID"
+                        name="InstagramID"
+                        prepend-icon="mdi-account"
+                        type="text"
+                        v-model="requestData.uinstagramid"
+                    ></v-text-field>
+
+                    </v-form>
+                </v-card-text>
+                <v-card-actions>
+                     <v-spacer></v-spacer>
+                    <v-btn dark color="#FFCB3C" v-on:click="signUp">회원가입</v-btn>
+                     <v-spacer></v-spacer>
+                    
+                </v-card-actions>
+                </v-card>
+            </v-col>
+
+            <v-col
+                cols="1"
+                sm="12"
+                md="6"
+            ></v-col>
+            </v-row>
+ 
+        </v-main>
+    </v-app>    
    
-   
-    <div class="join">
-        <h2 class="comm__title">회원가입</h2>
-
-
-        <div>
-        <v-form class = "sign-up-form">
-
-            <v-text-field label="ID" :rules="rulesid" hide-details="auto" v-model="requestData.uid"></v-text-field>
-            <v-text-field label="Password" v-model="requestData.upw"></v-text-field>
-            <v-text-field label="Name" v-model="requestData.uname"></v-text-field>
-            <v-text-field label="Email" v-model="requestData.uemail"></v-text-field>
-            <v-text-field label="Phone" v-model="requestData.uphone"></v-text-field>
-            <b-button id="show-btn" @click="$bvModal.show('bv-modal-example')">주소 검색</b-button>
-            <v-text-field label="Address" v-model="requestData.uaddr"></v-text-field>
-            <!--v-text-field label="Address Detail" v-model="addressData.address"></v-text-field 주소 디테일 필요하면 사용-->
-           
-            <v-text-field label="InstagramID" v-model="requestData.uinstagramid"></v-text-field>
-
-            <v-btn dark v-on:click="signUp">회원가입</v-btn>
-        </v-form>    
-        </div>
-        
-        
-
-
-        <!--
-                <tbody>
-                    <tr>
-                        <th width="180">주소</th>
-                        <td colspan="3">
-                            <div v-if="addressinfo.address =='' || addressinfo.address == null">
-                                <input type="text" class="w-30per">
-                                <p>{{ child }}</p>
-
-                                <button class="btn-default dp-inblock ml-05" @click="showModal('post')">주소검색</button>
-                            </div>
-                            
-                        </td>
-                    </tr>
-                </tbody>
-        <div class="ipt__btn">
-            <a href="#" class="btn btn--confirm btn--large" v-on:click="signUp">회원가입하기</a>
-        </div-->
-    </div>
+  
 
 
     <div>
@@ -102,9 +178,27 @@
                     address : ""
                 },
                 
-                rulesid: [
+                idrules: [
                     value => !!value || 'Required.',
                     value => (value && value.length >= 6) || 'Min 6 characters',
+                ],
+
+                passwordRules: [
+                    (value) => !!value || 'Please type password.',
+                    (value) => (value && value.length >= 7) || 'minimum 7 characters',
+                    (value) => /(?=.*\d)/.test(value) || 'Must have one number',
+                    (value) => /([!@$%])/.test(value) || 'Must have one special character [!@#$%]'
+                ],
+
+                confirmPasswordRules: [
+                    (value) => !!value || 'type confirm password',
+                    (value) => value === this.requestData.upw || 'The password confirmation does not match.',
+                ],
+
+
+                emailRules: [
+                    v => !!v || 'E-mail is required',
+                    v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
                 ],
             }
         },
@@ -145,6 +239,7 @@
 
         },
         created () {
-        }
+        },
+        
     }
 </script>
