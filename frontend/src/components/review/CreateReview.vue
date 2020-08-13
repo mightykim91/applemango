@@ -2,9 +2,9 @@
   <div>
       <h1>새로운 리뷰 작성</h1>
       <v-form class="review-creation-form">
-          <v-text-field v-model="requestData.title" label="제목"></v-text-field>
+          <v-text-field outlined v-model="requestData.title" label="제목"></v-text-field>
           <v-textarea outlined v-model="requestData.description" label="내용"></v-textarea>
-          <v-text-field v-model="requestData.star" label="평점"></v-text-field>
+          <v-select outlined :items="rating" v-model="requestData.star" label="평점"></v-select>
           <v-btn dark v-on:click="createReview">제출</v-btn> 
       </v-form>
   </div>
@@ -14,8 +14,7 @@
 
 import axios from 'axios'
 import constants from '../../constants.js'
-//local BACKEND_URL
-// const BACKEND_URL = 'http://localhost:8080'
+
 const BACKEND_URL = constants.URL
 
 export default {
@@ -26,22 +25,23 @@ export default {
     data(){
         return {
             requestData: {
-                userId:'test',
+                userId: this.$cookies.get('auth-token'),
                 restaurantId: this.rid,
                 title:'',
                 description:'',
                 star:'',
-                }
+                },
+            rating: [1,1.5,2,2.5,3,3.5,4,4.5,5]
         }
     },
     methods:{
         createReview: function(){
+            this.requestData.userId = this.$cookies.get('auth-token')
             axios.post(`${BACKEND_URL}review/new`, this.requestData)
             .then(response => {
                 console.log(response.data)
-                this.$router.push({ name: 'Review' })
+                this.$router.push({ name: 'storeDetail', params:{rid: Number(this.rid)} })
             })
-
         },
     }
 }

@@ -83,7 +83,7 @@
         <!-- 메뉴 삭제하기 모달 창-->
         <b-modal id="delMenu" title="메뉴삭제" @ok= delhandleSubmit(mid)><p>{{newname}}을(를) 정말 삭제 하시겠습니까?</p></b-modal>
 
-        <detail-review/>
+        <detail-review v-bind:restaurantId="rid"/>
         <h1 style="text-align: left;">Location</h1><hr>
         <div v-if="requestData.rst.rlat != 0"><div id="map">지도</div></div>
         <div v-else>위치 정보가 없습니다.</div>
