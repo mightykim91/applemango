@@ -5,20 +5,8 @@
     <!-- 지도 API 
     <dmap/> -->
       <v-row>
-          <v-col cols="9" id="map">
+          <v-col cols="12" id="map">
               지도
-          </v-col>
-          <v-col cols="3">
-              <v-simple-table>
-                  <thead>
-                      <tr><th id="nearby-restaurant-info" class="text-center">  주변 음식점</th></tr>
-                  </thead>
-                  <tbody>
-                      <tr v-for="rest in nearByRestaurants" v-bind:key="rest.id">
-                          <td>{{ rest }}</td>
-                      </tr>
-                  </tbody>
-              </v-simple-table>
           </v-col>
       </v-row> 
       
@@ -30,6 +18,8 @@
 import axios from 'axios';
 import constants from '../../constants.js';
 import {router} from '../../router/index.js';
+
+import forkimage from '../../assets/fork.png'
 
 const BACKEND_URL = constants.URL
 const MAP_URL = constants.MAP
@@ -66,11 +56,14 @@ export default {
                 
             })
         },//end of getAllRestaurants
+        moveToPage(i){
+            router.push({ name: 'storeDetail', params: { rid: i }});
+        },
         initMap() {
             var container = document.getElementById('map');
             var options = {
               center: new kakao.maps.LatLng(37.501320, 127.039654),
-              level: 5
+              level: 4
             };
             var map = new kakao.maps.Map(container, options);
             //map.setMapTypeId(kakao.maps.MapTypeId);
@@ -88,7 +81,7 @@ export default {
                     });
                     // 인포윈도우로 장소에 대한 설명을 표시합니다
                     var infowindow = new kakao.maps.InfoWindow({
-                        content: '<div style="width:150px;text-align:center;padding:6px 0;">내 주소</div>'
+                        content: '<div style="width:150px;text-align:center;padding:5px 0;">내 주소</div>'
                     });
                     infowindow.open(map, marker);
                     // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
@@ -105,20 +98,29 @@ export default {
                     if (status == kakao.maps.services.Status.OK) {
                         var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
                         // 결과값으로 받은 위치를 마커로 표시합니다
+
+                        //var imageSrc = "../../assets/mangoFork.png", // 마커이미지의 주소입니다    
+                        var imageSrc = forkimage,
+                        imageSize = new kakao.maps.Size(32, 32), // 마커이미지의 크기입니다
+                        imageOption = {offset: new kakao.maps.Point(15, 0)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+                        
+                        var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+
                         var marker = new kakao.maps.Marker({
                             map: map,
-                            position: coords
+                            position: coords,
+                            image: markerImage //마커 이미지 설정
                         });
                         // 인포윈도우로 장소에 대한 설명을 표시합니다
+                        //width:150px;text-align:center;padding:3px 0;
                         var infowindow = new kakao.maps.InfoWindow({
-                            content: '<div style="width:150px;text-align:center;padding:6px 0;">'+ this.rlist[i].rname +'</div>'
+                            content: '<div style="font-size:1em;padding:5px;width:150px;">'+ this.rlist[i].rname +'</div>'
                         });
                         infowindow.open(map, marker);  
-                        kakao.maps.event.addListener(marker, 'click', function() {
+                        // <v-img src="../../assets/mangoFork.png"  id="sigimg"></v-img>
+                        kakao.maps.event.addListener(marker, 'click',function(){
                             // 해당 매장으로 이동
-                           // console.dir('1');
-                           // var num = this.rlist[i].rid;
-                            router.push({ name: 'storeDetail', params: { rid: 1 }});
+                            router.push({ name: 'storeDetail', params: { rid: i+1 }})
                             //router.push({ name: 'storeDetail', params: { rid: '1' }});
                             //<router-link :to="{ name: "storeDetail", params: { rid: 1 }}"> 홍콩반점0410<br>강남역점 </router-link>
                         });
@@ -143,6 +145,7 @@ export default {
                 document.head.appendChild(script);
             }
         },//end of kakaoMapAPIReady
+        
       
         
     }, // methods
