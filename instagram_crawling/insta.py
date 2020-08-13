@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*- 
 from urllib.request import urlopen,Request # 인터넷 url를 열어주는 패키지
 from urllib.parse import quote_plus # 한글을 유니코드 형식으로 변환해줌
 from bs4 import BeautifulSoup # BeautifulSoup: 웹 크롤링이나 스크래핑할떄 쓰이는 python 라이브러리
@@ -16,17 +17,19 @@ from insta_modal import modal_images
 from server import SELECT
 from cnn_predict import Predict
 from person import person_filter
+# from text_filter import Text_Filtering_url
 
 warnings.filterwarnings(action='ignore') # 경고 메세지 제거
-
+start = time.time()
 #식당에 대한 정보를 입력
 baseUrl = "https://www.instagram.com/explore/tags/"
 plusUrl = input('식당명을 입력하세요 : ')
 en_name = input('식당의 영어명을 입력하세요 : ')
 irid = int(input('식당의 rid값을 입력하세요: '))
-ko_search = list(input('식당의 음식을 입력하세요: ').split())
-en_search = list(input('식당의 음식을 영어(폴더명)로 입력하세요: ').split())
-
+ko_search = ['알밥','비빔밥','비빔면','보쌈','불고기','닭갈비', '닭볶음탕', '된장찌개', '돈까스', '두부김치', '갈비', '갈비찜', '갈치구이', '김밥', '김치볶음밥', '김치전', '김치찌개', '곱창', '계란후라이', '계란찜', '계란말이', '호박전', '후라이드치킨', '훈제오리', '잔치국수', '장어구이', '제육볶음', '짜장면', '짬뽕', '쫄면', '쭈구미볶음', '조개구이', '족발', '조기구이', '주먹밥', '칼국수', '콩국수', '콩나물국밥', '라면','막국수', '만두', '미역국', '물회', '물냉면','오징어튀김' ,'파스타','피자', '생선구이', '새우볶음밥', '새우튀김', '삼겹살', '삼계탕' ,'산낙지', '설렁탕','수제비','순대', '순대국밥', '탕수육', '떡볶이','떡국', '우동', '양념치킨','유뷰초밥', '육회'] 
+en_search = ['albab', 'bibimbab', 'bibimnaengmyeon', 'bossam', 'bulgogi', 'dalg-galbi', 'dalgbokk-eumtang', 'doenjangjjigae', 'donkkaseu', 'dubugimchi', 'galbi', 'galbijjim', 'galchigu-i', 'gimbab', 'gimchibokk-eumbab', 'gimchijeon', 'gimchijjigae', 'gobchang', 'gyelanhulai', 'gyelanjjim', 'gyelanmal-i', 'hobagjeon', 'hulaideuchikin', 'hunje-oli', 'janchigugsu', 'jang-eogu-i', 'jeyugbokk-eum', 'jjajangmyeon', 'jjamppong', 'jjolmyeon', 'jjukkumibokk-eum', 'jogaegu-i', 'jogbal', 'jogigu-i', 'jumeogbab', 'kalgugsu', 'kong-gugsu', 'kongnamulgug', 'lamyeon', 'maggugsu', 'mandu', 'miyeoggug', 'mulhoe', 'mulnaengmyeon', 'ojing-eotwigim', 'paseuta', 'pija', 'saengseonjeon', 'saeubokk-eumbab', 'saeutwigim', 'samgyeobsal', 'samgyetang', 'sannagji', 'seolleongtang', 'sujebi', 'sundae', 'sundaegugbab', 'tangsuyug', 'tteogbokk-i', 'tteoggug', 'udong', 'yangnyeomchikin', 'yubuchobab', 'yughoe']
+# en_search = list(input('식당의 음식을 영어(폴더명)로 입력하세요: ').split())
+print(len(ko_search), len(en_search))
 #########################################################################
 # 1. 인스타 그램 url 생성 
 #########################################################################
@@ -110,6 +113,7 @@ while cnt < 5:
         else:
             last_height = new_height
             continue
+    modal_page = list(set(modal_page))
     time.sleep(0.3)
 
 
@@ -151,7 +155,10 @@ for i in tqdm(range(num_of_data)):
     account = account.replace('shared a post on','')
     account = account.replace('on Instagram','')
     account = account.replace(' ','')
-    # print(account," 을 추출했습니다.")
+    num = account.find(':')
+    if num >= 0:
+        account=account.replace(account[num:],"")
+    print(account," 을 추출했습니다.")
 #########################################################################
 # 3. DB와 인스타 계정비교
 #########################################################################
@@ -181,13 +188,17 @@ for i in tqdm(range(num_of_data)):
     print("음식 분류 완료!!!!!!!!!!!!!!!!!")
     
     # [3] 해당 url에서 사람 이미지 필터링
+    if len(res_url_menu) ==0:
+        continue
     res = person_filter(res_url_menu)
     print("사람 필터링 완료!!!!!!!!!!!!!!!!!")
     print("res ==>", res)
     
-    # [3+] 텍스트 편집
-    from text_filter import Text_Filtering_url
-    res = Text_Filtering_url(res)
+    # # [3+] 텍스트 편집
+    # if len(res) == 0:
+    #     continue
+    # res = Text_Filtering_jpg(res)
+    # print("텍스트편집 완료!!!!!!!")
 
     # [4] 기타 계정 정보 추출
     # 좋아요
@@ -220,6 +231,7 @@ for i in tqdm(range(num_of_data)):
         data["idate"] = my_date.isoformat()
         file_data.append(data)
         # print(data)
+print("총 걸린 시간은 : ",time.time()-start)
 # json 파일로 저장
 with open(en_name + '.json', 'w', encoding="utf-8") as make_file:
     json.dump(file_data, make_file, ensure_ascii=False, indent="\t")

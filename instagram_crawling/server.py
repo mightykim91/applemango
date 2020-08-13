@@ -26,10 +26,13 @@ cur = conn.cursor()
 def SELECT(uinstagramid):
   try:
     # ALTER TABLE TABLE_NAME CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-    sql = "SELECT * FROM userinfo WHERE uinstagramid ='" + ("%s" % uinstagramid) + "'"
+    # sql = "SELECT * FROM userinfo WHERE uinstagramid ='" + ("%s" % uinstagramid) + "'"
+    # sql = "SELECT * FROM instagrampictures"
     # print(sql)
     cur.execute(sql)
     resultList = cur.fetchall()
+    for res in resultList:
+      print(res)
     # print(len(resultList))
     if len(resultList) > 0:
       return False
@@ -39,10 +42,11 @@ def SELECT(uinstagramid):
     print("SELECT 과정에서 에러 발생")
 
 # insert information 
-def INSERT():
+def INSERT(data):
     try: 
       for i in range(len(data)):
         add = tuple(data[i].values())
+        # print(add)
         try:
           cur.execute("INSERT INTO instagrampictures (irid, rname, rbranch, instaid, iurl, likes, idate) VALUES (?,?,?,?,?,?,?)", add) 
         except:
@@ -55,10 +59,10 @@ def INSERT():
 
 
 # select information 
-SELECT(uinstagramid)
+# SELECT(uinstagramid)
 
-# # insert information 
-# # INSERT()
+# insert information 
+# INSERT()
 
 # conn.close()
 

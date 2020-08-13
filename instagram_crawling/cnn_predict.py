@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*- 
 import os, re, glob
 import cv2
 import numpy as np
@@ -6,7 +7,6 @@ from numpy import argmax
 from keras.models import load_model
 import wget
 
-ca = ["jjajangmyeon", "lamyeon", "donkkaseu" ,"udong" ,"paseuta", "gimbab" ,"samgyeobsal" ,"jjamppong", "chikin" ,"pija", "jogbal", "bossam", "tteogbokk-i", "sundaegugbab" ,"janchigugsu" ,"tangsuyug"]
 def Dataization(img_path):
     image_w = 28
     image_h = 28
@@ -42,28 +42,22 @@ def Predict(src_list, menu):
             test.append(Dataization(image_dir + file))
 
     # [3] 만든 데이터셋을 모델과 비교하면서 이미지 분류
-    test = np.array(test)
-    model = load_model('bingforcnn.h5')
+    test = np.array(test)   # 비교하려는 url 갯수
+    model = load_model('bingforcnn.h5') # 64개의 음식을 학습시킨 모델
     predictions = model.predict(test)   # 확률을 제공
-    # predict = model.predict_classes(test) # 클래스 레이블을 제공
-    # print("===============================")
-    # print(src_list)
-    # print(menu)
-    # print(len(test))
+
     res_url_menu = []
-    for i in range(len(src_list)):
-        print(np.max(predictions[i]))
-        if np.max(predictions[i]) >= 0.9:
+    for i in range(j):
+        number = np.max(predictions[i])
+        num = np.argmax(predictions[i])
+        menu_so = menu[num]
+        print("예측점수가 가장 높은것")
+        print(number, menu_so, num,src_list[i])
+        if np.max(predictions[i]) >= 0.85:
             tmp = []
-            num = np.argmax(predictions[i])
             # print(name[i],"의 음식분류는 ",menu[num])
             tmp.append(src_list[i])
             tmp.append(menu[num])
-            # print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
-            # print(src_list[i])
-            # print((menu[num]))
-            # print(ca[num])
-            # tmp.append(num)
             res_url_menu.append(tmp)
 
     # [4] insta_tmp_image폴더에 있는 모든 이미지 파일 지우기
@@ -73,7 +67,8 @@ def Predict(src_list, menu):
 
     return res_url_menu
 
-# q = ["https://t1.daumcdn.net/cfile/tistory/9933463B5CF6FA2821", "https://i.imgur.com/D2T8R2T.jpg","https://contents.sixshop.com/thumbnails/uploadedFiles/39154/default/image_1576811394455_1000.png","https://economy.donga.com/IMAGE/2017/04/14/83849831.3.jpg", "https://i1.wp.com/sharehows.com/wp-content/uploads/2019/07/0-%EC%8D%B8%EB%84%A4%EC%9D%BC.jpg?fit=800%2C400","https://cdn.crowdpic.net/detail-thumb/thumb_d_E8713DEDB7067CF98E30AA6683D7FE29.jpg","https://recipe1.ezmember.co.kr/cache/recipe/2018/01/08/8ae1b5468ae886aeb17ca81d0f18fc4a1.jpg"]
-# categories = ['donkkaseu', 'jjajangmyeon',"asdqw"]
-# res_url_menu = Predict(q,categories)
+# q = ["https://t1.daumcdn.net/cfile/tistory/2267C33558AAF9BF28","https://t1.daumcdn.net/cfile/tistory/262D14435791D62205","https://t1.daumcdn.net/thumb/R720x0/?fname=http://t1.daumcdn.net/brunch/service/user/2JVJ/image/vEBttMW9x_W027VoICmrbHh3fY4.png","https://t1.daumcdn.net/cfile/tistory/9933463B5CF6FA2821", "https://i.imgur.com/D2T8R2T.jpg","https://contents.sixshop.com/thumbnails/uploadedFiles/39154/default/image_1576811394455_1000.png","https://economy.donga.com/IMAGE/2017/04/14/83849831.3.jpg", "https://i1.wp.com/sharehows.com/wp-content/uploads/2019/07/0-%EC%8D%B8%EB%84%A4%EC%9D%BC.jpg?fit=800%2C400","https://cdn.crowdpic.net/detail-thumb/thumb_d_E8713DEDB7067CF98E30AA6683D7FE29.jpg","https://recipe1.ezmember.co.kr/cache/recipe/2018/01/08/8ae1b5468ae886aeb17ca81d0f18fc4a1.jpg"]
+# a = ['albab', 'bibimbab', 'bibimnaengmyeon', 'bossam', 'bulgogi', 'dalg-galbi', 'dalgbokk-eumtang', 'doenjangjjigae', 'donkkaseu', 'dubugimchi', 'galbi', 'galbijjim', 'galchigu-i', 'gimbab', 'gimchibokk-eumbab', 'gimchijeon', 'gimchijjigae', 'gobchang', 'gyelanhulai', 'gyelanjjim', 'gyelanmal-i', 'hobagjeon', 'hulaideuchikin', 'hunje-oli', 'janchigugsu', 'jang-eogu-i', 'jeyugbokk-eum', 'jjajangmyeon', 'jjamppong', 'jjolmyeon', 'jjukkumibokk-eum', 'jogaegu-i', 'jogbal', 'jogigu-i', 'jumeogbab', 'kalgugsu', 'kong-gugsu', 'kongnamulgug', 'lamyeon', 'maggugsu', 'mandu', 'miyeoggug', 'mulhoe', 'mulnaengmyeon', 'ojing-eotwigim', 'paseuta', 'pija', 'saengseonjeon', 'saeubokk-eumbab', 'saeutwigim', 'samgyeobsal', 'samgyetang', 'sannagji', 'seolleongtang', 'sujebi', 'sundae', 'sundaegugbab', 'tangsuyug', 'tteogbokk-i', 'tteoggug', 'udong', 'yangnyeomchikin', 'yubuchobab', 'yughoe']
+# print(len(a))
+# res_url_menu = Predict(q,a)
 # print(res_url_menu)
