@@ -66,6 +66,20 @@ export default {
                     location.reload();
                 })
         },
+        getLocation: function(){
+          if(navigator.geolocation){
+            console.log('geolocation is allowed')
+            navigator.geolocation.getCurrentPosition(position => {
+              var lat = position.coords.latitude
+              var lon = position.coords.longitude
+              console.log(this.$store,lat,lon)
+              this.$store.commit('getLocation', [lat, lon])
+            })
+          }
+          else{
+            console.log('geolocation is not allowed')
+          }
+        }
         //이벤트버스
         // send: function() {
         //   eventBus.$emit('sendUid', this.uid);
@@ -75,6 +89,11 @@ export default {
     // beforeMount(){
     //     this.send()
     // }
+    mounted(){
+      //위치정보
+      this.getLocation()
+      
+    }
 }
 </script>
 <style>

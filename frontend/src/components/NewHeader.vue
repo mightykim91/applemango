@@ -13,7 +13,7 @@
                 :items="searchOptions"
                 v-model="searchFilter"></v-select>
             </v-col>
-            <v-col align-self="center" cols="4">
+            <v-col class="d-flex justify-space-between" align-self="center" cols="4">
                 <v-text-field
                 hide-details
                 height="10px"
@@ -22,11 +22,17 @@
                 prepend-inner-icon="fa-search"
                 v-model="keyword"
                 @keyup.enter="search"
+                id="search-bar"
                 ></v-text-field>
-                
+                <div v-if="this.$store.getters.getLocation === false" class="d-flex ml-3">
+                    <v-icon class="align-self-center" color="gray">fa-location-arrow</v-icon>
+                </div>
+                <div v-else class="d-flex ml-3">
+                    <v-icon class="align-self-center" color="blue">fa-location-arrow</v-icon>
+                </div>
             </v-col>
             <v-col align-self="center" cols="1">
-                <v-btn @click="search">검색하기</v-btn>
+                <v-btn @click="search" height="46">검색하기</v-btn>
             </v-col>
             <v-col align-self="center" cols="2">
                 <v-icon
@@ -233,7 +239,5 @@ export default {
 #logo{
     height:80px;
 }
-
-
 </style>
 

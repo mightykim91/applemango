@@ -19,6 +19,7 @@ export const store = new Vuex.Store({
            },
            userType: '', //유저타입 변수
            keyword: '', //메인화면 검색어
+           currentLocation: false, //longitude, latitude //현재 위치 정보
          },
          mutations: {
              //CHECK USERTYPE
@@ -48,6 +49,14 @@ export const store = new Vuex.Store({
 
              search(state, keyword){
                  state.keyword = keyword
+             },
+            //현재 위치 정보 저장
+             getLocation(state, coordinates){
+                 console.log(coordinates)
+                 state.currentLocation = {
+                     longitude: coordinates[1],
+                     latitude: coordinates[0]
+                 }
              }
          },
          getters: {
@@ -56,6 +65,10 @@ export const store = new Vuex.Store({
              },
              getKeyword: state => {
                  return state.keyword;
+             },
+             //현재 위치 정보 getter
+             getLocation: state => {
+                 return state.currentLocation
              }
          }
        });
