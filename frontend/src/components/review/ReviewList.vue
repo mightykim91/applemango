@@ -1,8 +1,8 @@
 <template>
-    <div class="review-table">
+    <div class="review-table mx-3">
         <!--리뷰 헤더 시작-->
         <div class="d-flex justify-space-between mb-2">
-            <h1 style="text-align: left;">Review</h1>
+            <h1 style="text-align: left;">식당 리뷰들</h1>
 
             <!--params 안에 동적라우팅 변수 추후에 변경 요망-->
             <!--리뷰 작성페이지 링크 시작-->
@@ -15,9 +15,10 @@
         </div>
         <!--리뷰 헤더 종료-->
         <!--리뷰 grid 시작-->
-        <v-container
+        <v-card
+        rounded="xl"
         class="rounded mx-0 mx-auto mb-2"
-        style="background-color:#EFEBE9"
+        style="background-color:#FFF8E1"
         v-for="review in reviews" v-bind:key="review.reviewId"
         :id="review.title">
           <v-row class="ma-1">
@@ -27,17 +28,20 @@
               </v-col>
               <v-col cols="8" class="text-left d-flex flex-column">
                   <div class="d-flex align-center justify-space-between">
-                      <h1>{{ review.title }}</h1>
+                      <v-card-title class="headline px-0">{{ review.title }}</v-card-title>
                       <!--리뷰 삭제 버튼-->
-                      <v-icon v-on:click="deleteReview(review.reviewId)" color="red">fa-trash</v-icon>
+                      <v-icon v-if="getUserInfo === review.userId" v-on:click="deleteReview(review.reviewId)" color="red">fa-trash</v-icon>
                   </div>
-                  <div class="d-flex">
-                      <div class="mr-2">평점: 
-                          <v-rating style="display:inline" 
-                          readonly v-model="review.star" color="orange" small dense background-color="orange">
+                  <div class="d-flex mb-3">
+                      <div class="mr-2 d-flex align-center">
+                          <div>평점: </div>
+                          <v-rating
+                          class="pb-1"
+                          readonly v-model="review.star" color="orange" 
+                          small dense background-color="orange">
                           </v-rating>
                       </div>
-                      <div class="mr-2">작성자: {{ review.userId }}</div>
+                      <div class="mr-2 align-self-center">작성자: {{ review.userId }}</div>
                       <!-- <div>작성일: {{ review.createdDate[0] + review.createdDate[1] }}</div> -->
                   </div>
                   <p>
@@ -65,7 +69,7 @@
               </v-col>
               <!-- <v-col v-if="commentToShow === review.reviewId" style="background-color:white"> -->
             <v-expand-transition>
-              <v-col v-if="toggleComment(review.reviewId)" style="background-color:white">
+              <v-col class="rounded-xl mb-1" v-if="toggleComment(review.reviewId)" style="background-color:white">
                 <!-- <comment-form v-on:create="registerComment" v-bind:reid="review.reviewId"></comment-form> -->
                 <comment-form v-on:create="createComment" v-bind:reid="review.reviewId"></comment-form>
                 <p v-if="filteredComments.length === 0">댓글이 아직 없습니다 ㅠㅠ</p>
@@ -81,10 +85,13 @@
                             v-if="commentToEdit == false"
                             @click="commentToEdit = comment.id"
                             >fa-edit
-                            </v-icon> |
+                            </v-icon> 
 
                             <!--댓글 삭제 버튼-->
-                            <v-icon small color="red"
+                            <v-icon
+                            class="ml-2"
+                            v-if="getUserInfo === comment.userId" 
+                            small color="red"
                             id="delete-comment" v-on:click="deleteComment(comment.id)">
                             fa-trash
                             </v-icon>
@@ -100,7 +107,7 @@
               </v-col>
             </v-expand-transition>
           </v-row>
-        </v-container>
+        </v-card>
         <!--리뷰 grid 종료-->
     </div>
     
@@ -229,6 +236,11 @@ export default {
                 return comment.review.reviewId === this.commentToShow
             })
         },
+    },
+    computed: {
+        getUserInfo: function(){
+            return this.$cookies.get('auth-token')
+        }
     }
 
 }
