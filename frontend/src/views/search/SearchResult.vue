@@ -12,7 +12,7 @@
                         </v-col>
                         <v-col cols="9">
                             <v-card-title>
-                                <v-btn text @click="goDetail(rst.rid)" class="pa-0 ma-0 text-h6">
+                                <v-btn text @click="goDetail(rst.rid)" class="px-0 text-h6">
                                     {{ rst.rname }}
                                 </v-btn>    
                             </v-card-title>
@@ -38,7 +38,11 @@ const BACKEND_URL = constants.URL
 export default {
     name: 'SearchResult',
     mounted() {
-        this.search(this.$store.getters.getKeyword)
+        axios.get(BACKEND_URL + 'rst/all')
+        .then(response => {
+            this.search(this.$store.getters.getKeyword, response.data)
+        })
+        // this.search(this.$store.getters.getKeyword)
     },
     data(){
         return {
@@ -47,19 +51,28 @@ export default {
         }
     },
     methods:{
-        search: function(keyword){
+        //메뉴명 검색
+        search: function(keyword, rstLists){
             var allMenus = ''
+            console.log('all', rstLists)
             axios.get(BACKEND_URL + 'menu/all')
             .then(response => {
                 allMenus = response.data //전체메뉴
                 
-                //검색어로 필터링
+                //검색어로 필터링(메뉴)
                 var restaurants = new Set();
                 allMenus.forEach(menu => {
                     if (menu.mname === keyword){
                         restaurants.add(menu.mrid) //레스토랑id, 메뉴이름
                     }
-                })//END OF FOR EACH
+                })//END OF FOR EACH(메뉴 필터링 종료)
+
+                rstLists.forEach(rst => {
+                    if (keyword === rst.rname){
+                        restaurants.add(rst.rid)
+                    }
+                })
+
                 restaurants = Array.from(restaurants)
                 restaurants.forEach(rst => {
                     axios.get(BACKEND_URL + 'rst/detail?rid=' + rst)
@@ -68,9 +81,7 @@ export default {
                         
                     })
                 })
-
-            })//END OF GET RESPONSE
-            
+            })//END OF GET RESPONSE 
         },
         goDetail: function(restaurantId){
             this.$router.push({name: 'storeDetail', params:{ rid: restaurantId }})
