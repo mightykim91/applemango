@@ -90,16 +90,7 @@ export default {
             //map.setMapTypeId(kakao.maps.MapTypeId);
 
             var geocoder = new kakao.maps.services.Geocoder();
-            //드래그하면 
-            kakao.maps.event.addListener(map, 'dragend', function() {        
-    
-                // 지도 중심좌표를 얻어옵니다 
-                var latlng = map.getCenter(); 
-                
-                console.dir('변경된 지도 중심좌표는 ' + latlng.getLat() + ' 이고, '+ '경도는 ' + latlng.getLng() + ' 입니다');
-     
-                
-            });
+        
             geocoder.addressSearch(this.addr, (result, status) => {
                 // 정상적으로 검색이 완료됐으면 
                 if (status == kakao.maps.services.Status.OK) {
@@ -123,7 +114,6 @@ export default {
                 }
             });
            // "강남구 테헤란로4길 27",1,"홍콩반점0410"
-
            for(let i=0; i< this.rlist.length ;i++){
           // .forEach(element => {
                 
@@ -148,14 +138,20 @@ export default {
                         // 인포윈도우로 장소에 대한 설명을 표시합니다
                         //width:150px;text-align:center;padding:3px 0;
                         var infowindow = new kakao.maps.InfoWindow({
-                            content: '<div style="font-size:1em;padding:5px;width:150px;">'+ this.rlist[i].rname +'</div>'
+                            content: '<div style="font-size:1em;padding:5px;width:150px;">'+ this.rlist[i].rname +'</div>',
+                            removable : true // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+
                         });
                         infowindow.open(map, marker);  
                         // <v-img src="../../assets/mangoFork.png"  id="sigimg"></v-img>
                         kakao.maps.event.addListener(marker, 'click',function(){
                             // 해당 매장으로 이동
-                            router.push({ name: 'storeDetail', params: { rid: rid }})
+                            router.push({ name: 'storeDetail', params: { rid: rid}})
                             //router.push({ name: 'storeDetail', params: { rid: '1' }});
+                        });
+                        kakao.maps.event.addListener(marker, 'mouseover', function() {
+                        // 마커에 마우스오버 이벤트가 발생하면 인포윈도우를 마커위에 표시합니다
+                            infowindow.open(map, marker);
                         });
                         //infowindow.open(map, marker);
                         // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
