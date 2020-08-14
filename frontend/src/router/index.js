@@ -5,6 +5,7 @@ import login from '@/views/user/login.vue';
 import Join from '@/views/user/Join.vue';
 import insta from '@/views/restaurant/Receive-insta.vue';
 import Review from '@/components/review/ReviewList.vue';
+import ReviewForMypage from '@/components/review/ReviewListForMypage.vue';
 import CreateReview from '@/components/review/CreateReview.vue';
 import ReviewEditForm from '@/components/review/ReviewEditForm.vue';
 import reg from '@/components/restaurant/reg.vue';
@@ -80,6 +81,15 @@ export const router = new VueRouter({
       name: 'Review',
       component: Review
     },
+
+    //리뷰리스트 For Mypage
+    {
+      path: '/reviewformypage',
+      name: 'ReviewForMypage',
+      component: ReviewForMypage
+    },
+
+
     //새로운 리뷰 작성(레스토랑별 id 필요)
     {
       path: '/review/:rid',
@@ -101,7 +111,6 @@ export const router = new VueRouter({
       path: '/instagram/comment',
       name:'comment',
       component: comment,
-      
     },
     {  // 마이페이지 메인
       path: '/mypage',
