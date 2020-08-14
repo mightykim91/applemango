@@ -1,24 +1,16 @@
 <template>
   <div id="app" class="container text-left">
-      <h2 class="text-center">음식점 등록 신청</h2>
+      <h2 class="text-center">  음식점 등록 신청</h2>
       <div>
         <div class="form-group">
-          <!-- <label for="rname">*상호명</label>
-          <input type="text" class="form-control" id="rname" ref="rname" placeholder="상호명을 입력하세요" v-model="requestInfo.restaurantInfo.rname"> -->
           <v-text-field v-model="requestInfo.restaurantInfo.rname" label="상호명" :rules="[rules.required]" required></v-text-field>
         </div>
         <div class="form-group">
-          <!-- <label for="rbranch">*지점명</label>
-          <input type="text" class="form-control" id="rbranch" ref="rbranch" placeholder="지점명을 입력하세요" v-model="requestInfo.restaurantInfo.rbranch"> -->
           <v-text-field v-model="requestInfo.restaurantInfo.rbranch" label="지점명" :rules="[rules.required]" required></v-text-field>
         </div>
         <div class="form-group">
-          <!-- <label for="ruid">*아이디</label>
-          <textarea type="text" class="form-control" id="ruid" ref="userName" placeholder="아이디를 입력하세요" v-model="requestInfo.userName"></textarea> -->
         </div>
         <div class="form-group">
-          <!-- <label for="rphone">전화번호</label>
-          <textarea type="text" class="form-control" id="rphone" ref="rphone" placeholder="전화번호를 입력하세요" v-model="requestInfo.restaurantInfo.rphone"></textarea> -->
           <v-text-field 
           v-model="requestInfo.restaurantInfo.rphone" 
           hint="-를 제외하고 입력해주세요"
@@ -27,7 +19,6 @@
           required></v-text-field>
         </div>
         <div class="d-flex">
-          <!-- <label for="raddr">주소</label> -->
           <v-text-field 
           readonly 
           id="raddr" 
@@ -38,9 +29,6 @@
           </v-text-field>
           <address-search v-on:insertAddress="addAddress"></address-search>
         </div>
-        <!-- <div class="text-right">
-          <button class="btn btn-primary" @click="regHandler">등록</button>
-        </div> -->
       </div>
       <v-dialog v-model="dialog" persistent max-width="500">
         <template v-slot:activator="{ on, attrs }">
@@ -97,15 +85,6 @@ export default {
       AddressSearch
     },
     methods: {
-        // checkHandler() {
-        // let err = true;
-        // let msg = '';
-        // !this.rname && ((msg = '상호명을 입력해주세요'), (err = false), this.$refs.rname.focus());
-        // err && !this.rbranch && ((msg = '지점명을 입력해주세요'), (err = false), this.$refs.rbranch.focus());
-        // err && !this.ruid && ((msg = '아이디를 입력해주세요'), (err = false), this.$refs.userName.focus());
-        // if (!err) alert(msg);
-        // else this.regHandler();
-        // },
         regHandler() {
             //trigger Confirmation form
             //input value check
@@ -115,6 +94,7 @@ export default {
 
             //confirmation
             this.requestInfo.userName = this.ruid
+            console.log(this.requestInfo.userName)
             axios.post(BACKEND_URL + 'register/restaurant', this.requestInfo)
             .then( response => { 
             console.log('response : ', JSON.stringify(response, null, 2)) 
@@ -135,6 +115,7 @@ export default {
     data: () => {
         return {
           requestInfo:{
+            uid: '',
             userName: 'test', //test purpose, needs to be revised later with authentication
             restaurantInfo:{
             rname:'',
