@@ -67,6 +67,8 @@
         
     </div>
 
+    <my-review/>
+
     </div>
 </template>
 
@@ -75,9 +77,13 @@
     import axios from 'axios'
     import constants from "../../constants.js"; 
     import forkimage from '../../assets/fork.png'
+    import ReviewForMypage from '@/components/review/ReviewListForMypage.vue';
     const BACKEND_URL = constants.URL
     const MAP_URL = constants.MAP
     export default  {
+        components: {
+            'my-review' : ReviewForMypage
+        },
         data() {
             return {
                 user : {
