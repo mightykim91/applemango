@@ -8,7 +8,7 @@
      
       <v-row>
           <v-col>
-           <select  class="custom-select" v-model="showingPosition">
+        <select  class="custom-select" v-model="showingPosition">
            <option v-for="position in positionList" v-bind:key="position"> <!-- value는 selectedComment의 값 --> 
             {{position}}
         </option>
@@ -80,8 +80,8 @@ export default {
             this.lng =this.$store.getters.getLocation.longitude;
            
             var options = {
-              center: new kakao.maps.LatLng(this.lat, this.lng ),
-            //  center: new kakao.maps.LatLng(37.501320, 127.039654),
+            //  center: new kakao.maps.LatLng(this.lat, this.lng),
+              center: new kakao.maps.LatLng(37.499813584420224, 127.0347184269031),
               level: 4
             };
             this.map = new kakao.maps.Map(container, options);
@@ -90,11 +90,20 @@ export default {
             //map.setMapTypeId(kakao.maps.MapTypeId);
 
             var geocoder = new kakao.maps.services.Geocoder();
-            
+            //드래그하면 
+            kakao.maps.event.addListener(map, 'dragend', function() {        
+    
+                // 지도 중심좌표를 얻어옵니다 
+                var latlng = map.getCenter(); 
+                
+                console.dir('변경된 지도 중심좌표는 ' + latlng.getLat() + ' 이고, '+ '경도는 ' + latlng.getLng() + ' 입니다');
+     
+                
+            });
             geocoder.addressSearch(this.addr, (result, status) => {
                 // 정상적으로 검색이 완료됐으면 
                 if (status == kakao.maps.services.Status.OK) {
-                    var coords = new kakao.maps.LatLng(this.lat,this.lng );
+                    var coords = new kakao.maps.LatLng(this.lat,this.lng);
                     
                    // var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
                     // 결과값으로 받은 위치를 마커로 표시합니다
@@ -107,8 +116,10 @@ export default {
                         content: '<div style="width:150px;text-align:center;padding:5px 0;">내 주소</div>'
                     });
                     infowindow.open(map, marker);
+
                     // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-                    map.setCenter(coords);
+                    // 역삼역을 중심으로 초기값을 설정합니다.
+                    map.setCenter(new kakao.maps.LatLng(37.499813584420224, 127.0347184269031));
                 }
             });
            // "강남구 테헤란로4길 27",1,"홍콩반점0410"
@@ -121,7 +132,7 @@ export default {
                     if (status == kakao.maps.services.Status.OK) {
                         var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
                         // 결과값으로 받은 위치를 마커로 표시합니다
-
+                        var rid =this.rlist[i].rid;
                         //var imageSrc = "../../assets/mangoFork.png", // 마커이미지의 주소입니다    
                         var imageSrc = forkimage,
                         imageSize = new kakao.maps.Size(32, 32), // 마커이미지의 크기입니다
@@ -143,7 +154,7 @@ export default {
                         // <v-img src="../../assets/mangoFork.png"  id="sigimg"></v-img>
                         kakao.maps.event.addListener(marker, 'click',function(){
                             // 해당 매장으로 이동
-                            router.push({ name: 'storeDetail', params: { rid: i+1 }})
+                            router.push({ name: 'storeDetail', params: { rid: rid }})
                             //router.push({ name: 'storeDetail', params: { rid: '1' }});
                         });
                         //infowindow.open(map, marker);
@@ -185,9 +196,10 @@ export default {
         showingPosition:function(){
             console.dir(this.showingPosition);
             if(this.showingPosition=="내 위치"){
+                console.dir(this.lat+""+this.lng);
                 this.map.setCenter(new kakao.maps.LatLng(this.lat,this.lng));
             }else if(this.showingPosition=="역삼역"){
-                this.map.setCenter(new kakao.maps.LatLng(37.501320, 127.039654));
+                this.map.setCenter(new kakao.maps.LatLng(37.499813584420224, 127.0347184269031));
             }
         },
     }
