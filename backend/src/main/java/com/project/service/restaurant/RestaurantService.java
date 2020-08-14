@@ -42,6 +42,8 @@ public class RestaurantService {
             rst.setRbranch(request.getRbranch());
             rst.setRphone(request.getRphone());
             rst.setRaddr(request.getRaddr());
+            rst.setRimage(request.getRimage());
+            rst.setRdescription(request.getRdescription());
             rstDao.save(rst);
         });
 
