@@ -99,7 +99,7 @@
 import axios from 'axios';
 import Review from '@/components/review/ReviewList.vue';
 import constants from '../../constants.js'
-
+import forkimage from '../../assets/fork.png'
 //local
 const BACKEND_URL = constants.URL
 const MAP_URL = constants.MAP
@@ -145,7 +145,8 @@ export default {
                 likes : '',
                 idate : ''
 
-            }
+            },
+            instaflag:'', //수정버튼을 누르면 인스타의 현재 사진을 저장한다.
         }
     },
     created() {
@@ -228,9 +229,9 @@ export default {
                 this.$nextTick(() => {
                     this.$bvModal.hide('modMenu')
                 })
-                 
-                this.facebookLogin();
-                    
+                if(this.instaflag != this.newimage){
+                     this.facebookLogin(); //사진이 바뀌었으면 댓글을 보낸다.
+                }     
 
                 //메뉴사진 초기화
                 axios.get(BACKEND_URL + 'menu/list', {params: {'mrid':this.rid}})
@@ -246,6 +247,7 @@ export default {
             this.newprice = menu.mprice,
             this.newissig = menu.missig,
             this.newimage = menu.mimage
+            this.instaflag =menu.mimage; //수정하기전에 이미지를 저장한다.
             console.log("sendInfo확인"+this.newname)
         },
 
@@ -271,7 +273,11 @@ export default {
             //map.setMapTypeId(kakao.maps.MapTypeId);
 
             var geocoder = new kakao.maps.services.Geocoder();
-            
+            var imageSrc = forkimage,
+                imageSize = new kakao.maps.Size(32, 32), // 마커이미지의 크기입니다
+                imageOption = {offset: new kakao.maps.Point(15, 0)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+                    
+            var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
             geocoder.addressSearch(this.addr, (result, status) => {
                 // 정상적으로 검색이 완료됐으면 
                 if (status == kakao.maps.services.Status.OK) {
@@ -279,7 +285,8 @@ export default {
                     // 결과값으로 받은 위치를 마커로 표시합니다
                     var marker = new kakao.maps.Marker({
                         map: map,
-                        position: coords
+                        position: coords,
+                         image: markerImage //마커 이미지 설정
                     });
                     // 인포윈도우로 장소에 대한 설명을 표시합니다
                     var infowindow = new kakao.maps.InfoWindow({
@@ -380,8 +387,8 @@ export default {
         //모달에서 메뉴 사진 선택 url 변경
         changePicture: function(url,instaid){
             this.newimage = url;
-
-            alert(url + " " + instaid)
+            console.dir("!!!!!!!!!!!!판도라의 상자!!!!!!!! 인스타 사진의 주인:"+ instaid)// this.instagramName=instaid; // 판도라의 상자 실제 주인에게 메시지가 갈 수 있음 
+            //alert(url + " " + instaid)
 
             //선택 모달 창 종료
             this.$bvModal.hide('modal-multi')

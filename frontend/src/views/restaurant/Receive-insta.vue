@@ -31,7 +31,6 @@
         <div class="d-block text-center">
         </div>
 
-        
         <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example')">Close Me</b-button>
     </b-modal>
     </div>

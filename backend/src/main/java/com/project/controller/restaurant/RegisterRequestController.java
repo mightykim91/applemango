@@ -81,7 +81,10 @@ public class RegisterRequestController {
     public ResponseEntity acceptRequest(@RequestParam long requestId) throws JsonMappingException, JsonProcessingException {
         RestaurantRegisterRequest request = dao.findRestaurantRegisterRequestById(requestId);
         RestaurantEntity requestedRestaurant = mapper.readValue(request.getRestaurantInfo(),RestaurantEntity.class);
-        String username = request.getUser().getUname();
+        //소라 수정 --> username에서 uid로 수정
+        String username = request.getUser().getUid();
+        System.out.println("requestrst/accept userid"+ username);
+        
         requestedRestaurant.setRuid(username);
         dao.delete(request);
         rstDao.save(requestedRestaurant);
