@@ -163,6 +163,12 @@
             }
         },
         created () {
+            if (this.$cookies.get('auth-token')){
+                //request userinfo
+            }
+            else {
+                this.$router.push({ name: 'Login'})
+            }
         }
     }
 </script>
