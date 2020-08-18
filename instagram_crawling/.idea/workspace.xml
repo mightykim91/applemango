@@ -2,9 +2,34 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0d82510a-b3ba-4d38-93c8-fc2b19d8cbcb" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/instagram_crawling.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/instagram_crawling.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data_Preprocessing/bing.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data_Preprocessing/face.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data_Preprocessing/images/body.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data_Preprocessing/images/building.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data_Preprocessing/images/dog.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data_Preprocessing/images/input_img0.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data_Preprocessing/images/input_img1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data_Preprocessing/images/input_img2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data_Preprocessing/images/input_img3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data_Preprocessing/images/jaesuk.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data_Preprocessing/images/suzy.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data_Preprocessing/images/taehui.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data_Preprocessing/images/target_img.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data_Preprocessing/under/input_img3.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data_Preprocessing/upper/input_img0.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data_Preprocessing/upper/input_img1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data_Preprocessing/upper/input_img2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/asd.py" beforeDir="false" afterPath="$PROJECT_DIR$/asd.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bing.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cnn_predict.py" beforeDir="false" afterPath="$PROJECT_DIR$/cnn_predict.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cnn_train.py" beforeDir="false" afterPath="$PROJECT_DIR$/cnn_train.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/img_data.npy" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/insta.py" beforeDir="false" afterPath="$PROJECT_DIR$/insta.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/insta_modal.py" beforeDir="false" afterPath="$PROJECT_DIR$/insta_modal.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/person.py" beforeDir="false" afterPath="$PROJECT_DIR$/person.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/similarity.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/similarity_measure.py" beforeDir="false" afterPath="$PROJECT_DIR$/similarity_measure.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -16,24 +41,25 @@
     <session id="733514953">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="5" />
+          <entry key="project.closed" value="7" />
+          <entry key="project.open.time.2" value="1" />
           <entry key="project.open.time.3" value="2" />
           <entry key="project.open.time.4" value="2" />
+          <entry key="project.open.time.5" value="1" />
           <entry key="project.open.time.6" value="1" />
-          <entry key="project.opened" value="5" />
+          <entry key="project.opened" value="7" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+    <leaf>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/insta.py">
+        <entry file="file://$PROJECT_DIR$/bingfordata.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="437">
-              <caret line="19" column="52" lean-forward="true" selection-start-line="19" selection-start-column="52" selection-end-line="19" selection-end-column="52" />
+            <state>
               <folding>
-                <element signature="e#0#62#0" expanded="true" />
+                <element signature="e#0#42#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -44,13 +70,22 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="400" />
     <option name="width" value="1075" />
     <option name="height" value="1040" />
   </component>
   <component name="ProjectId" id="1fjFsE1UGqER2pItYSOTISMKjuj" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane" />
+      <pane id="Scope" />
+    </panes>
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -58,6 +93,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$USER_HOME$/PycharmProjects/algo" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
@@ -86,9 +122,9 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="320" y="0" width="860" height="832" extended-state="0" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.2490887" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -114,10 +150,16 @@
     <entry file="file://$PROJECT_DIR$/asd.py" />
     <entry file="file://$PROJECT_DIR$/insta.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="19" column="52" lean-forward="true" selection-start-line="19" selection-start-column="52" selection-end-line="19" selection-end-column="52" />
+        <state relative-caret-position="115">
+          <caret line="22" column="52" lean-forward="true" selection-start-line="22" selection-start-column="52" selection-end-line="22" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bingfordata.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
           <folding>
-            <element signature="e#0#62#0" expanded="true" />
+            <element signature="e#0#42#0" expanded="true" />
           </folding>
         </state>
       </provider>

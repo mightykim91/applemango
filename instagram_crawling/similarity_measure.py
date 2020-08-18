@@ -109,7 +109,7 @@ def Similarity_Measurement(url_path, en_name, url_name):
     for similarity, input_img_path in zip(similarities[1:], input_img_paths):
       # display(Image(input_img_path))
       # print(input_img_path,"의 유사도는 ","- similarity: %.2f" % similarity)
-      if similarity < 0.35:
+      if similarity < 0.3:
         os.remove(input_img_path)
         rm += 1
     # print(len(input_img_paths) - rm + "개가 수집됨")

@@ -25,11 +25,14 @@ def modal_images(url):
     driver.get(url)
     time.sleep(1)
     img_list = []
-    first_button = '//*[@id="react-root"]/section/main/div/div[1]/article/div/div[2]/div/div[1]/div[2]/div/button'
-    second_button='//*[@id="react-root"]/section/main/div/div[1]/article/div/div[2]/div/div[1]/div[2]/div/button[2]'
-
+    # first_button = '//*[@id="react-root"]/section/main/div/div[1]/article/div/div[2]/div/div[1]/div[2]/div/button'
+    first_button = '//*[@id="react-root"]/section/main/div/div[1]/article/div[2]/div/div[1]/div[2]/div/button/div'
+    # second_button='//*[@id="react-root"]/section/main/div/div[1]/article/div/div[2]/div/div[1]/div[2]/div/button[2]'
+    second_button = '//*[@id="react-root"]/section/main/div/div[1]/article/div[2]/div/div[1]/div[2]/div/button[2]/div'
+                  
     # [1] modal의 모든 img 태그 정보 추출
     for cnt in range(1,10):
+        print("모달창",cnt,'번 이동')
         pageString = driver.page_source
         soup = BeautifulSoup(pageString, 'lxml')
         img = soup.select("img[srcset]")
@@ -61,5 +64,6 @@ def modal_images(url):
         src_list.append(img_url)      
     # 중복제거를 위해 집합으로 변경 후 리스트로 다시 변환
     src_list = list(set(src_list))
-
+    print("========================")
+    print(src_list)
     return src_list

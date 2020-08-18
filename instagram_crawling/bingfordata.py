@@ -43,14 +43,19 @@ for i in range(len(k_categories)):
     start2 = time.time()  # 시작 시간 저장
     print(ko_name + "의 데이터 수집 시작")
 
+    # bing
     baseUrl = "https://www.bing.com/images/search?q="
     baseUrl2 = "&form=HDRSC2&first=1&scenario=ImageBasicHover"
+    # google
+    # baseUrl = "https://www.google.co.kr/search?q="
+    # baseUrl2 = "&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjK4aCV1ZnrAhXUMN4KHYBPBJQQ_AUoAXoECBAQAw&cshid=1597372755447732&biw=1536&bih=722"
     # 웹페이지를 안보이게해줌
     options = webdriver.ChromeOptions()
     options.add_argument('headless')
     options.add_argument('window-size=1920x1080')
 
     url = baseUrl + quote_plus(ko_name) + baseUrl2
+    print(url)
     driver = webdriver.Chrome(
             executable_path = "C:/Users/multicampus/chromedriver_win32/chromedriver.exe",
             chrome_options=options)
@@ -64,7 +69,8 @@ for i in range(len(k_categories)):
     ####################################################################################
     # 1. 이미지 url 수집
     ####################################################################################
-    while cnt < 20: # cnt 10당 => 약 500개 사이의 이미지 데이터 추출
+    while cnt < 50: # cnt 10당 => 약 500개 사이의 이미지 데이터 추출
+        print(cnt)
         cnt += 1
         pageString = driver.page_source
         bsObj = BeautifulSoup(pageString, 'lxml')
@@ -96,6 +102,7 @@ for i in range(len(k_categories)):
         url_path = list(set(url_path))
     driver.close()
     url_path = list(set(url_path))
+    print("추출된 url 개수는 : ",len(url_path))
 ####################################################################################
 # 2. 유사도 비교후 저장
 ####################################################################################
@@ -110,7 +117,7 @@ for i in range(len(k_categories)):
     Similarity_Measurement(url_path, en_name, url_name)
 
     # [3] text 필터링
-    Text_Filtering_jpg(en_name)
+    # Text_Filtering_jpg(en_name)
 
     print(ko_name , "의 걸린 시간 : " , time.time() - start2)
 

@@ -14,9 +14,10 @@ from datetime import datetime
 import requests
 # custom functions
 from insta_modal import modal_images
-from server import SELECT
+from server_select import SELECT
 from cnn_predict import Predict
 from person import person_filter
+from menu import find_name
 # from text_filter import Text_Filtering_url
 
 warnings.filterwarnings(action='ignore') # 경고 메세지 제거
@@ -26,8 +27,10 @@ baseUrl = "https://www.instagram.com/explore/tags/"
 plusUrl = input('식당명을 입력하세요 : ')
 en_name = input('식당의 영어명을 입력하세요 : ')
 irid = int(input('식당의 rid값을 입력하세요: '))
-ko_search = ['알밥','비빔밥','비빔면','보쌈','불고기','닭갈비', '닭볶음탕', '된장찌개', '돈까스', '두부김치', '갈비', '갈비찜', '갈치구이', '김밥', '김치볶음밥', '김치전', '김치찌개', '곱창', '계란후라이', '계란찜', '계란말이', '호박전', '후라이드치킨', '훈제오리', '잔치국수', '장어구이', '제육볶음', '짜장면', '짬뽕', '쫄면', '쭈구미볶음', '조개구이', '족발', '조기구이', '주먹밥', '칼국수', '콩국수', '콩나물국밥', '라면','막국수', '만두', '미역국', '물회', '물냉면','오징어튀김' ,'파스타','피자', '생선구이', '새우볶음밥', '새우튀김', '삼겹살', '삼계탕' ,'산낙지', '설렁탕','수제비','순대', '순대국밥', '탕수육', '떡볶이','떡국', '우동', '양념치킨','유뷰초밥', '육회'] 
-en_search = ['albab', 'bibimbab', 'bibimnaengmyeon', 'bossam', 'bulgogi', 'dalg-galbi', 'dalgbokk-eumtang', 'doenjangjjigae', 'donkkaseu', 'dubugimchi', 'galbi', 'galbijjim', 'galchigu-i', 'gimbab', 'gimchibokk-eumbab', 'gimchijeon', 'gimchijjigae', 'gobchang', 'gyelanhulai', 'gyelanjjim', 'gyelanmal-i', 'hobagjeon', 'hulaideuchikin', 'hunje-oli', 'janchigugsu', 'jang-eogu-i', 'jeyugbokk-eum', 'jjajangmyeon', 'jjamppong', 'jjolmyeon', 'jjukkumibokk-eum', 'jogaegu-i', 'jogbal', 'jogigu-i', 'jumeogbab', 'kalgugsu', 'kong-gugsu', 'kongnamulgug', 'lamyeon', 'maggugsu', 'mandu', 'miyeoggug', 'mulhoe', 'mulnaengmyeon', 'ojing-eotwigim', 'paseuta', 'pija', 'saengseonjeon', 'saeubokk-eumbab', 'saeutwigim', 'samgyeobsal', 'samgyetang', 'sannagji', 'seolleongtang', 'sujebi', 'sundae', 'sundaegugbab', 'tangsuyug', 'tteogbokk-i', 'tteoggug', 'udong', 'yangnyeomchikin', 'yubuchobab', 'yughoe']
+ko_search = list(input("음식명:").split())
+en_search = find_name(ko_search)
+# ko_search = ['알밥','비빔밥','비빔면','보쌈','불고기','닭갈비', '닭볶음탕', '된장찌개', '돈까스', '두부김치', '갈비', '갈비찜', '갈치구이', '김밥', '김치볶음밥', '김치전', '김치찌개', '곱창', '계란후라이', '계란찜', '계란말이', '호박전', '후라이드치킨', '훈제오리', '잔치국수', '장어구이', '제육볶음', '짜장면', '짬뽕', '쫄면', '쭈구미볶음', '조개구이', '족발', '조기구이', '주먹밥', '칼국수', '콩국수', '콩나물국밥', '라면','막국수', '만두', '미역국', '물회', '물냉면','오징어튀김' ,'파스타','피자', '생선구이', '새우볶음밥', '새우튀김', '삼겹살', '삼계탕' ,'산낙지', '설렁탕','수제비','순대', '순대국밥', '탕수육', '떡볶이','떡국', '우동', '양념치킨','유뷰초밥', '육회'] 
+# en_search = ['albab', 'bibimbab', 'bibimnaengmyeon', 'bossam', 'bulgogi', 'dalg-galbi', 'dalgbokk-eumtang', 'doenjangjjigae', 'donkkaseu', 'dubugimchi', 'galbi', 'galbijjim', 'galchigu-i', 'gimbab', 'gimchibokk-eumbab', 'gimchijeon', 'gimchijjigae', 'gobchang', 'gyelanhulai', 'gyelanjjim', 'gyelanmal-i', 'hobagjeon', 'hulaideuchikin', 'hunje-oli', 'janchigugsu', 'jang-eogu-i', 'jeyugbokk-eum', 'jjajangmyeon', 'jjamppong', 'jjolmyeon', 'jjukkumibokk-eum', 'jogaegu-i', 'jogbal', 'jogigu-i', 'jumeogbab', 'kalgugsu', 'kong-gugsu', 'kongnamulgug', 'lamyeon', 'maggugsu', 'mandu', 'miyeoggug', 'mulhoe', 'mulnaengmyeon', 'ojing-eotwigim', 'paseuta', 'pija', 'saengseonjeon', 'saeubokk-eumbab', 'saeutwigim', 'samgyeobsal', 'samgyetang', 'sannagji', 'seolleongtang', 'sujebi', 'sundae', 'sundaegugbab', 'tangsuyug', 'tteogbokk-i', 'tteoggug', 'udong', 'yangnyeomchikin', 'yubuchobab', 'yughoe']
 # en_search = list(input('식당의 음식을 영어(폴더명)로 입력하세요: ').split())
 print(len(ko_search), len(en_search))
 #########################################################################
@@ -125,20 +128,9 @@ num_of_data = len(modal_page)
 file_data = []
 print('총 {0}개의 데이터를 수집합니다.'.format(num_of_data))
 for i in tqdm(range(num_of_data)):
-    print(i,"번째 데이터를 추출중입니다.")
     # [1] data의 구조를 미리 정의 
-    data = OrderedDict()
-    data = {
-        "irid" : "",
-        "rname" : "",
-        "rbranch" : "", # 지점명은 일단 비워두자
-        "instaid" : "",
-        "iurl" : "",
-        "ifood": "",
-        "likes" : "",
-        "idate" : "",
-    }
-
+    # data = OrderedDict()
+    
     # [2] 해당 모달창에 이동하여 계정, 좋아요, 이미지 url을 추출
     req = Request("https://www.instagram.com"+modal_page[i], headers={'User-Agent': 'Mozilla/5.0'})
     webpage = urlopen(req).read()
@@ -149,25 +141,30 @@ for i in tqdm(range(num_of_data)):
     # 계정을 추출하여 db와  비교
     account = total[total.find("@")+1 : total.find(")")]
     account = account[:20]
+    print("======================")
+    print(account)
     if account == '':
         account = "Null"
+    num = account.find(':')
+    num2 = account.find(' ')
+    if num2 != -1:
+        account=account.replace(account[num2:],"")
+    if num >= 0:
+        account=account.replace(account[num:],"") 
     account = account.replace('posted on','')
     account = account.replace('shared a post on','')
     account = account.replace('on Instagram','')
-    account = account.replace(' ','')
-    num = account.find(':')
-    if num >= 0:
-        account=account.replace(account[num:],"")
-    print(account," 을 추출했습니다.")
+    # account = account.replace(' ','')
+    print(account,"을 추출했습니다.")
 #########################################################################
 # 3. DB와 인스타 계정비교
 #########################################################################
 
     # DB에 계정이 없으면 continue
-    # if SELECT(account):
-    #     continue
-
-
+    if SELECT(account):
+        print(account,"님은 애플망고 회원이 아닙니다.")
+        continue
+    print("애플망고 회원임을 확인했습니다.")
 #########################################################################
 # 4. 이미지를 추출하여 유사도 측정
 #########################################################################
@@ -192,15 +189,9 @@ for i in tqdm(range(num_of_data)):
         continue
     res = person_filter(res_url_menu)
     print("사람 필터링 완료!!!!!!!!!!!!!!!!!")
-    print("res ==>", res)
-    
-    # # [3+] 텍스트 편집
-    # if len(res) == 0:
-    #     continue
-    # res = Text_Filtering_jpg(res)
-    # print("텍스트편집 완료!!!!!!!")
+    # print("res ==>", res)
 
-    # [4] 기타 계정 정보 추출
+    # [3] 기타 계정 정보 추출
     # 좋아요
     likes = 0
     if total.find("Likes") != -1:
@@ -220,19 +211,26 @@ for i in tqdm(range(num_of_data)):
     for food_info in res:
         print("##########################################################################")
         print("food_info ==>", food_info)
+        data = {
+            "irid" : "",
+            "rname" : "",
+            "rbranch" : "", # 지점명은 일단 비워두자
+            "instaid" : "",
+            "iurl" : "",
+            "likes" : "",
+            "idate" : ""}
+
         img_url = food_info[0]
-        food = food_info[1]
         data["irid"] = irid
         data["rname"] = en_name 
         data["instaid"] = account
         data["iurl"] = img_url
-        data["ifood"] = food
+        # data["ifood"] = food
         data["likes"] = int(likes)
         data["idate"] = my_date.isoformat()
         file_data.append(data)
-        # print(data)
 print("총 걸린 시간은 : ",time.time()-start)
 # json 파일로 저장
-with open(en_name + '.json', 'w', encoding="utf-8") as make_file:
+with open('jsonfile/' + en_name + '.json', 'w', encoding="utf-8") as make_file:
     json.dump(file_data, make_file, ensure_ascii=False, indent="\t")
 driver.close()
