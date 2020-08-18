@@ -87,14 +87,6 @@ export default {
     methods: {
         regHandler() {
             //trigger Confirmation form
-            //input value check
-            Object.values(this.requestInfo.restaurantInfo).forEach(value => {
-              console.log(value)
-            })
-
-            //confirmation
-            this.requestInfo.userName = this.ruid
-            console.log(this.requestInfo.userName)
             axios.post(BACKEND_URL + 'register/restaurant', this.requestInfo)
             .then( response => { 
             console.log('response : ', JSON.stringify(response, null, 2)) 
@@ -108,21 +100,19 @@ export default {
             
         },
         addAddress: function(address){
-          console.log("HEYHEYHEY")
           this.requestInfo.restaurantInfo.raddr = address
         }
     },
     data: () => {
         return {
           requestInfo:{
-            uid: '',
-            userName: 'test', //test purpose, needs to be revised later with authentication
+            userName: '', 
             restaurantInfo:{
-            rname:'',
-            rbranch:'',
-            rphone:'',
-            raddr:'',
-            regSuccess:false
+              rname:'',
+              rbranch:'',
+              rphone:'',
+              raddr:'',
+              regSuccess:false
             }
           },
           dialog: false,
@@ -135,9 +125,10 @@ export default {
           
         }
     },
-    created(){
+    mounted(){
       if (this.$cookies.get('auth-token')){
         //request userinfo
+        this.requestInfo.userName = this.$cookies.get('auth-token')
       }
       else {
         this.$router.push({ name: 'Login'})
