@@ -4,12 +4,14 @@
 <input type="button" class="big-button" value="페이스북 로그인" @click="facebookLogin()"/>
 <p id="status"></p>
 
+<!--
 <p>게시물 목록</p>
 <select class="style-chooser" v-model="selectedPostid">
- <option v-for="post in postList" v-bind:value="post.id" v-bind:key="post.id"> <!-- value는 selectedComment의 값 --> 
+ <option v-for="post in postList" v-bind:value="post.id" v-bind:key="post.id"> value는 selectedComment의 값 
     {{post.id}}
   </option>
 </select>
+ -->
 
 <ul id="photoList">
   <li v-for="item in imgList" v-bind:key="item.media_url">
@@ -19,7 +21,7 @@
 </ul>
 
 <p>댓글 목록</p>
-<select class="style-chooser" v-model="selectedComment">
+<select class="custom-select" v-model="selectedComment">
  <option v-for="comment in comments" v-bind:value="comment.id" v-bind:key="comment.id"> <!-- value는 selectedComment의 값 --> 
     {{comment.username}} : {{ comment.text }}
   </option>
@@ -27,7 +29,7 @@
 <!-- <span>선택한 댓글의 id : {{ selectedComment }}</span> -->
 
 <p>대댓글 목록</p>
-<select class="style-chooser" v-model="selectedReply"> 
+<select class="custom-select" v-model="selectedReply"> 
 
  <option v-for="comment in replies" v-bind:value="comment.id" v-bind:key="comment.id"> <!-- value는 selectedReplies 값 --> 
     {{ comment.text }}
@@ -258,10 +260,9 @@ export default {
         pageid:'',
         selectedPostid:'', //선택된 게시물의 id 
         igUserid:'', // IG User Id
-        message:'누구 님 축하드립니다. 올리신 피드가 메뉴사진으로 선정되었습니다. 10%쿠폰 발행해드렸습니다. AppleMango 웹에서 확인해주세요.', // 게시글 댓글리스트 
+        message:' 누구 님 축하드립니다. 올리신 피드가 메뉴사진으로 선정되었습니다. 10%쿠폰 발행해드렸습니다. AppleMango 웹에서 확인해주세요.', // 게시글 댓글리스트 
         comments:{}, // 게시글의 댓글 정보
         replies:{}, //댓글의 대댓글 정보
-       
         selectedComment: '', // toggle 로 선택된 댓글 
         selectedReply:'', // toggle 로 선택된 대댓글 
       
@@ -317,5 +318,8 @@ export default {
   .style-chooser .vs__open-indicator {
     fill: #394066;
   }
+.big-button{
+  margin : 20px;
 
+}
 </style>

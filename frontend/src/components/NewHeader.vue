@@ -81,9 +81,33 @@
                             <!--MyStore-->
                             <v-list-item  @click="$router.push({ name: 'mystore',params: { ruid: $cookies.get('auth-token')} })">
                                 <v-list-item-icon>
-                                <v-icon>mdi-home</v-icon>
+                                <v-icon>fas fa-utensils</v-icon>
                                 </v-list-item-icon>
                                 <v-list-item-title>MyStore</v-list-item-title>
+                            </v-list-item>
+                            
+                            <v-list-item  @click="$router.push({ name: 'comment' })">
+                                <v-list-item-icon>
+                                <v-icon>fab fa-instagram</v-icon>
+                                </v-list-item-icon>
+                                <v-list-item-title>Instagram</v-list-item-title>
+                            </v-list-item>
+
+                            <v-list-item  @click="$router.push({ name: 'reg' })">
+                                <v-list-item-icon>
+                                <v-icon>far fa-plus-square</v-icon>
+                                </v-list-item-icon>
+                                <v-list-item-title>Reg New Store</v-list-item-title>
+                            </v-list-item>
+                        </div>
+
+                        <div v-else>
+                            <v-subheader>OWNER</v-subheader>
+                             <v-list-item  @click="$router.push({ name: 'reg' })">
+                                <v-list-item-icon>
+                                <v-icon>far fa-plus-square</v-icon>
+                                </v-list-item-icon>
+                                <v-list-item-title>Reg New Store</v-list-item-title>
                             </v-list-item>
                         </div>
 
@@ -99,6 +123,8 @@
                                 <v-list-item-title>Admin</v-list-item-title>
                             </v-list-item>
                         </div>
+
+
 
                         <v-subheader>USER</v-subheader>
                         <!--MyPage-->

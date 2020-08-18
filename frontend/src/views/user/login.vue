@@ -123,9 +123,12 @@
                         this.setCookies(this.user.id);
                         //alert(ses);
                         this.$store.commit('login', response.data.object)
+                        this.$router.push({name:'Home'})
+                        
+                    } else{
+                        alert("로그인 실패 : 아이디/비밀번호를 확인해 주십시오")
                         
                     }
-                    this.$router.push({name:'Home'})
                 })
 
                 //alert(this.$cookies.get('auth-token'));
