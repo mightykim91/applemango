@@ -4,12 +4,14 @@
 <input type="button" class="big-button" value="페이스북 로그인" @click="facebookLogin()"/>
 <p id="status"></p>
 
+<!--
 <p>게시물 목록</p>
 <select class="style-chooser" v-model="selectedPostid">
- <option v-for="post in postList" v-bind:value="post.id" v-bind:key="post.id"> <!-- value는 selectedComment의 값 --> 
+ <option v-for="post in postList" v-bind:value="post.id" v-bind:key="post.id"> value는 selectedComment의 값 
     {{post.id}}
   </option>
 </select>
+ -->
 
 <ul id="photoList">
   <li v-for="item in imgList" v-bind:key="item.media_url">
@@ -316,5 +318,8 @@ export default {
   .style-chooser .vs__open-indicator {
     fill: #394066;
   }
+.big-button{
+  margin : 20px;
 
+}
 </style>

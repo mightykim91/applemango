@@ -380,7 +380,7 @@ export default {
             });
         },//end of GetMediaId
         postComment(){ // 게시글 id(media id) 를 가지고 게시글에 댓글을 답니다.
-            const msg = this.instagramName + this.message;
+            const msg = '@'+this.instagramName + this.message;
             axios
             .post(`https://graph.facebook.com/v7.0/`+ this.selectedPostid + `/comments?access_token=`+ this.accesstoken,{message: msg })
             .then(({ data }) => {
