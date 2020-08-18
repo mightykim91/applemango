@@ -4,20 +4,23 @@
         <div class = "rstInfo">
         <p><font class="titlefont">{{requestData.rst.rname}} </font> {{requestData.rst.rbranch}} 지점</p><hr>
         <!-- 이미지 값 requestData.rst.rimg값으로 나중에 변경 -->
-        
-        <div v-if="requestData.rst.rimage" ><v-img id="sigimg" :src="requestData.rst.rimage"></v-img></div>
-        <div v-else><v-img src="../../assets/noimage.png"  id="sigimg"></v-img></div>
+        <a v-if="requestData.rst.rimage" ><img id="sigimg" :src="requestData.rst.rimage"/></a>
+        <a v-else><img src="../../assets/noimage.png"  id="sigimg"/></a>
         <pre><font class="content">
-        {{requestData.rst.rdescription}}
-        번호 {{requestData.rst.rphone}} 
-        주소 {{requestData.rst.raddr}}
+ {{requestData.rst.rdescription}}
+<v-icon color="blue">mdi-phone</v-icon> {{requestData.rst.rphone}} 
+<v-icon color="blue">mdi-map-marker</v-icon> {{requestData.rst.raddr}}
         </font></pre>
         </div>
         <br clear="left">
         <div class="menuInfo">
-            <!-- 메뉴 등록 모달 창 -->
-            <h1 style="text-align: left;">Menu <b-button v-b-modal.regMenu>등록</b-button></h1>
-                 
+            <!-- 메뉴 등록 모달 창 , 사용자가 주인일때만 등록/삭제/수정 창 보임-->
+            <h1 style="text-align: left;">
+                 <div v-if="$cookies.get('auth-token') === this.ruid">
+                    Menu <v-icon color="green" v-b-modal.regMenu>mdi-file-plus</v-icon>
+                 </div>
+                 <div v-else> Menu</div>
+            </h1>
             <b-modal id="regMenu" ref="modal" 
                 title="메뉴 등록" @show="resetModal" @hidden="resetModal" @ok="reghandleOk">
                 <form ref="form">
@@ -32,20 +35,28 @@
                 </form>
             </b-modal>
         <hr>
-        <div v-if="requestData.menus">
-            <v-container fluid>
-            <v-row>
-                <v-card flat v-for="(menu,index) in requestData.menus" :key="index">
-                    <div v-if="menu.mimage" ><v-img :src="menu.mimage"  id="menuimg"></v-img></div>
-                    <div v-else><v-img src="../../assets/noimage.png"  id="menuimg"></v-img></div>
-                    <div v-if="menu.missig" ><v-img src="../../assets/star.png" style="width:5%" id = "sigimg"></v-img></div>
-                    {{menu.mname}} / {{menu.mprice}}원
-                    <b-link v-b-modal = "'modMenu'" @click="sendInfo(menu)">수정</b-link>&nbsp;
-                    <b-link v-b-modal = "'delMenu'" @click="sendInfo(menu)">삭제</b-link>
+        <div v-if="requestData.menus" id="wrapper">  
+                <!-- 메인메뉴 -->
+                <a v-for="(menu,index) in requestData.menus" :key="index">
+                        <figure>
+                            <v-img :src="menu.mimage" v-if="menu.mimage" id="menuimg"/>
+                            <v-img src="../../assets/noimage.png" v-else id="menuimg"/>
+                            <figcaption>
+                                <a v-if="menu.missig"><v-icon color="yellow">mdi-star</v-icon></a>
+                                {{menu.mname}} / {{menu.mprice}}원 <br>
+                                
+                                <!-- 수정/삭제 아이콘 -->
+                                <p v-if="checkId($cookies.get('auth-token'))">
+                                    <v-icon class="mx-2" style="float:right;" fab large dark color="red" v-b-modal = "'delMenu'" @click="sendInfo(menu)">mdi-delete</v-icon>
+                                    <v-icon class="mx-2" style="float:right;" fab large dark color="cyan" v-b-modal = "'modMenu'" @click="sendInfo(menu)">mdi-pencil</v-icon>
+                                </p>
+                                <!-- <b-link v-b-modal = "'modMenu'" @click="sendInfo(menu)">수정</b-link>&nbsp;
+                                <b-link v-b-modal = "'delMenu'" @click="sendInfo(menu)">삭제</b-link> -->
+                            </figcaption>
+                        </figure>
+                </a>
 
-                </v-card>
-            </v-row>
-        </v-container>
+                <br>
         </div>
         <div v-else>
         등록된 메뉴 정보가 없습니다.
@@ -84,9 +95,12 @@
         <b-modal id="delMenu" title="메뉴삭제" @ok= delhandleSubmit(mid)><p>{{newname}}을(를) 정말 삭제 하시겠습니까?</p></b-modal>
 
         <detail-review v-bind:restaurantId="rid"/>
-        <h1 style="text-align: left;">Location</h1><hr>
+
+
+        <h1 style="text-align: left;"> Location</h1><hr>
         <div v-if="requestData.rst.rlat != 0"><div id="map">지도</div></div>
         <div v-else>위치 정보가 없습니다.</div>
+
     </div>
 
 
@@ -104,7 +118,6 @@ import forkimage from '../../assets/fork.png'
 const BACKEND_URL = constants.URL
 const MAP_URL = constants.MAP
 //AWS
-
 
 export default {
     name:'Detail',
@@ -128,6 +141,7 @@ export default {
             menuid:'',
             name:'멀캠',
             addr:'서울특별시 강남구 역삼동 테헤란로 212',
+            ruid:'ttt',
 
             instagramName:'@myunggi_moon',
             message:'님 축하드립니다. 올리신 피드가 메뉴사진으로 선정되었습니다. 10%쿠폰 발행해드렸습니다. AppleMango 웹에서 확인해주세요.',
@@ -157,18 +171,20 @@ export default {
         .then(response => {
             console.log(response.data)
             this.requestData.rst = response.data
-
             this.addr = this.requestData.rst.raddr
             this.name = this.requestData.rst.rname
-
+            // 사용자 아이디 확인
+            this.ruid = this.requestData.rst.ruid
+            // console.log("사용자 아이디 확인"+this.ruid+" 쿠키:"+ $cookies.get('auth-token'))
             this.initMap();
-
         })
 
         axios.get(BACKEND_URL + 'menu/list', {params: {'mrid':this.rid}})
         .then(response => {
             console.log("menu list:" + response.data)
             this.requestData.menus = response.data
+            this.ruid = this.$cookies.get('auth-token')
+            console.log("사용자 아이디 확인"+this.ruid+" 쿠키:"+ this.$cookies.get('auth-token'))
         })
 
         if (window.kakao && window.kakao.maps) {
@@ -215,7 +231,10 @@ export default {
                 this.$nextTick(() => {
                     this.$bvModal.hide('regMenu')
                         })
+                alert('등록되었습니다.')
+                location.reload('/rst/detail/'+this.rid);
                 })
+
         },
 
         //메뉴수정처리
@@ -245,7 +264,13 @@ export default {
                     console.log("menu list:" + response.data)
                     this.requestData.menus = response.data
                 })
+
+                alert('수정되었습니다.')
+                location.reload('/rst/detail/'+this.rid);
             })
+        },
+        checkId: function(word){
+            if(word == this.ruid) return true
         },
         sendInfo(menu) {
             this.mid = menu.mid,
@@ -259,12 +284,13 @@ export default {
 
         //메뉴삭제처리
         delhandleSubmit: function(mid) {
-            console.log("삭제할 메뉴 번호:"+mid);
             axios.get(BACKEND_URL + 'menu/del?mid=' + mid).then(response => {
                 console.log(response.data)
                 this.$nextTick(() => {
                     this.$bvModal.hide('delMenu')
                     })
+                    alert('삭제되었습니다.')
+                    location.reload('/rst/detail/'+this.rid);
                 })
         },
 
@@ -446,9 +472,46 @@ export default {
     margin : 20px;
     padding: 5px;
 }
+pre { 
+    padding:10px;
+    overflow: auto;
+    white-space: pre-wrap;
+}
 .titlefont {font-size: 50px;}
 .content {font-size: 25px;}
-#sigimg {float:left}
-#menuimg {width: 240px; height:200px;}
+#sigimg {float:left; width: 350px; height:300px;}
+#menuimg {
+    width: 240px; 
+    height:200px;
+    display: inline-block;
+}
 #map {width: 100%; height:480px;}
+#wrapper{
+    /* display: flex; */
+    column-count: 5;
+    column-gap: 10px;
+    column-width: 240px;
+    /* 크롬 */
+    -webkit-column-count: 5;
+    -webkit-column-gap: 10px;
+    -webkit-column-width: 240px;
+    max-width: 1680px;
+}
+#wrapper figure{
+    display: inline-block;
+    /* border: 1px solid rgba(0,0,0,0.2); */
+    width: 250px;
+    height: 320px;
+    margin: 0;
+    margin-bottom: 10px;
+    /* padding: 3px; */
+}
+#wrapper figure img{
+    width: 100%;
+}
+#wrapper figure figcaption{
+    /* border-top: 1px solid rgba(0,0,0,0.2); */
+    padding: 10px;
+    margin-top: 3px;
+}
 </style>

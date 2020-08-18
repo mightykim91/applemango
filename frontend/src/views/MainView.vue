@@ -2,21 +2,15 @@
     <div class="container">
         <map-component/>
         <hr>
+
     <v-container>
       <v-row no-gutters>
-        <img class = "image" v-on:click="search('돈까스')" src="../assets/katsu.jpg"/>
-        <div class = "middle"><div class="text">돈까스</div></div>
+        <v-col><img class = "image" v-on:click="search('돈까스')" src="../assets/katsu.jpg"/></v-col>
+        <v-col><img class = "image" v-on:click="search('파스타')" src="../assets/pasta.jpg"/></v-col>
+        <v-col><img class = "image" v-on:click="search('짜장면')" src="../assets/blackbean.jpg"/></v-col>
       </v-row>
-      <hr><h1>#파스타</h1>
-      <v-row no-gutters>
-        <img v-on:click="search('파스타')" style="cursor:grab; width:50%" src="../assets/pasta.jpg"/>
-      </v-row>
-      <v-row no-gutters>
-        <img v-on:click="search('짜장면')" style="cursor:grab; width:50%" src="../assets/blackbean.jpg"/>
-      </v-row>
-     
-      
     </v-container>
+
     <!-- <div class="container">
         <img src="../assets/katsu.jpg" class="image" style="width:20%">
         <div class="middle">
@@ -58,8 +52,9 @@ export default {
     // }
     methods: {
         search: function(word){
-          console.log(word)
-          this.$router.push({ name: 'SearchResult' , params:{'keyword':this.keyword}})
+          console.log('https://i3a503.p.ssafy.io/'+'search/result/'+word)
+          this.$router.push('search/result/'+ word)
+          // location.replace('https://i3a503.p.ssafy.io/'+'search/result/'+word)
         },
     }
 }
@@ -69,31 +64,24 @@ export default {
 
 .image {
   cursor:grab; 
-  width:50%;
-  height: auto;
-  opacity: 1;
-  display: block;
+  width:300px;
+  height: 250px;
+  display: inline-block;
   transition: .5s ease;
   backface-visibility: hidden;
 }
 
 .middle {
   transition: .5s ease;
-  opacity: 0;
   position:absolute;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   text-align: center;
 }
 
-.container:hover .image {
+/* .container:hover .image {
   opacity: 0.3;
-}
-
-.container:hover .middle {
-  opacity: 1;
-}
-
+} */
 .text {
   background-color: #4CAF50;
   color: white;
