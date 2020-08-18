@@ -7,7 +7,7 @@
             <!--params 안에 동적라우팅 변수 추후에 변경 요망-->
             <!--리뷰 작성페이지 링크 시작-->
             <div class="my-auto">
-                <router-link v-bind:to="{ name:'ReviewForm', params: {rid:1} }" style="text-decoration:none">
+                <router-link v-bind:to="{ name:'ReviewForm', params: {rid:restaurantId} }" style="text-decoration:none">
                     <v-btn color="#E0E0E0" class="font-weight-bold">리뷰 작성하러 가기!</v-btn>
                 </router-link>
             </div>
@@ -149,7 +149,7 @@ export default {
         createComment: function(commentData){
             axios.post(`${BACKEND_URL}comment/new`,commentData)
             .then(response => {
-                console.log(response.data)
+                // console.log(response.data)
                 this.comments.unshift(response.data) //새로운댓글 배열에 추가후 배열의 처음으로 이동.
             })
         },
@@ -160,7 +160,7 @@ export default {
         },
         filterComment: function(){
             this.comment = this.comment.filter(function(v){
-                console.log(this.commentToShow)
+                // console.log(this.commentToShow)
                 return v === this.commentToShow
             })
         },
@@ -177,7 +177,7 @@ export default {
                 console.log(commentId)
                 axios.delete(BACKEND_URL + 'comment/delete', { params: { 'commentId': commentId }})
                 .then(response => {
-                    console.log(response)
+                    // console.log(response)
                     this.comments = response.data
                 })
             }
@@ -187,7 +187,7 @@ export default {
                 axios.delete(BACKEND_URL + 'review/delete', {params: { 'reviewId': reviewId }})
                 .then(response => {
                     alert('성공적으로 삭제되었습니다')
-                    console.log(response)
+                    // console.log(response)
                     this.reviews = response.data
                 })
             }
@@ -207,14 +207,14 @@ export default {
             this.reviews = this.reviews.filter(review => {
                 return review.restaurantId === this.restaurantId
             })
-            console.log(response)
+            
         })
 
         //Get All comments
         axios.get(`${BACKEND_URL}comment/all`)
         .then(response => {
             this.comments = response.data;
-            console.log(response)
+            // console.log(response)
         })
         //login check
         if (this.$cookies.isKey('auth-token')) {
