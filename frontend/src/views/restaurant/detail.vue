@@ -230,7 +230,13 @@ export default {
                     this.$bvModal.hide('modMenu')
                 })
                 if(this.instaflag != this.newimage){
-                     this.facebookLogin(); //사진이 바뀌었으면 댓글을 보낸다.
+                    //사진이 바뀌었으면 댓글을 보낸다.
+                     if(this.selectedPostid ==''){ //처음이면 전체 실행 
+                         this.facebookLogin(); 
+                     }else{
+                         this.postComment();  // 두번째 이상이면 post만 실행 
+                     }
+                       
                 }     
 
                 //메뉴사진 초기화
@@ -387,7 +393,7 @@ export default {
         //모달에서 메뉴 사진 선택 url 변경
         changePicture: function(url,instaid){
             this.newimage = url;
-            console.dir("!!!!!!!!!!!!판도라의 상자!!!!!!!! 인스타 사진의 주인:"+ instaid)// this.instagramName=instaid; // 판도라의 상자 실제 주인에게 메시지가 갈 수 있음 
+            this.instagramName=instaid; // 판도라의 상자 실제 주인에게 메시지가 갈 수 있음 
             //alert(url + " " + instaid)
 
             //선택 모달 창 종료
