@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.project.model.review.*;
+import com.project.service.user.FavorService;
 import com.project.dao.review.ReviewDAO;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,18 @@ public class ReviewService {
     
     @Autowired
     ReviewDAO reviewDao;
+    
+    @Autowired
+    FavorService favorService;
 
     public List<ReviewEntity> findAll(){
         return reviewDao.findAll();
     }
 
     public Object save(ReviewEntity newReview){
+        
+        favorService.save(newReview);
+
         return reviewDao.save(newReview); 
     }
 

@@ -31,7 +31,7 @@ public class FavorEntity {
     private String uid;
 
     @Column(name = "frid")
-    private int frid;
+    private long frid;
 
     // @OneToOne
     // @JoinTable(name = "ffff", //조인테이블명

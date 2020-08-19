@@ -7,6 +7,7 @@ import java.util.Optional;
 import com.project.dao.restaurant.RestaurantDAO;
 import com.project.dao.user.FavorDAO;
 import com.project.model.restaurant.RestaurantEntity;
+import com.project.model.review.ReviewEntity;
 import com.project.model.user.FavorEntity;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,14 @@ public class FavorService {
         return favorDao.findByUid(uid);
     }
 
+    public Object save(ReviewEntity newReview){
+
+        FavorEntity newFavor = new FavorEntity();
+        newFavor.setUid(newReview.getUserId());
+        newFavor.setFrid(newReview.getRestaurantId());
+        
+        return favorDao.save(newFavor);
+    }
    
     
 }
