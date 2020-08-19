@@ -1,15 +1,37 @@
 <template>
 
   <div id="instagramComment">
-<p>
+
+<button class="big-button" v-on:click="readme=!readme">
+  <div v-if="!readme">
+    <div v-if="!isStatusOn">페이스북으로 로그인을 해주세요!</div>
+    <div v-else>사용설명서 모드로 전환하기</div>
+  </div>
+  <div v-else>
+    <div v-if="!isStatusOn">거참 말 안듣네.. 페이스북 로그인하랬죠!</div>
+    <div v-else>사용설명서 모드 해제</div>
+  </div>
+</button> 
+<div v-if="readme">
+  <p  class="description read-me">애플망고 인스타그램 페이지(https://www.instagram.com/p/CEDvDqmBsn5/)를 관리 할수있는 페이지 입니다.
+    
+    <br>1. 댓글 전송을 통해 instagram 사용자에게 알림을 줄수있습니다.
+    <br>2. 대댓글 전송을 통해 대댓글을 달 수 있습니다.
+    <br>3. 댓글과 대댓글을 삭제 할 수 있습니다.
+  </p>
+
+</div>
+<div v-if="!isStatusOn"> 
+  <p>
 AppleMango 페이스북 계정 <br>
 id: mmj2566@naver.com <br>
 password : ssafy1234!</p>
 
+
 <button v-on:click="facebookLogin()"><img src="../../assets/facebook.png" border="0" alt="" width="472" height="75"></button>
 
 <p id="status"></p>
-
+</div>
 <!--
 <p>게시물 목록</p>
 <select class="style-chooser" v-model="selectedPostid">
@@ -27,7 +49,7 @@ password : ssafy1234!</p>
   
 </ul>
 
-<p><br>댓글 목록</p>
+<p class="list">댓글 목록</p><div class="read-me" v-if="readme"> 댓글을 클릭하고,<br> 1. "댓글 삭제" 버튼을 누르면 댓글을 삭제할 수 있습니다.<br> 2. "대댓글 전송" 버튼을 누르면 선택한 댓글에 대댓글을 달 수 있습니다.</div> 
 <select class="custom-select" v-model="selectedComment">
  <option v-for="comment in comments" v-bind:value="comment.id" v-bind:key="comment.id"> <!-- value는 selectedComment의 값 --> 
     {{comment.username}} : {{ comment.text }}
@@ -35,14 +57,14 @@ password : ssafy1234!</p>
 </select>
 <!-- <span>선택한 댓글의 id : {{ selectedComment }}</span> -->
 
-<p>대댓글 목록</p>
+<p class="list">대댓글 목록</p> <div class="read-me" v-if="readme"> 대댓글을 클릭하고,<br> 대댓글 삭제버튼을 누르면 대댓글을 삭제할 수 있습니다.</div> 
 <select class="custom-select" v-model="selectedReply"> 
 
  <option v-for="comment in replies" v-bind:value="comment.id" v-bind:key="comment.id"> <!-- value는 selectedReplies 값 --> 
     {{ comment.text }}
   </option>
 </select>
-
+<p class="list"> 댓글 창 </p><div class="read-me" v-if="readme"> 댓글 창에 쓴 글이 댓글 전송 버튼을 누르면 댓글로,<br> 대댓글 전송버튼을 누르면 대댓글로 남겨집니다. </div> 
 <textarea class="ta" v-model="message" placeholder="선택한 댓글에 대댓글 달기"></textarea>
 <br>
 <input type="button" class="big-button" value="댓글 전송" @click="postComment()"/>
@@ -267,12 +289,13 @@ export default {
         pageid:'',
         selectedPostid:'', //선택된 게시물의 id 
         igUserid:'', // IG User Id
-        message:' 누구 님 축하드립니다. 올리신 피드가 메뉴사진으로 선정되었습니다. 10%쿠폰 발행해드렸습니다. AppleMango 웹에서 확인해주세요.', // 게시글 댓글리스트 
+        message:' @ssafy_applemango 님 축하드립니다. 올리신 피드가 메뉴사진으로 선정되었습니다. 10%쿠폰 발행해드렸습니다. AppleMango 웹에서 확인해주세요.', // 게시글 댓글리스트 
         comments:{}, // 게시글의 댓글 정보
         replies:{}, //댓글의 대댓글 정보
         selectedComment: '', // toggle 로 선택된 댓글 
         selectedReply:'', // toggle 로 선택된 대댓글 
         isStatusOn: false,
+        readme:false,
     }
   },
   // pageid(계정페이지id)-> Userid(사용자계정id) -> mediaid(게시물id) ->commentid(댓글id)
@@ -343,8 +366,14 @@ export default {
   resize:none;
   border: solid 2px orange;
   
+  
+}
+.list{
+  margin-top: 10px;
 }
 ul li {list-style-type:none; display: inline; margin-left:20px;}
 
-
+.read-me{
+  color: gray;
+}
 </style>
