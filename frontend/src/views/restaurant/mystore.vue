@@ -1,24 +1,31 @@
 <template>
-        <div class="container">
+        <div class="box" style="max-width: 1720px; max-height:auto">
         
-        <p>{{this.$route.params.ruid}}님의 가게 정보</p>
-        <router-link :to="{name: 'reg', params: { ruid: this.$route.params.ruid}}" class="black--text">등록</router-link>
-        <div v-if="rsts">
-            <v-container fluid>
-            <v-row>
-                <v-card flat v-for="(rst, index) in rsts" :key="index + '_rsts'">
-                    <div v-if="rst.rimage" ><v-img :src="rst.rimage"  id="rimg"></v-img></div>
-                    <div v-else><v-img src="../../assets/noimage.png"  id="rimg"></v-img></div>
-                    <h3><router-link :to="{ name: 'storeDetail', params: { rid: rst.rid }}">{{rst.rname}}</router-link></h3><br>
-                    전화번호 : {{rst.rphone}}<br>
-                    주소 : {{rst.raddr}}
-                    <b-link v-b-modal = "'modRst'" @click="sendInfo(rst)">수정</b-link>&nbsp;
-                    <b-link v-b-modal = "'delRst'" @click="sendInfo(rst)">삭제</b-link>
-                </v-card>
-            </v-row>
-        </v-container>
-        </div>
+        <p>{{this.$route.params.ruid}}님의 가게 <router-link :to="{name: 'reg', params: { ruid: this.$route.params.ruid}}" class="black--text">
+                                                    <v-icon color="green">mdi-file-plus</v-icon>
+                                                </router-link></p>
+        
+        <div v-if="rsts" class="wrapper">
+            <a v-for="(rst, index) in rsts" :key="index + '_rsts'">
+                <figure>
+                    <img v-if="rst.rimage" :src="rst.rimage"  id="rimg"/>
+                    <img v-else src="../../assets/noimage.png"  id="rimg"/>
+                    <figcaption>
+                        <h3 style="text-align:center;"><router-link :to="{ name: 'storeDetail', params: { rid: rst.rid }}">{{rst.rname}}</router-link></h3><br>
+                        <v-icon>mdi-phone</v-icon> {{rst.rphone}}<br>
+                        <v-icon>mdi-map-marker</v-icon> {{rst.raddr}}<br><br>
+                        <v-icon class="mx-2" style="float:right;" fab large dark color="red" v-b-modal = "'delRst'" @click="sendInfo(rst)">mdi-delete</v-icon>
+                        <v-icon class="mx-2" style="float:right;" fab large dark color="cyan" v-b-modal = "'modRst'" @click="sendInfo(rst)">mdi-pencil</v-icon>
 
+                        <!-- <b-link v-b-modal = "'modRst'" @click="sendInfo(rst)">수정</b-link>&nbsp; -->
+                        <!-- <b-link v-b-modal = "'delRst'" @click="sendInfo(rst)">삭제</b-link> -->   
+                    </figcaption>
+                </figure>
+            </a>
+        </div>
+        <div v-else>
+            등록된 상점이 없습니다.
+        </div>
         <!-- 레스토랑 수정하는 모달 창-->
         <b-modal id="modRst" title="레스토랑 수정" @ok="modhandleSubmit()">
             <form>
@@ -125,21 +132,49 @@
     margin: 0;
     padding: 0px;
 }
-.table {
-    margin:auto;
-    width:60%;
-    text-align:left;
+.wrapper{
+    column-count: 4;
+    column-gap: 10px;
+    column-width: 300px;
+    -webkit-column-count: 4;
+    -webkit-column-gap: 10px;
+    -webkit-column-width: 300px;
 }
-.left{
-    position:fixed; 
-    top:10%; 
-    left:0px; 
-    width:250px; 
-    height:80%; 
-    background-color: transparent;
-    padding:40px 0; 
-    overflow: hidden
-  }
-.left ul {padding: 0 30px; list-style:none;}
-.left ul li { font-size:25px;  height:75px;} 
+
+.wrapper figure{
+    display: inline-block;
+    border: 1px solid rgba(0,0,0,0.2);
+    width: 350px;
+    height: 500px;
+    margin: 0;
+    margin-bottom: 10px;
+    padding: 3px;
+}
+.wrapper figure img{
+    width: 100%;
+}
+.wrapper figure figcaption{
+    border-top: 1px solid rgba(0,0,0,0.2);
+    padding: 10px;
+    margin-top: 3px;
+    text-align: left;
+}
+
+/* .card{
+    display: inline-block;
+    width: 300px;
+    height: 500px;
+    border: 1px solid #cecece;
+    text-align: left;
+    margin-top: 5px;
+}
+.card img{
+    width: 100%;
+    border: 1px solid #cecece;
+    margin-top: 0;
+} */
+
+
+
+
 </style>
