@@ -143,7 +143,7 @@ export default {
             addr:'서울특별시 강남구 역삼동 테헤란로 212',
             ruid:'ttt',
 
-            instagramName:'@myunggi_moon',
+            instagramName:'@ssafy_applemango',
             message:'님 축하드립니다. 올리신 피드가 메뉴사진으로 선정되었습니다. 10%쿠폰 발행해드렸습니다. AppleMango 웹에서 확인해주세요.',
             accesstoken: 'EAAwHQEzKWuMBAM1Q8hPdQxM2ZBU4xiVZAqXCRy2ZCpDQTmMkUny4LupkHAZCHjOPp3pDenmIoDlPnGBlBtNstIC6b03kpd3eJRnph4ZAAokNDsKtrZCpwcbAVPyieOoVVue0hdBKqIanOaZCFuDifcXKzgMpgRoPh70OVMZB2cve4uvqSgbaKYpXtRWlWJN5P1OCyiphZBUC7OQZDZD',
             pageid:'',
