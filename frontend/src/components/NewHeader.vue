@@ -3,7 +3,7 @@
         <v-row id="nav-menus">
             <v-col align-self="center" cols="2">
                 <!-- <v-toolbar-title v-on:click="home" style="cursor:grab"></v-toolbar-title> -->
-                <img id="logo" v-on:click="home" style="cursor:grab" src="../assets/applemango_logo.png"/>
+                <img id="logo" v-on:click="home" style="cursor:pointer" src="../assets/applemango_logo.png"/>
             </v-col>
             <v-col align-self="center" cols="3">
                 <v-select

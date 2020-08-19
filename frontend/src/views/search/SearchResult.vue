@@ -2,28 +2,37 @@
     <div>
         <h1>검색결과</h1>
         <div class="d-flex justify-center">
-            <v-card class="my-3" v-for="rst in restaurants" v-bind:key="rst.id" width="500">
-                <v-container class="ma-0 pa-0">
-                    <v-row>
-                        <v-col cols="3" class="d-flex justify-center align-center">
-                            <div id="logo-container" class="rounded-circle p-3" style="background-color:gray">
-                                <v-icon large>fa-utensils</v-icon>
-                            </div>
-                        </v-col>
-                        <v-col cols="9">
-                            <v-card-title>
-                                <v-btn text @click="goDetail(rst.rid)" class="px-0 text-h6">
-                                    {{ rst.rname }}
-                                </v-btn>    
-                            </v-card-title>
-                            <v-card-text class="text-left">
-                                <p>주소: {{ rst.raddr }}</p>
-                                <p>연락처: {{ rst.rphone }}</p>
-                            </v-card-text>
-                        </v-col>
-                    </v-row>
-                </v-container>
-            </v-card>
+            <v-hover
+              v-slot:default="{ hover }">
+                <v-card
+                :elevation="hover ? 12 : 2" 
+                @click="goDetail(rst.rid)" 
+                class="my-3" 
+                v-for="rst in restaurants" 
+                v-bind:key="rst.id" 
+                width="500">
+                    <v-container class="ma-0 pa-0">
+                        <v-row>
+                            <v-col cols="3" class="d-flex justify-center align-center">
+                                <div id="logo-container" class="rounded-circle p-3" style="background-color:gray">
+                                    <v-icon large>fa-utensils</v-icon>
+                                </div>
+                            </v-col>
+                            <v-col cols="9">
+                                <v-card-title>
+                                    <v-btn text class="px-0 text-h6">
+                                        {{ rst.rname }}
+                                    </v-btn>    
+                                </v-card-title>
+                                <v-card-text class="text-left">
+                                    <p>주소: {{ rst.raddr }}</p>
+                                    <p>연락처: {{ rst.rphone }}</p>
+                                </v-card-text>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                </v-card>
+            </v-hover>
         </div>
     </div>
 </template>
