@@ -1,7 +1,12 @@
 <template>
-  <div id="instagramComment">
 
-<input type="button" class="big-button" value="페이스북 로그인" @click="facebookLogin()"/>
+  <div id="instagramComment">
+<p>
+AppleMango 페이스북 계정 <br>
+id: mmj2566@naver.com <br>
+password : ssafy1234!</p>
+<button v-on:click="facebookLogin()"><img src="../../assets/facebook.png" border="0" alt="" width="472" height="75"></button>
+
 <p id="status"></p>
 
 <!--
@@ -18,9 +23,10 @@
     <img v-show="item.media_url" v-bind:src="item.media_url" width="300" height="300">
     
   </li>
+  
 </ul>
 
-<p>댓글 목록</p>
+<p><br>댓글 목록</p>
 <select class="custom-select" v-model="selectedComment">
  <option v-for="comment in comments" v-bind:value="comment.id" v-bind:key="comment.id"> <!-- value는 selectedComment의 값 --> 
     {{comment.username}} : {{ comment.text }}
@@ -53,7 +59,7 @@
 
 // import Facebook from './Facebook.js'
 import axios from 'axios';
-
+import facebookimg from '../../assets/facebook.png'
 export default {
   
   name: 'App',
@@ -107,7 +113,7 @@ export default {
                     profileIMG: res.picture,
                     source: 'f',
                   };
-                  document.getElementById('status').innerHTML ='Thanks for logging in, ' + req_body.name + '!<br>'; // + 'Your accesstoken is '+req_body.facebookAccessToken; 
+                  // document.getElementById('status').innerHTML ='Thanks for logging in, ' + req_body.name + '!<br>'; // + 'Your accesstoken is '+req_body.facebookAccessToken; 
                   
                   this.accesstoken=accessToken; //accesstoken 저장 
                   
@@ -282,15 +288,17 @@ export default {
     igUserid:function(){ //GetUserId를 수행해서 igUserid가 바뀌면 
        this.GetMediaId(); // Post(게시물)들의 MediaId List를 가져오는 함수 실행 
     },
- //   selectedPostid:function(){ //GetMediaId를 수행해서 postList가 바뀌고 selectedPostid가 바뀌면
-  //    this.GetPostNum(); // Post(게시물)들의 MediaId List중 0번 인덱스 게시물을 가져오는 함수 실행 
-  //  },
-    selectedPostid:function(){ // GetPostNum을 수행해서 imgList 가 바뀌면 
-      this.postComment(); //게시물의 댓글을 보내는 함수 실행 
+    selectedPostid:function(){ //GetMediaId를 수행해서 postList가 바뀌고 selectedPostid가 바뀌면
+      this.GetPostNum(); // Post(게시물)들의 MediaId List중 0번 인덱스 게시물을 가져오는 함수 실행 
+      this.GetComment(); //게시물의 댓글을 가져오는 함수 실행 
     },
-//    selectedComment:function(){ // GetComment를 수행해서 selectedComment 가 바뀌면 
-//      this.GetReplies(); // 선택된 댓글의 대댓글을 조회하는 함수 실행 
-//    },
+    
+   // selectedPostid:function(){ // GetPostNum을 수행해서 imgList 가 바뀌면 
+   //   this.postComment(); //게시물의 댓글을 보내는 함수 실행 
+   // },
+    selectedComment:function(){ // GetComment를 수행해서 selectedComment 가 바뀌면 
+      this.GetReplies(); // 선택된 댓글의 대댓글을 조회하는 함수 실행 
+    },
   },
 }
 </script>
@@ -319,7 +327,22 @@ export default {
     fill: #394066;
   }
 .big-button{
-  margin : 20px;
-
+  margin : 10px;
+  background-color: #FFCB3C;
+  padding: 10px;
+  border-radius: 12px;
+  color: black;
+  font-weight:300;
+  font-size:15px;
 }
+textarea{
+  width:500px;
+  height: 100px;
+  resize:none;
+  border: solid 2px orange;
+  
+}
+ul li {list-style-type:none; display: inline; margin-left:20px;}
+
+
 </style>
