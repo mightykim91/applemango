@@ -6,9 +6,9 @@
                                                 </router-link></p>
         
         <div v-if="rsts" class="wrapper">
-            <a v-for="(rst, index) in rsts" :key="index + '_rsts'">
+            <div v-for="(rst, index) in rsts" :key="index + '_rsts'">
                 <figure>
-                    <img v-if="rst.rimage" :src="rst.rimage"  id="rimg"/>
+                    <img v-if="rst.rimage" :src="rst.rimage" class= "scale" id="rimg"/>
                     <img v-else src="../../assets/noimage.png"  id="rimg"/>
                     <figcaption>
                         <h3 style="text-align:center;"><router-link :to="{ name: 'storeDetail', params: { rid: rst.rid }}">{{rst.rname}}</router-link></h3><br>
@@ -16,12 +16,11 @@
                         <v-icon>mdi-map-marker</v-icon> {{rst.raddr}}<br><br>
                         <v-icon class="mx-2" style="float:right;" fab large dark color="red" v-b-modal = "'delRst'" @click="sendInfo(rst)">mdi-delete</v-icon>
                         <v-icon class="mx-2" style="float:right;" fab large dark color="cyan" v-b-modal = "'modRst'" @click="sendInfo(rst)">mdi-pencil</v-icon>
-
                         <!-- <b-link v-b-modal = "'modRst'" @click="sendInfo(rst)">수정</b-link>&nbsp; -->
                         <!-- <b-link v-b-modal = "'delRst'" @click="sendInfo(rst)">삭제</b-link> -->   
                     </figcaption>
                 </figure>
-            </a>
+            </div>
         </div>
         <div v-else>
             등록된 상점이 없습니다.
@@ -110,6 +109,7 @@
                         })
                     })
             },
+
         },
         data: () => {
             return {
@@ -121,7 +121,7 @@
                 newphone:'',
                 newaddr:'',
                 newimage:'',
-                newdescription:''
+                newdescription:'',
             }
         }
     }
@@ -151,7 +151,10 @@
     padding: 3px;
 }
 .wrapper figure img{
-    width: 100%;
+    /* width: 100%; */
+    width: 300px;
+    height: 246px;
+    overflow:hidden;
 }
 .wrapper figure figcaption{
     border-top: 1px solid rgba(0,0,0,0.2);
@@ -160,19 +163,21 @@
     text-align: left;
 }
 
-/* .card{
-    display: inline-block;
-    width: 300px;
-    height: 500px;
-    border: 1px solid #cecece;
-    text-align: left;
-    margin-top: 5px;
+.scale {
+  transform: scale(1);
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -o-transform: scale(1);
+  transition: all 0.3s ease-in-out;   /* 부드러운 모션을 위해 추가*/
 }
-.card img{
-    width: 100%;
-    border: 1px solid #cecece;
-    margin-top: 0;
-} */
+.scale:hover {
+  transform: scale(1.5);
+  -webkit-transform: scale(1.5);
+  -moz-transform: scale(1.5);
+  -ms-transform: scale(1.5);
+  -o-transform: scale(1.5);
+}
 
 
 
