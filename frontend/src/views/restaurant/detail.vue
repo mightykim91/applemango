@@ -514,7 +514,7 @@ pre {
     /* border-top: 1px solid rgba(0,0,0,0.2); */
     padding: 10px;
     margin-top: 3px;
-    
+}
 .instagramPick{
     margin-top: 10px;
 }
