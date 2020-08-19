@@ -4,8 +4,8 @@
         <div class = "rstInfo">
         <p><font class="titlefont">{{requestData.rst.rname}} </font> {{requestData.rst.rbranch}} 지점</p><hr>
         <!-- 이미지 값 requestData.rst.rimg값으로 나중에 변경 -->
-        <a v-if="requestData.rst.rimage" ><img id="sigimg" :src="requestData.rst.rimage"/></a>
-        <a v-else><img src="../../assets/noimage.png"  id="sigimg"/></a>
+        <div v-if="requestData.rst.rimage" ><img id="sigimg" :src="requestData.rst.rimage"/></div>
+        <div v-else><img src="../../assets/noimage.png"  id="sigimg"/></div>
         <pre><font class="content">
  {{requestData.rst.rdescription}}
 <v-icon color="blue">mdi-phone</v-icon> {{requestData.rst.rphone}} 
@@ -37,9 +37,9 @@
         <hr>
         <div v-if="requestData.menus" id="wrapper">  
                 <!-- 메인메뉴 -->
-                <a v-for="(menu,index) in requestData.menus" :key="index">
+                <div v-for="(menu,index) in requestData.menus" :key="index">
                         <figure>
-                            <v-img :src="menu.mimage" v-if="menu.mimage" id="menuimg"/>
+                            <v-img :src="menu.mimage" v-if="menu.mimage" class="scale" id="menuimg"/>
                             <v-img src="../../assets/noimage.png" v-else id="menuimg"/>
                             <figcaption>
                                 <a v-if="menu.missig"><v-icon color="yellow">mdi-star</v-icon></a>
@@ -54,7 +54,7 @@
                                 <b-link v-b-modal = "'delMenu'" @click="sendInfo(menu)">삭제</b-link> -->
                             </figcaption>
                         </figure>
-                </a>
+                </div>
 
                 <br>
         </div>
@@ -525,5 +525,20 @@ pre {
 }
 .instagramPick{
     margin-top: 10px;
+}
+.scale {
+  transform: scale(1);
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  -ms-transform: scale(1);
+  -o-transform: scale(1);
+  transition: all 0.3s ease-in-out;   /* 부드러운 모션을 위해 추가*/
+}
+.scale:hover {
+  transform: scale(1.2);
+  -webkit-transform: scale(1.2);
+  -moz-transform: scale(1.2);
+  -ms-transform: scale(1.2);
+  -o-transform: scale(1.2);
 }
 </style>
