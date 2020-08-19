@@ -419,7 +419,7 @@ export default {
         //모달에서 메뉴 사진 선택 url 변경
         changePicture: function(url,instaid){
             this.newimage = url;
-            this.instagramName=instaid; // 판도라의 상자 실제 주인에게 메시지가 갈 수 있음 
+            //판도라의 상자!!!! this.instagramName=instaid; // 판도라의 상자 실제 주인에게 메시지가 갈 수 있음 
             //alert(url + " " + instaid)
 
             //선택 모달 창 종료
