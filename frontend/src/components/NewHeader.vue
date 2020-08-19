@@ -35,7 +35,7 @@
                 <v-btn @click="search" height="46">검색하기</v-btn>
             </v-col>
             <v-col align-self="center" cols="2">
-                <v-icon
+                <!-- <v-icon
                 class="pa-3"
                 color="black" 
                 v-if="this.$store.state.userType === 'Admin'"
@@ -49,7 +49,7 @@
                 v-if="this.$cookies.get('auth-token')"
                 >
                 fa-envelope
-                </v-icon>
+                </v-icon> -->
 
                 
                 <v-menu bottom left>
@@ -116,7 +116,7 @@
                         <div v-if="this.$store.state.userType === 'Admin'">
                             <v-subheader>ADMIN</v-subheader>
                             <!--MyStore-->
-                            <v-list-item  @click="$router.push({ name: 'mystore',params: { ruid: $cookies.get('auth-token')} })">
+                            <v-list-item  @click="$router.push({ name: 'AdminPage' })">
                                 <v-list-item-icon>
                                 <v-icon>fa-user-cog</v-icon>
                                 </v-list-item-icon>
