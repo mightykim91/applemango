@@ -5,6 +5,7 @@
 AppleMango 페이스북 계정 <br>
 id: mmj2566@naver.com <br>
 password : ssafy1234!</p>
+
 <button v-on:click="facebookLogin()"><img src="../../assets/facebook.png" border="0" alt="" width="472" height="75"></button>
 
 <p id="status"></p>
@@ -17,7 +18,7 @@ password : ssafy1234!</p>
   </option>
 </select>
  -->
-
+<div v-if="isStatusOn">
 <ul id="photoList">
   <li v-for="item in imgList" v-bind:key="item.media_url">
     <img v-show="item.media_url" v-bind:src="item.media_url" width="300" height="300">
@@ -42,14 +43,14 @@ password : ssafy1234!</p>
   </option>
 </select>
 
-<textarea v-model="message" placeholder="선택한 댓글에 대댓글 달기"></textarea>
+<textarea class="ta" v-model="message" placeholder="선택한 댓글에 대댓글 달기"></textarea>
 <br>
 <input type="button" class="big-button" value="댓글 전송" @click="postComment()"/>
 <input type="button" class="big-button" value="대댓글 전송" @click="postReplies()"/>
 <input type="button" class="big-button" value="댓글 삭제" @click="deleteComment()"/>
 <input type="button" class="big-button" value="대댓글 삭제" @click="deleteReplies()"/>
 <br>
-
+</div>
   </div>
 </template>
 
@@ -271,7 +272,7 @@ export default {
         replies:{}, //댓글의 대댓글 정보
         selectedComment: '', // toggle 로 선택된 댓글 
         selectedReply:'', // toggle 로 선택된 대댓글 
-      
+        isStatusOn: false,
     }
   },
   // pageid(계정페이지id)-> Userid(사용자계정id) -> mediaid(게시물id) ->commentid(댓글id)
@@ -281,6 +282,7 @@ export default {
     },*/
     accesstoken:function(){ //페이스북 로그인해서 accesstoken 이 바뀌면 
       this.GetAccountsId(); // Accountid를 가져오는 함수 실행 
+      this.isStatusOn=!this.isStatusOn;
     },
     pageid:function(){ //Accountid를 수행해서 pageid가 바뀌면 
        this.GetUserId(); // IG Userid를 가져오는 함수 실행 
@@ -335,7 +337,7 @@ export default {
   font-weight:300;
   font-size:15px;
 }
-textarea{
+.ta{
   width:500px;
   height: 100px;
   resize:none;

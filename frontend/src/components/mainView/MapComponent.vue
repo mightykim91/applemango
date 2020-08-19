@@ -43,7 +43,7 @@ export default {
             uid : this.$parent.uid,
             userInfo : [],
             rlist:[],
-            positionList:["내 위치","역삼역"],
+            positionList:["내 위치","역삼역","제주도 서귀포시","신림역","사당역"],
             showingPosition:'역삼역',
             map:'',
             lat:'',
@@ -196,7 +196,14 @@ export default {
                 this.map.setCenter(new kakao.maps.LatLng(this.lat,this.lng));
             }else if(this.showingPosition=="역삼역"){
                 this.map.setCenter(new kakao.maps.LatLng(37.499813584420224, 127.0347184269031));
+            }else if(this.showingPosition=="제주도 서귀포시"){
+                this.map.setCenter(new kakao.maps.LatLng(33.259155, 126.407260));
+            }else if(this.showingPosition=="신림역"){
+                this.map.setCenter(new kakao.maps.LatLng(37.484124, 126.929613));
+            }else if(this.showingPosition=="사당역"){
+                this.map.setCenter(new kakao.maps.LatLng(37.476440, 126.981579));
             }
+            
         },
     }
 }

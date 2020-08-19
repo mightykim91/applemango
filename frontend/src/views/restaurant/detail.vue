@@ -70,7 +70,7 @@
                     가격 <b-form-input v-model="newprice"  required></b-form-input>
                     <!-- 이미지 업로드 or 이미지 주소 복사(현재는 이미지 주소) -->
                     이미지 <b-form-input v-model="newimage" required></b-form-input>
-                    <b-button v-b-modal.modal-multi size="xl">인스타그램 사진 선택</b-button>
+                    <b-button class="instagramPick" v-b-modal.modal-multi size="xl">인스타그램 사진 선택</b-button>
                  </b-form-group>
             </form>
         </b-modal>
@@ -486,6 +486,7 @@ pre {
     display: inline-block;
 }
 #map {width: 100%; height:480px;}
+
 #wrapper{
     /* display: flex; */
     column-count: 5;
@@ -513,5 +514,8 @@ pre {
     /* border-top: 1px solid rgba(0,0,0,0.2); */
     padding: 10px;
     margin-top: 3px;
+    
+.instagramPick{
+    margin-top: 10px;
 }
 </style>
