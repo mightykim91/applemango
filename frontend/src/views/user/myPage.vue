@@ -11,7 +11,7 @@
 
         <h1 style="text-align: left;">Location</h1><hr>
 
-        <div id="map">지도</div>
+        <!--div id="map">지도</div-->
         <!--div v-if="requestData.rst.rlat != 0"><div id="map">지도</div></div>
         <div v-else>위치 정보가 없습니다.</div-->
  
