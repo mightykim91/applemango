@@ -22,11 +22,11 @@
 
 </div>
 <div v-if="!isStatusOn"> 
-  <p>
-AppleMango 페이스북 계정 <br>
-id: mmj2566@naver.com <br>
-password : ssafy1234!</p>
-
+  <div id="idpw">
+    <p>AppleMango 페이스북 계정 <br>
+    id: mmj2566@naver.com <br>
+    password : ssafy1234!</p>
+  </div>
 
 <button v-on:click="facebookLogin()"><img src="../../assets/facebook.png" border="0" alt="" width="472" height="75"></button>
 
@@ -49,7 +49,7 @@ password : ssafy1234!</p>
   
 </ul>
 
-<p class="list">댓글 목록</p><div class="read-me" v-if="readme"> 댓글을 클릭하고,<br> 1. "댓글 삭제" 버튼을 누르면 댓글을 삭제할 수 있습니다.<br> 2. "대댓글 전송" 버튼을 누르면 선택한 댓글에 대댓글을 달 수 있습니다.</div> 
+<p >댓글 목록</p><div class="read-me" v-if="readme"> 댓글을 클릭하고,<br> 1. "댓글 삭제" 버튼을 누르면 댓글을 삭제할 수 있습니다.<br> 2. "대댓글 전송" 버튼을 누르면 선택한 댓글에 대댓글을 달 수 있습니다.</div> 
 <select class="custom-select" v-model="selectedComment">
  <option v-for="comment in comments" v-bind:value="comment.id" v-bind:key="comment.id"> <!-- value는 selectedComment의 값 --> 
     {{comment.username}} : {{ comment.text }}
@@ -57,14 +57,14 @@ password : ssafy1234!</p>
 </select>
 <!-- <span>선택한 댓글의 id : {{ selectedComment }}</span> -->
 
-<p class="list">대댓글 목록</p> <div class="read-me" v-if="readme"> 대댓글을 클릭하고,<br> 대댓글 삭제버튼을 누르면 대댓글을 삭제할 수 있습니다.</div> 
+<p >대댓글 목록</p> <div class="read-me" v-if="readme"> 대댓글을 클릭하고,<br> 대댓글 삭제버튼을 누르면 대댓글을 삭제할 수 있습니다.</div> 
 <select class="custom-select" v-model="selectedReply"> 
 
  <option v-for="comment in replies" v-bind:value="comment.id" v-bind:key="comment.id"> <!-- value는 selectedReplies 값 --> 
     {{ comment.text }}
   </option>
 </select>
-<p class="list"> 댓글 창 </p><div class="read-me" v-if="readme"> 댓글 창에 쓴 글이 댓글 전송 버튼을 누르면 댓글로,<br> 대댓글 전송버튼을 누르면 대댓글로 남겨집니다. </div> 
+<p > 댓글 창 </p><div class="read-me" v-if="readme"> 댓글 창에 쓴 글이 댓글 전송 버튼을 누르면 댓글로,<br> 대댓글 전송버튼을 누르면 대댓글로 남겨집니다. </div> 
 <textarea class="ta" v-model="message" placeholder="선택한 댓글에 대댓글 달기"></textarea>
 <br>
 <input type="button" class="big-button" value="댓글 전송" @click="postComment()"/>
@@ -351,6 +351,9 @@ export default {
   .style-chooser .vs__open-indicator {
     fill: #394066;
   }
+.custom-select{
+  margin:10px;
+}
 .big-button{
   margin : 10px;
   background-color: #FFCB3C;
@@ -365,15 +368,19 @@ export default {
   height: 100px;
   resize:none;
   border: solid 2px orange;
-  
+  margin-top:10px;
   
 }
-.list{
-  margin-top: 10px;
-}
+
 ul li {list-style-type:none; display: inline; margin-left:20px;}
 
 .read-me{
+  margin: 10px;
   color: gray;
+  
+}
+#idpw{
+  position: absolute;
+  text-align: left;
 }
 </style>
