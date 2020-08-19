@@ -144,7 +144,7 @@ export default {
             ruid:'ttt',
 
             instagramName:'@kimto.y',
-            message:'님 축하드립니다. 올리신 피드가 메뉴사진으로 선정되었습니다. 10%쿠폰 발행해드렸습니다. AppleMango 웹에서 확인해주세요.',
+            message:'님 축하드립니다. 올리신 피드가 메뉴사진으로 선정되었습니다. 이 알림을 직원에게 보여주시면 10%쿠폰으로 사용하실 수 있습니다!  ',
             accesstoken: 'EAAwHQEzKWuMBAM1Q8hPdQxM2ZBU4xiVZAqXCRy2ZCpDQTmMkUny4LupkHAZCHjOPp3pDenmIoDlPnGBlBtNstIC6b03kpd3eJRnph4ZAAokNDsKtrZCpwcbAVPyieOoVVue0hdBKqIanOaZCFuDifcXKzgMpgRoPh70OVMZB2cve4uvqSgbaKYpXtRWlWJN5P1OCyiphZBUC7OQZDZD',
             pageid:'',
             igUserid:'',
@@ -251,23 +251,27 @@ export default {
                 if(this.instaflag != this.newimage){
                     //사진이 바뀌었으면 댓글을 보낸다.
                      if(this.selectedPostid ==''){ //처음이면 전체 실행 
+                       
                          this.facebookLogin(); 
                      }else{
                          this.postComment();  // 두번째 이상이면 post만 실행 
                      }
                        
+                }else{
+                     this.reload();
+                     alert('수정되었습니다.')
                 }     
-
+                
+            })
+        },
+        reload(){
                 //메뉴사진 초기화
                 axios.get(BACKEND_URL + 'menu/list', {params: {'mrid':this.rid}})
                 .then(response => {
                     console.log("menu list:" + response.data)
                     this.requestData.menus = response.data
                 })
-
-                alert('수정되었습니다.')
                 location.reload('/rst/detail/'+this.rid);
-            })
         },
         checkId: function(word){
             if(word == this.ruid) return true
@@ -354,6 +358,7 @@ export default {
         }, //end of facebookInit() 
         facebookLogin(){
           //처음 로그인 
+           
           window.FB.login(  // 참고:  https://developers.facebook.com/docs/reference/javascript/FB.login/v7.0 + 출처: https://parkjihwan.tistory.com/9
             response =>{
               if (response.status === 'connected') {
@@ -406,13 +411,14 @@ export default {
             });
         },//end of GetMediaId
         postComment(){ // 게시글 id(media id) 를 가지고 게시글에 댓글을 답니다.
-            const msg = '@'+this.instagramName + this.message;
+            const msg = this.instagramName + this.message;
             axios
             .post(`https://graph.facebook.com/v7.0/`+ this.selectedPostid + `/comments?access_token=`+ this.accesstoken,{message: msg })
             .then(({ data }) => {
                 console.dir("댓글 :'"+ msg + " '을 적었습니다.");
                 console.dir(data);
                 alert("변경사항이 반영되어 "+this.instagramName +"님께 인스타그램에 댓글을 달았습니다.");
+                this.reload();
             });
         },//end of postComment
 
@@ -451,6 +457,7 @@ export default {
     },
     selectedPostid:function(){ // GetPostNum을 수행해서 imgList 가 바뀌면 
       this.postComment(); //게시물의 댓글을 보내는 함수 실행 
+      
     },
   }, //end of watch
 }//end of export default
