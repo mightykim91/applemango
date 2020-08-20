@@ -48,7 +48,7 @@
                       {{ review.description }}  
                   </p>
                   <div fixed class="d-flex justify-space-between mt-auto">
-                      <p>#해시태그 #여기들어가야함</p>
+                      <p></p>
                       <div>
                         <!--리뷰수정버튼(리뷰 작성자에게만 표시)-->
                         <v-btn v-if="userInfo.uid == review.userId" 
@@ -71,7 +71,7 @@
             <v-expand-transition>
               <v-col class="rounded-xl mb-1" v-if="toggleComment(review.reviewId)" style="background-color:white">
                 <!-- <comment-form v-on:create="registerComment" v-bind:reid="review.reviewId"></comment-form> -->
-                <comment-form v-on:create="createComment" v-bind:reid="review.reviewId"></comment-form>
+                <comment-form v-on:create="createComment" v-bind:reid="review.reviewId" v-bind:commentCreated="commentCreated"></comment-form>
                 <p v-if="filteredComments.length === 0">댓글이 아직 없습니다 ㅠㅠ</p>
                 <h4 v-else class="text-left mb-2">댓글 목록</h4>
                 <v-card v-for="(comment,index) in filteredComments" :key="index" 
@@ -142,7 +142,7 @@ export default {
             isLoggedIn: '',
             userInfo:'',
             commentToEdit: false,
-            
+            commentCreated: false,
         }
     },
     methods:{
@@ -151,6 +151,7 @@ export default {
             .then(response => {
                 // console.log(response.data)
                 this.comments.unshift(response.data) //새로운댓글 배열에 추가후 배열의 처음으로 이동.
+                this.commentCreated = !this.commentCreated
             })
         },
         toggleComment: function(reviewId){
