@@ -5,15 +5,15 @@
                 <!-- <v-toolbar-title v-on:click="home" style="cursor:grab"></v-toolbar-title> -->
                 <img id="logo" v-on:click="home" style="cursor:pointer" src="../assets/applemango_logo.png"/>
             </v-col>
-            <v-col align-self="center" cols="3">
+            <!-- <v-col align-self="center" cols="3">
                 <v-select
                 :select="searchFilter"
                 hide-details 
                 solo 
                 :items="searchOptions"
                 v-model="searchFilter"></v-select>
-            </v-col>
-            <v-col class="d-flex justify-space-between" align-self="center" cols="4">
+            </v-col> -->
+            <v-col class="d-flex justify-space-between" align-self="center" cols="7">
                 <v-text-field
                 hide-details
                 height="10px"

@@ -34,6 +34,7 @@ export default {
     name:'CommentForm',
     props: {
         reid:Number,
+        commentCreated: Boolean
     },
     data(){
         return {
@@ -50,6 +51,12 @@ export default {
             this.$emit("create",this.commentData)
         },
     },
+    watch:{
+        commentCreated: function(){
+            console.log('댓글 등록 완료!')
+            this.commentData.content = ''
+        }
+    }
 }
 </script>
 
