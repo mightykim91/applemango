@@ -6,10 +6,20 @@
     <v-container>
       <v-row no-gutters>
         <v-col>
-          <img class = "scale" id = "image" v-on:click="search('돈까스')" src="../assets/katsu.jpg"/>
+          <!-- <a href="https://i3a503.p.ssafy.io/search/result/돈까스"> -->
+            <img class = "scale" id = "image" v-on:click="search('돈까스')" src="../assets/katsu.jpg"/>
+          <!-- </a> -->
         </v-col>
-        <v-col><img class = "scale" id = "image" v-on:click="search('파스타')" src="../assets/pasta.jpg"/></v-col>
-        <v-col><img class = "scale" id = "image" v-on:click="search('짜장면')" src="../assets/blackbean.jpg"/></v-col>
+        <v-col>
+            <!-- <a href="https://i3a503.p.ssafy.io/search/result/파스타"> -->
+            <img class = "scale" id = "image" v-on:click="search('파스타')" src="../assets/pasta.jpg"/>
+          <!-- </a> -->
+        </v-col>
+        <v-col>
+          <!-- <a href="https://i3a503.p.ssafy.io/search/result/짜장면"> -->
+            <img class = "scale" id = "image" v-on:click="search('짜장면')" src="../assets/blackbean.jpg"/>
+          <!-- </a> -->
+        </v-col>
       </v-row>
     </v-container>
     </div>
@@ -29,14 +39,14 @@ export default {
     //     return {
     //     }
     // }
-    methods: {
-        search: function(word){
-          console.log('https://i3a503.p.ssafy.io/'+'search/result/'+word)
-          this.$router.push({ name: 'SearchResult', params: { keyword: word }})
-          // this.$router.push('search/result/'+ word)
-          // location.replace('https://i3a503.p.ssafy.io/'+'search/result/'+word)
-        },
-    }
+    // methods: {
+    //     search: function(word){
+    //       console.log('https://i3a503.p.ssafy.io/'+'search/result/'+word)
+    //       this.$router.push({ name: 'SearchResult', params: { keyword: word }})
+    //       // this.$router.push('search/result/'+ word)
+    //       // location.replace('https://i3a503.p.ssafy.io/'+'search/result/'+word)
+    //     },
+    // }
 }
 </script>
 
@@ -76,6 +86,6 @@ export default {
   -moz-transform: scale(1.5);
   -ms-transform: scale(1.5);
   -o-transform: scale(1.5);
-  opacity: 0.3;
+  /* opacity: 0.3; */
 }
 </style>
