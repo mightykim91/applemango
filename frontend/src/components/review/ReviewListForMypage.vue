@@ -48,7 +48,7 @@
                       {{ review.description }}  
                   </p>
                   <div fixed class="d-flex justify-space-between mt-auto">
-                      <p>#해시태그 #여기들어가야함</p>
+                      <p></p>
                       <div>
                         <!--리뷰수정버튼(리뷰 작성자에게만 표시)-->
                         <v-btn v-if="userInfo.uid == review.userId" 
