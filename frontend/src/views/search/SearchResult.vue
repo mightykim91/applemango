@@ -13,13 +13,19 @@
                 width="500">
                     <v-container class="ma-0 pa-0">
                         <v-row>
-                            <v-col cols="3" class="d-flex justify-center align-center">
-                                <div id="logo-container" class="rounded-circle p-3" style="background-color:gray">
+                            <v-col cols="4" class="d-flex justify-center align-center pl-3">
+                                <div v-if="rst.rimage == '' || rst.rimage == null" id="logo-container" class="rounded-circle p-1" style="background-color:gray">
                                     <!-- <v-icon large>fa-utensils</v-icon> -->
-                                    <v-img :src="rst.rimage" width="50" height="50"></v-img>
+                                    <v-img src="https://img.icons8.com/ios-filled/150/000000/meal.png" 
+                                    class="rounded-circle" width="7rem" height="7rem"></v-img>
+                                    
+                                </div>
+                                <div v-else id="logo-container" class="rounded-circle p-1" style="background-color:gray">
+                                    <!-- <v-icon large>fa-utensils</v-icon> -->
+                                    <v-img :src="rst.rimage" class="rounded-circle" width="7rem" height="7rem"></v-img>
                                 </div>
                             </v-col>
-                            <v-col cols="9">
+                            <v-col cols="8">
                                 <v-card-title>
                                         {{ rst.rname }}   
                                 </v-card-title>
@@ -70,13 +76,13 @@ export default {
                     //검색어로 필터링(메뉴)
                     var restaurants = new Set();
                     allMenus.forEach(menu => {
-                        if (menu.mname === keyword){
+                        if (menu.mname === keyword || menu.mname.includes(keyword)){
                             restaurants.add(menu.mrid) //레스토랑id, 메뉴이름
                         }
                     })//END OF FOR EACH(메뉴 필터링 종료)
 
                     rstLists.forEach(rst => {
-                        if (keyword === rst.rname){
+                        if (keyword === rst.rname || rst.rname.includes(keyword)){
                             restaurants.add(rst.rid)
                         }
                     })
@@ -95,6 +101,7 @@ export default {
                 axios.get(BACKEND_URL + 'rst/all')
                 .then(response => {
                     this.restaurants = response.data
+                    console.log(response.data)
                 })
             } 
         },
@@ -105,6 +112,8 @@ export default {
 }
 </script>
 
-<style>
+<style lang="sass">
+$icon-size: ('large':7rem)
+
 
 </style>

@@ -34,7 +34,13 @@
             <v-col align-self="center" cols="1">
                 <v-btn @click="search" height="46">검색하기</v-btn>
             </v-col>
-            <v-col align-self="center" cols="2">
+            <v-col cols="1" align-self="center" class="d-flex justify-end">
+                <div class="d-flex align-center" v-if="this.$cookies.get('auth-token')">
+                    <v-avatar size="3rem"><v-icon size="2.2rem">fa-user-circle</v-icon></v-avatar>
+                    <div><strong style="font-size:18px">{{ this.$store.getters.getUserId }}</strong></div>
+                </div>
+            </v-col>
+            <v-col align-self="center" cols="1">
                 <!-- <v-icon
                 class="pa-3"
                 color="black" 

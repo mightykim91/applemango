@@ -13,6 +13,7 @@ export const store = new Vuex.Store({
          state: {
            userInfo: {
              isLoggedin: false,
+             userId: ''
             //  isAdmin: false,
             //  isUser: false,
             //  isOwner: false,
@@ -25,6 +26,7 @@ export const store = new Vuex.Store({
              //CHECK USERTYPE
              login(state, userInfo){
                  const userType = userInfo.ukind;
+                 state.userInfo.userId = userInfo.uid;
                  if (userType === 0){
                     //  state.userInfo.isUser = true
                      state.userType = 'User'  
@@ -69,6 +71,9 @@ export const store = new Vuex.Store({
              //현재 위치 정보 getter
              getLocation: state => {
                  return state.currentLocation
+             },
+             getUserId: state => {
+                 return state.userInfo.userId
              }
          }
        });
