@@ -69,22 +69,24 @@
                     <b-form-checkbox v-model="newissig" requried>메인메뉴</b-form-checkbox> 
                     가격 <b-form-input v-model="newprice"  required></b-form-input>
                     <!-- 이미지 업로드 or 이미지 주소 복사(현재는 이미지 주소) -->
-                    이미지 <b-form-input v-model="newimage" required></b-form-input>
-                    <b-button class="instagramPick" v-b-modal.modal-multi size="xl">인스타그램 사진 선택</b-button>
+                    이미지<br>
+                    <img :src= "newimage" style="width:450px; height:380px; margin: 3px; float:center"/>
+                     <b-form-input v-model="newimage" required></b-form-input>
+                    <b-button class="instagramPick" v-b-modal.modal-multi size="xl" style="float:right">인스타그램 사진 선택</b-button>
                  </b-form-group>
             </form>
         </b-modal>
 
         <!-- 인스타그램 사진 선택 modal -->
-        <b-modal id="modal-multi" size="xl" title="Third Modal" ok-only>
+        <b-modal id="modal-multi" size="xl" title="메뉴 사진을 선택하세요." ok-only>
             <p class="my-1">인스타그램 사진 선택</p>
 
             <v-container fluid>
                 <v-row>
                     <v-card flat class="text-xs-center ma-3" v-for="instadata in instadatalist" v-bind:key="instadata.instaid">
                         
-                        <v-img :src="instadata.iurl"  max-width="200" max-height="300" ></v-img>
-                        <b-button id="select-menu-picture" v-on:click="changePicture(instadata.iurl,instadata.instaid)" >사진 선택</b-button>
+                        <a><v-img :src="instadata.iurl" id="instapic" class="scale" v-on:click="changePicture(instadata.iurl,instadata.instaid)" /></a>
+                        <!-- <b-button id="select-menu-picture" v-on:click="changePicture(instadata.iurl,instadata.instaid)" >사진 선택</b-button> -->
                     </v-card>
                 </v-row>
             </v-container>
@@ -495,6 +497,13 @@ pre {
 }
 #map {width: 100%; height:480px;}
 
+#instapic {
+    cursor:pointer; 
+    width: 240px;
+    height:200px;
+    margin: 9px;
+}
+
 #wrapper{
     /* display: flex; */
     column-count: 5;
@@ -521,7 +530,7 @@ pre {
 #wrapper figure figcaption{
     /* border-top: 1px solid rgba(0,0,0,0.2); */
     padding: 10px;
-    margin-top: 3px;
+    margin-top: 5px;
 }
 .instagramPick{
     margin-top: 10px;
@@ -535,10 +544,11 @@ pre {
   transition: all 0.3s ease-in-out;   /* 부드러운 모션을 위해 추가*/
 }
 .scale:hover {
-  transform: scale(1.2);
-  -webkit-transform: scale(1.2);
-  -moz-transform: scale(1.2);
-  -ms-transform: scale(1.2);
-  -o-transform: scale(1.2);
+  transform: scale(1.1);
+  -webkit-transform: scale(1.1);
+  -moz-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  -o-transform: scale(1.1);
 }
+
 </style>
