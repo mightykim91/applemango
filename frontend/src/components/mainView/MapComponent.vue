@@ -7,13 +7,12 @@
     <dmap/> -->
      
       <v-row>
-          <v-col>
-        <select  class="custom-select" v-model="showingPosition">
-           <option v-for="position in positionList" v-bind:key="position"> <!-- value는 selectedComment의 값 --> 
-            {{position}}
-        </option>
-
-        </select>
+          <v-col cols="2">
+            <select class="custom-select" v-model="showingPosition">
+                <option v-for="position in positionList" v-bind:key="position"> <!-- value는 selectedComment의 값 --> 
+                    {{position}}
+                </option>
+            </select>
           </v-col>
           <v-col cols="12" id="map">
               지도
