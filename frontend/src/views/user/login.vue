@@ -70,25 +70,7 @@
         </v-main>
     </v-app>
 
-    <div class="login">
-        <h2 class="comm__title">LOGIN</h2>
-
-        
-        
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-
-        <div class="ipt__box">
-            <input type="text" class="ipt" placeholder="ID" v-model="user.id">
-        </div>
-        <div class="ipt__box">
-            <input type="password" class="ipt" placeholder="Password" v-model="user.password" @keyup.enter="login()">
-        </div>
-
-        <v-btn dark v-on:click="login()">로그인</v-btn>
-
-        <v-btn yellow @click="$router.push({ name: 'SignUp' })">회원가입</v-btn>
-
-    </div>
+    
     </div>
 </template>
 <script>
