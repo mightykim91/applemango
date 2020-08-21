@@ -8,7 +8,7 @@
             <!--리뷰 작성페이지 링크 시작-->
             <div class="my-auto">
                 <router-link v-bind:to="{ name:'ReviewForm', params: {rid:restaurantId} }" style="text-decoration:none">
-                    <v-btn color="#E0E0E0" class="font-weight-bold">리뷰 작성하러 가기!</v-btn>
+                    <v-btn color="#ffcb3b" class="font-weight-bold">리뷰 작성하러 가기!</v-btn>
                 </router-link>
             </div>
             <!--리뷰 작성페이지 링크 종료-->
@@ -22,13 +22,13 @@
         v-for="review in reviews" v-bind:key="review.reviewId"
         :id="review.title">
           <v-row class="ma-1">
-              <v-col cols="4">
+              <!-- <v-col cols="4">
                   <v-img src="https://images.pexels.com/photos/704569/pexels-photo-704569.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
                   contain aspect-ratio="1.5"></v-img>
-              </v-col>
-              <v-col cols="8" class="text-left d-flex flex-column">
+              </v-col> -->
+              <v-col cols="12" class="text-left d-flex flex-column">
                   <div class="d-flex align-center justify-space-between">
-                      <v-card-title class="headline px-0">{{ review.title }}</v-card-title>
+                      <v-card-title class="h-5 px-0">{{ review.title }}</v-card-title>
                       <!--리뷰 삭제 버튼-->
                       <v-icon v-if="getUserInfo === review.userId" v-on:click="deleteReview(review.reviewId)" color="red">fa-trash</v-icon>
                   </div>
@@ -44,7 +44,7 @@
                       <div class="mr-2 align-self-center">작성자: {{ review.userId }}</div>
                       <!-- <div>작성일: {{ review.createdDate[0] + review.createdDate[1] }}</div> -->
                   </div>
-                  <p>
+                  <p class="body-1">
                       {{ review.description }}  
                   </p>
                   <div fixed class="d-flex justify-space-between mt-auto">
@@ -60,7 +60,7 @@
                         </v-btn>
                         <v-btn 
                         @click="commentToShow = review.reviewId; commentSwitch = !commentSwitch"
-                        small>
+                        small color="#ffcb3b">
                             <span v-if="toggleComment(review.reviewId)" class="font-weight-bold">댓글 닫기</span>
                             <span v-else class="font-weight-bold">댓글 보기</span>
                         </v-btn>
