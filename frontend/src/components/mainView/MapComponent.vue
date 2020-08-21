@@ -43,7 +43,7 @@ export default {
             userInfo : [],
             rlist:[],
             positionList:["내 위치","역삼역","제주도 서귀포시","신림역","사당역"],
-            showingPosition:'역삼역',
+            showingPosition:'사당역',
             map:'',
             lat:'',
             lng:'',
@@ -109,7 +109,7 @@ export default {
 
                     // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
                     // 역삼역을 중심으로 초기값을 설정합니다.
-                    map.setCenter(new kakao.maps.LatLng(37.499813584420224, 127.0347184269031));
+                    
                 }
             });
            // "강남구 테헤란로4길 27",1,"홍콩반점0410"
@@ -164,6 +164,7 @@ export default {
                 });// end of geocoder.addressSearch
              // });// end of foreach
             }// end of for
+           
             
         },//end of initMap
         kakaoMapAPIReady(){
