@@ -29,9 +29,6 @@ en_name = input('식당의 영어명을 입력하세요 : ')
 irid = int(input('식당의 rid값을 입력하세요: '))
 ko_search = list(input("음식명:").split())
 en_search = find_name(ko_search)
-# ko_search = ['알밥','비빔밥','비빔면','보쌈','불고기','닭갈비', '닭볶음탕', '된장찌개', '돈까스', '두부김치', '갈비', '갈비찜', '갈치구이', '김밥', '김치볶음밥', '김치전', '김치찌개', '곱창', '계란후라이', '계란찜', '계란말이', '호박전', '후라이드치킨', '훈제오리', '잔치국수', '장어구이', '제육볶음', '짜장면', '짬뽕', '쫄면', '쭈구미볶음', '조개구이', '족발', '조기구이', '주먹밥', '칼국수', '콩국수', '콩나물국밥', '라면','막국수', '만두', '미역국', '물회', '물냉면','오징어튀김' ,'파스타','피자', '생선구이', '새우볶음밥', '새우튀김', '삼겹살', '삼계탕' ,'산낙지', '설렁탕','수제비','순대', '순대국밥', '탕수육', '떡볶이','떡국', '우동', '양념치킨','유뷰초밥', '육회'] 
-# en_search = ['albab', 'bibimbab', 'bibimnaengmyeon', 'bossam', 'bulgogi', 'dalg-galbi', 'dalgbokk-eumtang', 'doenjangjjigae', 'donkkaseu', 'dubugimchi', 'galbi', 'galbijjim', 'galchigu-i', 'gimbab', 'gimchibokk-eumbab', 'gimchijeon', 'gimchijjigae', 'gobchang', 'gyelanhulai', 'gyelanjjim', 'gyelanmal-i', 'hobagjeon', 'hulaideuchikin', 'hunje-oli', 'janchigugsu', 'jang-eogu-i', 'jeyugbokk-eum', 'jjajangmyeon', 'jjamppong', 'jjolmyeon', 'jjukkumibokk-eum', 'jogaegu-i', 'jogbal', 'jogigu-i', 'jumeogbab', 'kalgugsu', 'kong-gugsu', 'kongnamulgug', 'lamyeon', 'maggugsu', 'mandu', 'miyeoggug', 'mulhoe', 'mulnaengmyeon', 'ojing-eotwigim', 'paseuta', 'pija', 'saengseonjeon', 'saeubokk-eumbab', 'saeutwigim', 'samgyeobsal', 'samgyetang', 'sannagji', 'seolleongtang', 'sujebi', 'sundae', 'sundaegugbab', 'tangsuyug', 'tteogbokk-i', 'tteoggug', 'udong', 'yangnyeomchikin', 'yubuchobab', 'yughoe']
-# en_search = list(input('식당의 음식을 영어(폴더명)로 입력하세요: ').split())
 print(len(ko_search), len(en_search))
 #########################################################################
 # 1. 인스타 그램 url 생성 
@@ -44,9 +41,13 @@ options.add_argument('window-size=1920x1080')
 
 url = baseUrl + quote_plus(plusUrl)
 # [2] chromedriver 띄운다.
+
+# driver = webdriver.Chrome(
+#     executable_path= "C:/Users/multicampus/chromedriver_win32/chromedriver.exe",
+#     chrome_options=options)
 driver = webdriver.Chrome(
-    executable_path= "C:/Users/multicampus/chromedriver_win32/chromedriver.exe",
-    chrome_options=options)
+    executable_path= "C:/Users/multicampus/chromedriver_win32/chromedriver.exe")
+
 driver.get(url)
 time.sleep(2)
 
@@ -84,22 +85,27 @@ except:
 SCROLL_PAUSE_TIME = 1.0
 modal_page = []
 cnt = 0 
-while cnt < 5:
+while cnt < 3:
     cnt += 1
     print(cnt,"번 크롤링을 진행중입니다.")
     pageString = driver.page_source
     bsObj = BeautifulSoup(pageString, 'lxml')
-    # [5] 크롤링하 데이터의 모달 페이지를 추출해내어 modal_page에 push
-    try:
+    # [5] 크롤링하 데이터의 모달 페이지를 추출해내어 modal_page에 pushs
+
     # bsObj는 웹에서 모든 데이터를 크롤링한 결과데이터
-        for line in bsObj.find_all(name='div', attrs={"class":"Nnq7C weEfm"}): # "class":"Nnq7C weEfm"는 이미지를 가리키는 클래스
-            # 인스타는 1row 마다 3 column이 있음 => 1개의 line마다 3개의 개시글 데이터가존재
+    for line in bsObj.find_all(name='div', attrs={"class":"Nnq7C weEfm"}): # "class":"Nnq7C weEfm"는 이미지를 가리키는 클래스
+        # 인스타는 1row 마다 3 column이 있음 => 1개의 line마다 3개의 개시글 데이터가존재
+        try:
             for i in range(3):
                 title = line.select('a')[i]
                 real = title.attrs['href']   
                 modal_page.append(real)
-    except IndexError as ider:
-        print("IndexError")
+
+        except IndexError as ider:
+            print("IndexError")
+                
+    # except IndexError as ider:
+    #     print("IndexError")
 
     last_height = driver.execute_script('return document.body.scrollHeight')
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
@@ -117,6 +123,7 @@ while cnt < 5:
             last_height = new_height
             continue
     modal_page = list(set(modal_page))
+    print(modal_page)
     time.sleep(0.3)
 
 
@@ -124,6 +131,7 @@ while cnt < 5:
 # 2. 크롤링한 데이터에서 계정 modal_page 
 #########################################################################
 modal_page = list(set(modal_page)) # 모든 게시글 모달창 주소 리스트
+print(modal_page)
 num_of_data = len(modal_page)
 file_data = []
 print('총 {0}개의 데이터를 수집합니다.'.format(num_of_data))
@@ -141,8 +149,7 @@ for i in tqdm(range(num_of_data)):
     # 계정을 추출하여 db와  비교
     account = total[total.find("@")+1 : total.find(")")]
     account = account[:20]
-    print("======================")
-    print(account)
+    # print(account)
     if account == '':
         account = "Null"
     num = account.find(':')
@@ -155,7 +162,7 @@ for i in tqdm(range(num_of_data)):
     account = account.replace('shared a post on','')
     account = account.replace('on Instagram','')
     # account = account.replace(' ','')
-    print(account,"을 추출했습니다.")
+    # print(account,"을 추출했습니다.")
 #########################################################################
 # 3. DB와 인스타 계정비교
 #########################################################################
@@ -174,7 +181,7 @@ for i in tqdm(range(num_of_data)):
     src_list = []
     url = "https://www.instagram.com"+modal_page[i]
     src_list = modal_images(url)
-    print("src_list ==>", src_list)
+    # print("src_list ==>", src_list)
     
     # [2] 사전에 학습된 cnn 모델로 음식 이미지 판단하고 url을 넘김
     # res_url : 음식이 담긴 url

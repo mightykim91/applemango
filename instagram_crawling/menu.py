@@ -64,7 +64,8 @@ menu_list ={'알밥': 'albab',
 '크림파스타' : 'keulimpaseuta',
 '토마토파스타' : 'tomatopaseuta',
 '일본식돈까스' : 'japanese_donkkaseu',
-'양식돈까스' : 'donkkaseu'}
+'양식돈까스' : 'donkkaseu',
+'군만두':'gunmandu'}
 
 def find_name(foods):
     en_names = []

@@ -55,7 +55,7 @@ X_train, X_test, Y_train, Y_test = train_test_split(X,Y)
 xy = (X_train, X_test, Y_train, Y_test)
 # dataset_name = "./model_and_datasets/datasets/" + food
 # print(dataset_name)
-np.save("./img_data.npy", xy)
+np.save("./img_datas.npy", xy)
 
 ####################################################################################
 # 2. CNN 알고리즘 => dataset을 이용용하여 학습을 시켜 모델을 만든다.
@@ -86,6 +86,6 @@ model.add(Dense(num_classes,activation = 'softmax'))
 model.compile(loss='binary_crossentropy',optimizer='Adam',metrics=['accuracy'])
 model.fit(X_train, Y_train, batch_size=32, epochs=30)
 # model_name = "./model_and_datasets/model/" + food + "_model.h5"
-model.save('newbingforcnn.h5')
+model.save('newbingforcnns.h5')
 
 print("모든 학습을 위한 걸린시간은 ",time.time()-start,"초 입니다.")

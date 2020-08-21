@@ -19,8 +19,8 @@ cur = conn.cursor()
 
 # delete information
 def DELETE():
-    # sql = "DELETE FROM instagrampictures"
+    sql = "DELETE FROM instagrampictures"
     print(sql)
     cur.execute(sql)
     conn.close()
-# DELETE()
+DELETE()

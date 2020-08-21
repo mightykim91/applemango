@@ -23,7 +23,7 @@ def SELECT(account):
         # ALTER TABLE TABLE_NAME CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
         # sql = "SELECT * FROM instagrampictures"
         sql = "SELECT uinstagramid FROM userinfo WHERE uinstagramid = '" + ("%s" % account) + "'"
-        print(sql)
+        # print(sql)
         cur.execute(sql)
         resultList = cur.fetchall()
         for res in resultList:
@@ -37,4 +37,4 @@ def SELECT(account):
         print("SELECT 과정에서 에러 발생")
     conn.close()
 
-SELECT()
+# SELECT()
