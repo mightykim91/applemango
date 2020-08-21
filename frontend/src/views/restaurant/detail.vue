@@ -70,7 +70,9 @@
                     가격 <b-form-input v-model="newprice"  required></b-form-input>
                     <!-- 이미지 업로드 or 이미지 주소 복사(현재는 이미지 주소) -->
                     이미지<br>
-                    <img :src= "newimage" style="width:450px; height:380px; margin: 3px; float:center"/>
+                    <img :src= "newimage" v-if="newimage" style="width:450px; height:380px; margin: 3px; float:center"/>
+                    <img src="../../assets/noimage.png" v-else style="width:450px; height:380px; margin: 3px; float:center"/>
+
                      <b-form-input v-model="newimage" required></b-form-input>
                     <b-button class="instagramPick" v-b-modal.modal-multi size="xl" style="float:right">인스타그램 사진 선택</b-button>
                  </b-form-group>
