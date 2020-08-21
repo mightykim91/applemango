@@ -48,7 +48,7 @@
           <v-card-text class="text-left">관리자의 심사를 거친 후 식당 등록이 완료됩니다.</v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="blue" text @click="dialog = false; proceed=false">확인</v-btn>
+            <v-btn color="blue" text @click="dialog = false; proceed=false;">확인</v-btn>
           </v-card-actions>
         </v-card>
         <v-card v-else>
@@ -101,7 +101,7 @@ export default {
         },
         addAddress: function(address){
           this.requestInfo.restaurantInfo.raddr = address
-        }
+        },
     },
     data: () => {
         return {
