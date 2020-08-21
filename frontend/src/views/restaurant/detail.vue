@@ -16,7 +16,7 @@
         <div class="menuInfo">
             <!-- 메뉴 등록 모달 창 , 사용자가 주인일때만 등록/삭제/수정 창 보임-->
             <h1 style="text-align: left;">
-                 <div v-if="$cookies.get('auth-token') === this.ruid">
+                 <div v-if="$cookies.isKey('auth-token') && ($cookies.get('auth-token') === ruid)">
                     Menu <v-icon color="green" v-b-modal.regMenu>mdi-file-plus</v-icon>
                  </div>
                  <div v-else> Menu</div>
@@ -46,7 +46,7 @@
                                 {{menu.mname}} / {{menu.mprice}}원 <br>
                                 
                                 <!-- 수정/삭제 아이콘 -->
-                                <p v-if="checkId($cookies.get('auth-token'))">
+                                <p v-if="$cookies.isKey('auth-token') && ($cookies.get('auth-token') === ruid)">
                                     <v-icon class="mx-2" style="float:right;" fab large dark color="red" v-b-modal = "'delMenu'" @click="sendInfo(menu)">mdi-delete</v-icon>
                                     <v-icon class="mx-2" style="float:right;" fab large dark color="cyan" v-b-modal = "'modMenu'" @click="sendInfo(menu)">mdi-pencil</v-icon>
                                 </p>
@@ -145,7 +145,7 @@ export default {
             menuid:'',
             name:'멀캠',
             addr:'서울특별시 강남구 역삼동 테헤란로 212',
-            ruid:'ttt',
+            ruid: '',
 
             instagramName:'@kimto.y',
             message:'님 축하드립니다. 올리신 피드가 메뉴사진으로 선정되었습니다. 이 알림을 직원에게 보여주시면 10%쿠폰으로 사용하실 수 있습니다!  ',
@@ -177,9 +177,7 @@ export default {
             this.requestData.rst = response.data
             this.addr = this.requestData.rst.raddr
             this.name = this.requestData.rst.rname
-            // 사용자 아이디 확인
             this.ruid = this.requestData.rst.ruid
-            // console.log("사용자 아이디 확인"+this.ruid+" 쿠키:"+ $cookies.get('auth-token'))
             this.initMap();
         })
 
@@ -187,8 +185,6 @@ export default {
         .then(response => {
             console.log("menu list:" + response.data)
             this.requestData.menus = response.data
-            this.ruid = this.$cookies.get('auth-token')
-            console.log("사용자 아이디 확인"+this.ruid+" 쿠키:"+ this.$cookies.get('auth-token'))
         })
 
         if (window.kakao && window.kakao.maps) {
@@ -276,9 +272,6 @@ export default {
                     this.requestData.menus = response.data
                 })
                 location.reload('/rst/detail/'+this.rid);
-        },
-        checkId: function(word){
-            if(word == this.ruid) return true
         },
         sendInfo(menu) {
             this.mid = menu.mid,
