@@ -289,7 +289,7 @@ export default {
         pageid:'',
         selectedPostid:'', //선택된 게시물의 id 
         igUserid:'', // IG User Id
-        message:' @ssafy_applemango 님 축하드립니다. 올리신 피드가 메뉴사진으로 선정되었습니다. 이 알림을 직원에게 보여주시면 10%쿠폰으로 사용하실 수 있습니다!', // 게시글 댓글리스트 
+        message:' @kimto.y 님 축하드립니다. 올리신 피드가 메뉴사진으로 선정되었습니다. 이 알림을 직원에게 보여주시면 10%쿠폰으로 사용하실 수 있습니다!', // 게시글 댓글리스트 
         comments:{}, // 게시글의 댓글 정보
         replies:{}, //댓글의 대댓글 정보
         selectedComment: '', // toggle 로 선택된 댓글 
