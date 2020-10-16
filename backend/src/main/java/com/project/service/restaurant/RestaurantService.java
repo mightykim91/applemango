@@ -16,33 +16,38 @@ public class RestaurantService {
     @Autowired
     RestaurantDAO rstDao;
 
-    public List<Restaurant> findAll(){
+    public List<RestaurantEntity> findAll(){
         return rstDao.findAll();
     }
 
-    public Optional<Restaurant> getRestaurantInfo(int rid){
+    public Optional<RestaurantEntity> getRestaurantInfo(int rid){
         return rstDao.findByRid(rid);
     }
 
-    public Object rstSave(Restaurant request) {
+    public Object rstSave(RestaurantEntity request) {
         return rstDao.save(request);
     }
 
-    public List<Restaurant> getRestaurantList(String ruid) {
+    public List<RestaurantEntity> getRestaurantList(String ruid) {
         return rstDao.findAllByRuid(ruid);
     }
 
-    public Object Modrst(Restaurant request) {
+    public Object Modrst(RestaurantEntity request) {
         int rid = request.getRid();
-        Optional<Restaurant> tmp = rstDao.findByRid(rid);
+
+        System.out.println("레스토랑 수정 Service rid"+rid);
+        Optional<RestaurantEntity> tmp = rstDao.findByRid(rid);
         tmp.ifPresent(rst -> {
             rst.setRname(request.getRname());
             rst.setRbranch(request.getRbranch());
             rst.setRphone(request.getRphone());
             rst.setRaddr(request.getRaddr());
+            rst.setRimage(request.getRimage());
+            rst.setRdescription(request.getRdescription());
+            rstDao.save(rst);
         });
 
-        return new ResponseEntity<Optional<Restaurant>>(tmp, HttpStatus.OK);
+        return new ResponseEntity<Optional<RestaurantEntity>>(tmp, HttpStatus.OK);
     }
 
     public Object Delrst(int rid) {

@@ -1,47 +1,78 @@
 <template>
+
   <div id="instagramComment">
 
-<input type="button" class="big-button" value="페이스북 로그인" @click="facebookLogin()"/>
-<p id="status"></p>
+<button class="big-button" v-on:click="readme=!readme">
+  <div v-if="!readme">
+    <div v-if="!isStatusOn">페이스북으로 로그인을 해주세요!</div>
+    <div v-else>사용설명서 모드로 전환하기</div>
+  </div>
+  <div v-else>
+    <div v-if="!isStatusOn">거참 말 안듣네.. 페이스북 로그인하랬죠!</div>
+    <div v-else>사용설명서 모드 해제</div>
+  </div>
+</button> 
+<div v-if="readme">
+  <p  class="description read-me">애플망고 인스타그램 페이지(https://www.instagram.com/p/CEDvDqmBsn5/)를 관리 할수있는 페이지 입니다.
+    
+    <br>1. 댓글 전송을 통해 instagram 사용자에게 알림을 줄수있습니다.
+    <br>2. 대댓글 전송을 통해 대댓글을 달 수 있습니다.
+    <br>3. 댓글과 대댓글을 삭제 할 수 있습니다.
+  </p>
 
+</div>
+<div v-if="!isStatusOn"> 
+  <div id="idpw">
+    <p>AppleMango 페이스북 계정 <br>
+    id: mmj2566@naver.com <br>
+    password : ssafy1234!</p>
+  </div>
+
+<button v-on:click="facebookLogin()"><img src="../../assets/facebook.png" border="0" alt="" width="472" height="75"></button>
+
+<p id="status"></p>
+</div>
+<!--
 <p>게시물 목록</p>
 <select class="style-chooser" v-model="selectedPostid">
- <option v-for="post in postList" v-bind:value="post.id" v-bind:key="post.id"> <!-- value는 selectedComment의 값 --> 
+ <option v-for="post in postList" v-bind:value="post.id" v-bind:key="post.id"> value는 selectedComment의 값 
     {{post.id}}
   </option>
 </select>
-
+ -->
+<div v-if="isStatusOn">
 <ul id="photoList">
   <li v-for="item in imgList" v-bind:key="item.media_url">
     <img v-show="item.media_url" v-bind:src="item.media_url" width="300" height="300">
     
   </li>
+  
 </ul>
 
-<p>댓글 목록</p>
-<select class="style-chooser" v-model="selectedComment">
+<p >댓글 목록</p><div class="read-me" v-if="readme"> 댓글을 클릭하고,<br> 1. "댓글 삭제" 버튼을 누르면 댓글을 삭제할 수 있습니다.<br> 2. "대댓글 전송" 버튼을 누르면 선택한 댓글에 대댓글을 달 수 있습니다.</div> 
+<select class="custom-select" v-model="selectedComment">
  <option v-for="comment in comments" v-bind:value="comment.id" v-bind:key="comment.id"> <!-- value는 selectedComment의 값 --> 
     {{comment.username}} : {{ comment.text }}
   </option>
 </select>
 <!-- <span>선택한 댓글의 id : {{ selectedComment }}</span> -->
 
-<p>대댓글 목록</p>
-<select class="style-chooser" v-model="selectedReply"> 
+<p >대댓글 목록</p> <div class="read-me" v-if="readme"> 대댓글을 클릭하고,<br> 대댓글 삭제버튼을 누르면 대댓글을 삭제할 수 있습니다.</div> 
+<select class="custom-select" v-model="selectedReply"> 
 
  <option v-for="comment in replies" v-bind:value="comment.id" v-bind:key="comment.id"> <!-- value는 selectedReplies 값 --> 
     {{ comment.text }}
   </option>
 </select>
-
-<textarea v-model="message" placeholder="선택한 댓글에 대댓글 달기"></textarea>
+<p > 댓글 창 </p><div class="read-me" v-if="readme"> 댓글 창에 쓴 글이 댓글 전송 버튼을 누르면 댓글로,<br> 대댓글 전송버튼을 누르면 대댓글로 남겨집니다. </div> 
+<textarea class="ta" v-model="message" placeholder="선택한 댓글에 대댓글 달기"></textarea>
 <br>
 <input type="button" class="big-button" value="댓글 전송" @click="postComment()"/>
 <input type="button" class="big-button" value="대댓글 전송" @click="postReplies()"/>
 <input type="button" class="big-button" value="댓글 삭제" @click="deleteComment()"/>
 <input type="button" class="big-button" value="대댓글 삭제" @click="deleteReplies()"/>
 <br>
-
+</div>
   </div>
 </template>
 
@@ -51,7 +82,7 @@
 
 // import Facebook from './Facebook.js'
 import axios from 'axios';
-
+import facebookimg from '../../assets/facebook.png'
 export default {
   
   name: 'App',
@@ -82,8 +113,8 @@ export default {
          
         }(document, 'script', 'facebook-jssdk'));
         
-      },
-        Login(){
+      }, //end of Init() 
+        facebookLogin(){
           //처음 로그인 
           window.FB.login(  // 참고:  https://developers.facebook.com/docs/reference/javascript/FB.login/v7.0 + 출처: https://parkjihwan.tistory.com/9
             response =>{
@@ -105,7 +136,7 @@ export default {
                     profileIMG: res.picture,
                     source: 'f',
                   };
-                  document.getElementById('status').innerHTML ='Thanks for logging in, ' + req_body.name + '!<br>'; // + 'Your accesstoken is '+req_body.facebookAccessToken; 
+                  // document.getElementById('status').innerHTML ='Thanks for logging in, ' + req_body.name + '!<br>'; // + 'Your accesstoken is '+req_body.facebookAccessToken; 
                   
                   this.accesstoken=accessToken; //accesstoken 저장 
                   
@@ -124,13 +155,6 @@ export default {
           
          
       }, //login
-      facebookLogin(){
-        if(localStorage.getItem('JWT_token')) return alert('이미 로그인 되어 있습니다.');
-        this.Login();
-      },
-      facebookLogout(){
-        this.Logout();
-      },
        
       GetAccountsId(){ //accesstoken 를 가지고 pageid 를 가져온다.
         axios
@@ -162,7 +186,7 @@ export default {
             this.postList = data.data;
             console.dir("게시물 목록:");
             console.dir(this.postList);
-            // this.selectedPostid = this.postList[1].id;
+            this.selectedPostid = this.postList[0].id;
           });
       },
       GetPostNum(){// MediaId를 가지고 게시물 리스트(Post들의 각 MediaId)를 가져온다
@@ -176,7 +200,7 @@ export default {
                     'timestamp'].join(',')
         axios
           .get(`https://graph.facebook.com/v7.0/`+ this.selectedPostid + `?fields=${fields}&access_token=`+ this.accesstoken)
-          //.get(`https://graph.facebook.com/v7.0/`+ this.postList[0].id + `?fields=id,media_type,media_url,owner,timestamp&access_token=`+ this.accesstoken)
+          //.get(`https://graph.facebook.com/v7.0/`+ this.postList[0].id + `?fields=id,media_type,media_url,owner,timestamp&access_token=`+ this.accesstoken) //첫번째 게시물의 데이터만 가져온다.
           .then(({ data }) => {
             console.dir("선택된 게시물 데이터");
           if(data.media_type=="IMAGE"){ //image 가 1개면 하나만 등록 
@@ -263,14 +287,15 @@ export default {
         imgList:{}, //받아온 imgList
         accesstoken: 'EAAwHQEzKWuMBAM1Q8hPdQxM2ZBU4xiVZAqXCRy2ZCpDQTmMkUny4LupkHAZCHjOPp3pDenmIoDlPnGBlBtNstIC6b03kpd3eJRnph4ZAAokNDsKtrZCpwcbAVPyieOoVVue0hdBKqIanOaZCFuDifcXKzgMpgRoPh70OVMZB2cve4uvqSgbaKYpXtRWlWJN5P1OCyiphZBUC7OQZDZD',
         pageid:'',
+        selectedPostid:'', //선택된 게시물의 id 
         igUserid:'', // IG User Id
-        message:'댓글을 입력해주세요', // 게시글 댓글리스트 
+        message:' @kimto.y 님 축하드립니다. 올리신 피드가 메뉴사진으로 선정되었습니다. 이 알림을 직원에게 보여주시면 10%쿠폰으로 사용하실 수 있습니다!', // 게시글 댓글리스트 
         comments:{}, // 게시글의 댓글 정보
         replies:{}, //댓글의 대댓글 정보
-        selectedPostid:'', //선택된 게시물의 id 
         selectedComment: '', // toggle 로 선택된 댓글 
         selectedReply:'', // toggle 로 선택된 대댓글 
-      
+        isStatusOn: false,
+        readme:false,
     }
   },
   // pageid(계정페이지id)-> Userid(사용자계정id) -> mediaid(게시물id) ->commentid(댓글id)
@@ -280,6 +305,7 @@ export default {
     },*/
     accesstoken:function(){ //페이스북 로그인해서 accesstoken 이 바뀌면 
       this.GetAccountsId(); // Accountid를 가져오는 함수 실행 
+      this.isStatusOn=!this.isStatusOn;
     },
     pageid:function(){ //Accountid를 수행해서 pageid가 바뀌면 
        this.GetUserId(); // IG Userid를 가져오는 함수 실행 
@@ -287,15 +313,14 @@ export default {
     igUserid:function(){ //GetUserId를 수행해서 igUserid가 바뀌면 
        this.GetMediaId(); // Post(게시물)들의 MediaId List를 가져오는 함수 실행 
     },
-    postList:function(){ //GetMediaId를 수행해서 postList가 바뀌면 
+    selectedPostid:function(){ //GetMediaId를 수행해서 postList가 바뀌고 selectedPostid가 바뀌면
       this.GetPostNum(); // Post(게시물)들의 MediaId List중 0번 인덱스 게시물을 가져오는 함수 실행 
+      this.GetComment(); //게시물의 댓글을 가져오는 함수 실행 
     },
-    selectedPostid:function(){ //GetMediaId를 수행해서 postList가 바뀌면 
-      this.GetPostNum(); // Post(게시물)들의 MediaId List중 0번 인덱스 게시물을 가져오는 함수 실행 
-    },
-    imgList:function(){ // GetPostNum을 수행해서 imgList 가 바뀌면 
-      this.GetComment(); //게시물의 댓글을 조회하는 함수 실행 
-    },
+    
+   // selectedPostid:function(){ // GetPostNum을 수행해서 imgList 가 바뀌면 
+   //   this.postComment(); //게시물의 댓글을 보내는 함수 실행 
+   // },
     selectedComment:function(){ // GetComment를 수행해서 selectedComment 가 바뀌면 
       this.GetReplies(); // 선택된 댓글의 대댓글을 조회하는 함수 실행 
     },
@@ -326,5 +351,36 @@ export default {
   .style-chooser .vs__open-indicator {
     fill: #394066;
   }
+.custom-select{
+  margin:10px;
+}
+.big-button{
+  margin : 10px;
+  background-color: #FFCB3C;
+  padding: 10px;
+  border-radius: 12px;
+  color: black;
+  font-weight:300;
+  font-size:15px;
+}
+.ta{
+  width:500px;
+  height: 100px;
+  resize:none;
+  border: solid 2px orange;
+  margin-top:10px;
+  
+}
 
+ul li {list-style-type:none; display: inline; margin-left:20px;}
+
+.read-me{
+  margin: 10px;
+  color: gray;
+  
+}
+#idpw{
+  position: absolute;
+  text-align: left;
+}
 </style>

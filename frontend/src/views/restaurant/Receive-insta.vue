@@ -13,6 +13,7 @@
                 <v-card flat class="text-xs-center ma-3" v-for="instadata in instadatalist" v-bind:key="instadata.instaid">
                     
                     <v-img :src="instadata.iurl"  max-width="200" max-height="300" ></v-img>
+                     <b-button id="show-btn" @click="$bvModal.show('show-menu-modal')">메뉴 변경</b-button>
                     <input v-model="mid" placeholder="변경할 메뉴 mid - demo"><br>
                     <button v-on:click="changePicture(instadata.iurl,mid)">사진 변경</button>
                 </v-card>
@@ -21,10 +22,24 @@
 
     </div>
 
+    <div>
+    <!-- 메뉴선택 Modal-->
+    <b-modal id="show-menu-modal" hide-footer>
+        <template v-slot:modal-title>
+        메뉴 선택<code>$bvModal</code>
+        </template>
+        <div class="d-block text-center">
+        </div>
+
+        <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example')">Close Me</b-button>
+    </b-modal>
+    </div>
+
+
     </div>
 </template>
 <script>
-import Header from '../../components/Header.vue'
+
 import axios from 'axios'
 import constants from "../../constants.js";
     const BACKEND_URL = constants.URL
@@ -33,7 +48,7 @@ import constants from "../../constants.js";
     export default  {
         name: "InstaReceive",
          components :{
-            'main-header' : Header
+            
         },
         data() {
            return {
@@ -75,11 +90,18 @@ import constants from "../../constants.js";
         },
         mounted(){
             
-            axios.get(`${BACKEND_URL}/instagram/all`)
+            axios.get(`${BACKEND_URL}/instagram/select/1`) // select/{irid} 레스토랑 정보 인자로 받아와서 넣어주면 댐!
             .then(response => {
                 this.instadatalist = response.data;
                 console.log(response);
             })
+
+            axios.get(BACKEND_URL + 'menu/list', {params: {'mrid':this.rid}})
+            .then(response => {
+                console.log("menu list:" + response.data)
+                this.requestData.menus = response.data
+            })
+
         },
 
         created () {

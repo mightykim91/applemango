@@ -1,9 +1,10 @@
 <template>
   <div>
-      <h4 class="text-left">댓글작성</h4>
-      <v-container class="px-0">
+      <p class="text-left headline my-2">댓글작성</p>
+      <v-container class="pa-0">
           <v-row>
               <v-col
+              class="pr-0"
               cols="10">
                 <v-textarea
                 solo
@@ -15,13 +16,12 @@
                 </v-textarea>
               </v-col>
               <v-col
+              class="pl-1"
               cols="2">
-                  <!-- <v-btn
-                  height="100px" 
-                  dark v-on:click="submit">댓글 등록</v-btn> -->
                   <v-btn
                   height="100px" 
-                  dark v-on:click.prevent="registerComment">댓글 등록</v-btn>
+                  dark 
+                  v-on:click="submit">댓글 등록</v-btn>
               </v-col>
           </v-row>
       </v-container>
@@ -29,44 +29,34 @@
 </template>
 
 <script>
-import axios from 'axios'
-
-//local
-// const BACKEND_URL = "http://localhost:8080/"
-const BACKEND_URL = "http://i3a503.p.ssafy.io:8080/"
 
 export default {
     name:'CommentForm',
     props: {
         reid:Number,
+        commentCreated: Boolean
     },
     data(){
         return {
             commentData:{
-                reviewId:this.reid, //need to revise this too!
-                userId:'test', //For testing purpose, need to be revised later.
+                reviewId: this.reid, //need to revise this too!
+                userId: '', //For testing purpose, need to be revised later.
                 content:'',
             }
         }
     },
     methods:{
         submit: function(){
+            this.commentData.userId = this.$cookies.get('auth-token')
             this.$emit("create",this.commentData)
-            console.log(this.commentData)
         },
-        registerComment: function(){
-            axios.post(`${BACKEND_URL}comment/new`,this.commentData)
-            .then(response => {
-                console.log(this.commentData)
-                console.log(response.data)
-                this.$emit("create", response.data)
-                this.commentData.content = ''
-                // this.comments.unshift(response.data) //새로운댓글 배열에 추가후 배열의 처음으로 이동.
-            })
+    },
+    watch:{
+        commentCreated: function(){
+            console.log('댓글 등록 완료!')
+            this.commentData.content = ''
         }
-        
     }
-
 }
 </script>
 
