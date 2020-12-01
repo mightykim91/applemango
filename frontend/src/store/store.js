@@ -54,7 +54,6 @@ export const store = new Vuex.Store({
              },
             //현재 위치 정보 저장
              getLocation(state, coordinates){
-                 console.log(coordinates)
                  state.currentLocation = {
                      longitude: coordinates[1],
                      latitude: coordinates[0]

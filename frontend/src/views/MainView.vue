@@ -1,36 +1,44 @@
 <template>
-    <div class="container">
-        <map-component/>
-        <hr>
-
-    <v-container>
-      <v-row no-gutters>
-        <v-col class = "scale" v-on:click="search('돈까스')">
-            <img id = "image" src="../assets/katsu.jpg"/>
-            <div class="text" >돈까스</div>
-        </v-col>
-        <v-col class = "scale" v-on:click="search('파스타')">
-            <img id = "image" src="../assets/pasta.jpg"/>
-            <div class="text">파스타</div>
-        </v-col>
-        <v-col class = "scale" v-on:click="search('짜장면')">
-            <img id = "image" src="../assets/blackbean.png"/>
-            <div class="text">짜장면</div>
-        </v-col>
-      </v-row>
-    </v-container>
+<div>
+    <h1 id="map-header">내 주변 맛집</h1>
+    <hr id="map-division-line">
+    <div class="map-container">
+      <!-- <map-component/> -->
+      <newMapComponent class="item-map"/>
+      <!-- <v-container>
+        <v-row no-gutters>
+          <v-col class = "scale" v-on:click="search('돈까스')">
+              <img id = "image" src="../assets/katsu.jpg"/>
+              <div class="text" >돈까스</div>
+          </v-col>
+          <v-col class = "scale" v-on:click="search('파스타')">
+              <img id = "image" src="../assets/pasta.jpg"/>
+              <div class="text">파스타</div>
+          </v-col>
+          <v-col class = "scale" v-on:click="search('짜장면')">
+              <img id = "image" src="../assets/blackbean.png"/>
+              <div class="text">짜장면</div>
+          </v-col>
+        </v-row>
+      </v-container> -->
+      <store-list class="item-store"></store-list>
     </div>
+</div>
 </template>
 
 <script>
-import MapComponent from '../components/mainView/MapComponent.vue'
+// import MapComponent from '../components/mainView/MapComponent.vue'
+import NewMapComponent from '../components/mainView/newMapComponent.vue'
+import StoreList from '../components/mainView/StoreList.vue'
 // import constants from "../constants.js";
 // const BACKEND_URL = constants.URL
 
 export default {
     name : 'Home',
     components: {
-        'map-component': MapComponent
+        // 'map-component': MapComponent,
+        NewMapComponent,
+        StoreList
     },
     // data() {
     //     return {
@@ -48,7 +56,44 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
+@font-face {
+    font-family: 'BinggraeMelona-Bold';
+    src: url('../assets/fonts/BinggraeMelona-Bold.ttf') format('truetype');
+}
+
+#map-header {
+    font-family: 'BinggraeMelona-Bold';
+    text-align: left;
+    margin-bottom: 0;
+}
+
+#map-division-line {
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 0;
+    width: 1200px;
+    height: 2px;
+    background-color: #ffaa2b;
+}
+
+.map-container {
+  display: flex;
+  width: 1200px;
+  height: 500px;
+}
+
+.item-map {
+  width: 800px;
+  height: 500px;
+}
+
+.item-store {
+  margin-left: 5px;
+  width: 400px;
+  height: 500px;
+}
 
 .scale {
   cursor:pointer;

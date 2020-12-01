@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app">
+  <v-app id="app" class="app">
     <!--v-system-bar app>
       <v-row justify="end" no-gutters v-if="!this.$cookies.isKey('auth-token')">
         <v-col cols="1" class="px-1"><router-link :to="{name: 'Login'}" class="black--text">로그인</router-link></v-col>
@@ -92,17 +92,17 @@ export default {
     mounted(){
       //위치정보
       this.getLocation()
-      
     }
 }
 </script>
-<style>
+<style scoped>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  z-index: 1;
   /* margin-top: 60px; */
 }
 </style>

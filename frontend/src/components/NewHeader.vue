@@ -28,7 +28,7 @@
                     <v-icon class="align-self-center" color="gray">fa-location-arrow</v-icon>
                 </div>
                 <div v-else class="d-flex ml-3">
-                    <v-icon class="align-self-center" color="blue">fa-location-arrow</v-icon>
+                    <v-icon class="align-self-center" color="#38aa1e">fa-location-arrow</v-icon>
                 </div>
             </v-col>
             <v-col align-self="center" cols="1">
